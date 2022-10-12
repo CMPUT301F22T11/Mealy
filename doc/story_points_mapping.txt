@@ -1,0 +1,6 @@
+Story points to time effort.
+=======================================================================
+Size of card|     XS     |     S     |     M    |     L    |    XL    |
+Work effort | < half day | < one day | 1-2 days | 2-3 days | > 3 days |
+Story points|     1      |     2     |     3    |     4    |    5     |
+=======================================================================
