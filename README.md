@@ -1,7 +1,7 @@
 # Mealy
 CMPUT 301 Group Project.
 
-##Members:
+# Members:
 
 | Member  | CCID | Github Username |
 | ------------- | ------------- | ------------- | 
