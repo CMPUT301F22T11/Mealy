@@ -1,5 +1,6 @@
 # Mealy
 CMPUT 301 Group Project.
+Mealy is a simple app that allows user to plan out and prepare their meals in advance.
 
 # Members:
 
