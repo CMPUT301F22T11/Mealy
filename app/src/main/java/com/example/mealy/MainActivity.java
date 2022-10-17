@@ -1,6 +1,8 @@
 package com.example.mealy;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -14,6 +16,7 @@ import com.example.mealy.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button testButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        testButton = findViewById(R.id.buttonTest);
+
+        //This is for testing, to set the button to your view, modify it in test view
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
+            }
+        });
+
+
+
     }
 
 }
