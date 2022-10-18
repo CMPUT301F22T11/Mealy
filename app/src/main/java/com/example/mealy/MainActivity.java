@@ -41,7 +41,13 @@ public class MainActivity extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Open whatever fragment you want
+
+                //Test Fragment. Just give the layout as an input for TestFragment, Format: TestFragment(R.layout.xmlFileName)
                 new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
+
+                // Food Entry Layout For Testing
+                //new FoodEntry().show(getSupportFragmentManager(),"test");
             }
         });
 

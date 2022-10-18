@@ -12,6 +12,10 @@ import android.widget.SpinnerAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * This is just to test your fragment. It's not a proper fragment
+ */
+
 public class TestFragment extends DialogFragment {
     int layout;
 
