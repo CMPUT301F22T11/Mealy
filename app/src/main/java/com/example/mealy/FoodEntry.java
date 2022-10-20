@@ -1,5 +1,6 @@
 package com.example.mealy;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ public class FoodEntry extends DialogFragment{
     String[] volume;
     String[] current;
     RadioGroup unitsRadioGroup;
-
+    View view;
 
     public FoodEntry(){
 
@@ -38,22 +39,20 @@ public class FoodEntry extends DialogFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.food_entry, container, false);
-        InitializeCategorySpinner(view);
-        quantityUnitsSpinner(view);
-
-
+        view = inflater.inflate(R.layout.food_entry, container, false);
+        InitializeCategorySpinner();
+        quantityUnitsSpinner();
         return view;
     }
 
-    private void InitializeCategorySpinner(View view) {
+    private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
         categories = new String[]{"Select A Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
-    private void quantityUnitsSpinner(View view) {
+    private void quantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
         whole = new String[]{"Select unit", "single", "Dozen", "Five Pack"};
@@ -65,6 +64,7 @@ public class FoodEntry extends DialogFragment{
         unitsAdapter.setNotifyOnChange(true);
 
         unitsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch (checkedId) {
@@ -84,7 +84,7 @@ public class FoodEntry extends DialogFragment{
                         quantityUnits.setAdapter(unitsAdapter);
                         break;
                     default:
-                        Log.wtf(String.valueOf(checkedId), "it's 3");
+                        Log.wtf("This shouldn't happen", String.valueOf(checkedId));
 
                 }
             }
