@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
                 // Open whatever fragment you want
 
                 //Test Fragment. Just give the layout as an input for TestFragment, Format: TestFragment(R.layout.xmlFileName)
-                new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
+                //new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
 
                 // Food Entry Layout For Testing
-                //new FoodEntry().show(getSupportFragmentManager(),"test");
+                new FoodEntry().show(getSupportFragmentManager(),"test");
             }
         });
 
