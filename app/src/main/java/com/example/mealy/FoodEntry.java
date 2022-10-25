@@ -112,14 +112,14 @@ public class FoodEntry extends DialogFragment{
         return view;
     }
 
-    private void InitializeCategorySpinner() {
+    private void InitializeCategorySpinner(View view) {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
         categories = new String[]{"Select A Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
-    private void quantityUnitsSpinner() {
+    private void quantityUnitsSpinner(View view) {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
         whole = new String[]{"Select unit", "single", "Dozen", "Five Pack"};

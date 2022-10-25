@@ -1,4 +1,5 @@
 public class RecipeIngredient {
+    /*
     private String title;
     private String description;
     private int amount;
@@ -56,5 +57,5 @@ public class RecipeIngredient {
         this.unit = unit;
         this.category = category;
     }
-
+*/
 }
