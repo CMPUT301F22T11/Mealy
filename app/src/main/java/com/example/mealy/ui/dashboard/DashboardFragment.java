@@ -29,7 +29,7 @@ public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
 
     private Spinner spinner;
-    private LinearLayout ingredients;
+    private ListView ingredients;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,14 +49,25 @@ public class DashboardFragment extends Fragment {
         spinner.setAdapter(adapter);
 
         ArrayList<Ingredient> foodList = new ArrayList<>();
-        foodList.add(new Ingredient("Tomato",
-                "Red and big",
+        foodList.add(new Ingredient("MeatRat",
+                "Yummy for my tummy",
                 1, "Whole",
-                "Stew",
+                "Baked",
                 "Fridge",
-                LocalDate.parse("2022-12-03")));
+                LocalDate.parse("2022-12-03"),
+                R.drawable.meat_rat));
 
         //ingredients.setAdapter(cityAdapter);
+
+        // Now create the instance of the NumebrsViewAdapter and pass
+        // the context and arrayList created above
+        IngredientList ingredientList = new IngredientList(getActivity(), foodList);
+
+        // create the instance of the ListView to set the numbersViewAdapter
+        ListView storage = root.findViewById(R.id.storage);
+
+        // set the numbersViewAdapter for ListView
+        storage.setAdapter(ingredientList);
 
         return root;
     }

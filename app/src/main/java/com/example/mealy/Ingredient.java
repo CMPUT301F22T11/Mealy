@@ -13,6 +13,7 @@ public class Ingredient {
     String category;
     String location;
     LocalDate expiration;
+    int imageID;
 
     public String getName() {
         return name;
@@ -70,7 +71,22 @@ public class Ingredient {
         this.expiration = expiration;
     }
 
-    public Ingredient(String name, String description, int amount, String unit, String category, String location, LocalDate localDate){
+    public String getExpirationInText() {
+        return expiration.toString();
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public Ingredient(String name,
+                      String description,
+                      int amount,
+                      String unit,
+                      String category,
+                      String location,
+                      LocalDate localDate,
+                      int imageID){
         this.name = name;
         this.description = description;
         this.amount = amount;
@@ -78,6 +94,7 @@ public class Ingredient {
         this.category = category;
         this.location = location;
         this.expiration = localDate;
+        this.imageID = imageID;
     }
 
 }

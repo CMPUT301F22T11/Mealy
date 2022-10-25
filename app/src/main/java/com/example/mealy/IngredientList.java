@@ -1,52 +1,59 @@
 package com.example.mealy;
-
-
+// taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.mealy.Ingredient;
 
 import java.util.ArrayList;
 
 public class IngredientList extends ArrayAdapter<Ingredient> {
-    private ArrayList<Ingredient> ingredients;
-    private Context context;
 
-    public IngredientList(Context context, ArrayList<Ingredient> cities){
-        super(context,0, cities);
-        this.ingredients = ingredients;
-        this.context = context;
+    // invoke the suitable constructor of the ArrayAdapter class
+    public IngredientList(@NonNull Context context, ArrayList<Ingredient> arrayList) {
+
+        // pass the context and arrayList for the super
+        // constructor of the ArrayAdapter class
+        super(context, 0, arrayList);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
 
-        View view = convertView;
+        // convertView which is recyclable view
+        View currentItemView = convertView;
 
-        // TO DO
-        if(view == null){
-            //view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
+        // of the recyclable view is null then inflate the custom layout for the same
+        if (currentItemView == null) {
+            currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.custom_list_view, parent, false);
         }
-        Ingredient ingredient = ingredients.get(position);
-//
-//        TextView cityName = view.findViewById(R.id.city_text);
-//        TextView provinceName = view.findViewById(R.id.province_text);
-//
-//        cityName.setText(city.getCityName());
-//        provinceName.setText(city.getProvinceName());
 
-        return view;
-    }
+        // get the position of the view from the ArrayAdapter
+        Ingredient currentIngredient = getItem(position);
 
-    public ArrayList<Ingredient> getCities() {
-        return ingredients;
+        // then according to the position of the view assign the desired image for the same
+        ImageView ingredientImage = currentItemView.findViewById(R.id.imageView);
+        assert ingredientImage != null;
+        ingredientImage.setImageResource(currentIngredient.getImageID());
+
+        // then according to the position of the view assign the desired TextView 1 for the same
+        TextView textView1 = currentItemView.findViewById(R.id.textView1);
+        textView1.setText(currentIngredient.getName());
+
+        // then according to the position of the view assign the desired TextView 2 for the same
+        TextView textView2 = currentItemView.findViewById(R.id.textView2);
+        textView2.setText(currentIngredient.getExpirationInText());
+
+        // then return the recyclable view
+        return currentItemView;
     }
 }
