@@ -1,5 +1,7 @@
 package com.example.mealy;
 
+import java.time.LocalDate;
+
 /**
  * Ingredients
  */
@@ -9,6 +11,9 @@ public class Ingredient {
     int amount;
     String unit;
     String category;
+    String location;
+    LocalDate expiration;
+    int imageID;
 
     public String getName() {
         return name;
@@ -50,13 +55,45 @@ public class Ingredient {
         this.category = category;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
-    public Ingredient(String name, String description, int amount, String unit, String category){
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public LocalDate getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(LocalDate expiration) {
+        this.expiration = expiration;
+    }
+
+    public String getExpirationInText() {
+        return expiration.toString();
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public Ingredient(String name,
+                      String description,
+                      int amount,
+                      String unit,
+                      String category,
+                      String location,
+                      LocalDate localDate,
+                      int imageID) {
         this.name = name;
         this.description = description;
         this.amount = amount;
         this.unit = unit;
         this.category = category;
+        this.location = location;
+        this.expiration = localDate;
+        this.imageID = imageID;
     }
-
 }
