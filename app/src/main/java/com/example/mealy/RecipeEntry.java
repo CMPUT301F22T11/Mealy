@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 public class RecipeEntry {
 
+    /*
     public RecipeEntry(){
 
     }
@@ -41,4 +42,5 @@ public class RecipeEntry {
 
 
     }
+     */
 }
