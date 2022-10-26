@@ -70,8 +70,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
+            android:layout_weight="1"
             android:spinnerMode="dropdown"
-            android:contentDescription="Test"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -150,6 +151,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/expiryDateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Expiry Date: "
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10sp"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/expiryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="1234567890-"
+            android:hint="yyyy-MM-dd"
+            android:ems="10"
+            android:inputType="date" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5sp"
         android:orientation="horizontal">
 
@@ -162,6 +190,7 @@
             android:text="Save"
             style="?android:attr/buttonBarButtonStyle"
             />
+
     </LinearLayout>
 
 </LinearLayout>

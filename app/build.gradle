@@ -59,4 +59,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation "io.grpc:grpc-okhttp:1.48.1"
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
 }

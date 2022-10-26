@@ -1,6 +1,7 @@
 package com.example.mealy;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,20 +14,17 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Objects;
+
+import com.example.mealy.functions.Validate;
+import com.example.mealy.functions.Firestore;
 
 public class FoodEntry extends DialogFragment {
-
+    private final FoodEntry fragment = this;
     Spinner categorySpinner;
     Spinner quantityUnits;
     ArrayAdapter<CharSequence> categoryAdapter;
@@ -41,6 +39,7 @@ public class FoodEntry extends DialogFragment {
     Button Save;
     EditText IngredientName;
     EditText IngredientQuantity;
+    EditText ExpiryDate;
 
     View view;
 
@@ -52,7 +51,6 @@ public class FoodEntry extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -66,53 +64,8 @@ public class FoodEntry extends DialogFragment {
         InitializeSaveButton();
         InitializeTextViews();
 
-        StoreToFirestore();
+        //StoreToFirestore();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final String TAG = "!!!";
-        final CollectionReference collectionReference = db.collection("Ingredients");
-
-        Save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("AHAHA", "This is my message");
-
-                final String ingredientName = IngredientName.getText().toString();
-                final String categoryName = categorySpinner.getSelectedItem().toString();
-                final String ingredientQuantity = IngredientQuantity.getText().toString();
-                final String unit = quantityUnits.getSelectedItem().toString();
-                HashMap<String, String> data = new HashMap<>();
-                if (ingredientName.length() > 0 &&
-                        (categoryName != "Select A Category") &&
-                        IngredientQuantity.length() > 0 &&
-                        (unit != "Select unit")
-                ) { //&& categoryName.length()>0
-                    data.put("Category", categoryName);
-                    data.put("Quantity", ingredientQuantity);
-                    data.put("Quantity Unit", unit);
-                    collectionReference
-                            .document(ingredientName)
-                            .set(data)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // These are a method which gets executed when the task is succeeded
-                                    Log.d(TAG, "Data has been added successfully!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // These are a method which gets executed if there’s any problem
-                                    Log.d(TAG, "Data could not be added!" + e.toString());
-                                }
-                            });
-                    IngredientName.setText("");
-                    IngredientQuantity.setText("");
-                }
-                // figure out how to destroy the fragment and insert it here
-            }
-        });
 
         return view;
     }
@@ -127,9 +80,9 @@ public class FoodEntry extends DialogFragment {
     private void InitializeQuantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
-        whole = new String[]{"Select unit", "single", "Dozen", "Five Pack"};
-        weight = new String[]{"Select unit", "lb", "kg", "g"};
-        volume = new String[]{"Select unit", "L", "ml", "oz"};
+        whole = new String[]{"Select Unit", "single", "Dozen", "Five Pack"};
+        weight = new String[]{"Select Unit", "lb", "kg", "g"};
+        volume = new String[]{"Select Unit", "L", "ml", "oz"};
         current = whole;
         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
         quantityUnits.setAdapter(unitsAdapter);
@@ -165,14 +118,101 @@ public class FoodEntry extends DialogFragment {
 
     private void InitializeSaveButton() {
         Save = (Button) view.findViewById(R.id.addIngredient);
+
+        Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("AHAHA", "This is my message");
+
+                if (ValidData()) {
+                    String ingredientName = GetIngredientName();
+                    HashMap<String, String> data = GetData();
+                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    Firestore.StoreToFirestore("Ingredients", ingredientName, data);
+                }
+
+                // figure out how to destroy the fragment and insert it here
+            }
+        });
     }
 
     private void InitializeTextViews() {
         IngredientName = (EditText) view.findViewById(R.id.ingredientName);
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
+        ExpiryDate = (EditText) view.findViewById(R.id.expiryDate);
     }
 
-    private void StoreToFirestore() {
+    private HashMap<String, String> GetData(){
+
+        HashMap<String, String> data = new HashMap<>();
+
+        String categoryName = categorySpinner.getSelectedItem().toString();
+        String ingredientQuantity = IngredientQuantity.getText().toString();
+        String unit = quantityUnits.getSelectedItem().toString();
+        String expiryDate = ExpiryDate.getText().toString();
+
+        data.put("Category", categoryName);
+        data.put("Quantity", ingredientQuantity);
+        data.put("Quantity Unit", unit);
+        data.put("Expiry Date", expiryDate);
+
+        return data;
+    }
+
+
+    private String GetIngredientName() {
+        return IngredientName.getText().toString();
+    }
+
+
+    private boolean ValidData(){
+        String ingredientName = GetIngredientName();
+        HashMap<String, String> data = GetData();
+        /*
+        Keys:
+
+         */
+
+
+        boolean isValid = true;
+
+        if (Validate.IsEmpty(ingredientName)) {
+            IngredientName.setError("Ingredient Name cant be empty");
+            isValid =  false;
+        }
+
+        if (Validate.IsEmpty(data.get("Category")) || Objects.equals(data.get("Category"), "Select A Category")) {
+            TextView errorText = (TextView) categorySpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Select A Category");
+            isValid =  false;
+        }
+
+        if (Validate.IsEmpty(data.get("Quantity"))) {
+            IngredientQuantity.setError("Please Input Quantity");
+            isValid =  false;
+        }
+
+        if (Validate.IsEmpty(data.get("Quantity Unit")) || Objects.equals(data.get("Quantity Unit"), "Select Unit")) {
+            TextView errorText = (TextView) quantityUnits.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Select Unit");
+            isValid =  false;
+        }
+        if (Validate.ValidDate(data.get("Quantity Unit")) || Objects.equals(data.get("Quantity Unit"), "Select Unit")) {
+            TextView errorText = (TextView) quantityUnits.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Select Unit");
+            isValid =  false;
+        }
+
+        // TODO Validate expiry date
+
+
+        return isValid;
 
     }
 }
