@@ -13,11 +13,16 @@ import java.util.HashMap;
 
 public class Firestore {
 
-
+    /** Stores your data into Firestore (Only supports Strings for now)
+     *
+     * @param CollectionName Name of collection in Database (e.g. Programming Languages)
+     * @param document Title of Item (e.g. Java)
+     * @param data  HashMap<String, String> of the data you want to store into the database (e.g. <"Founder", "James Gosling">)
+     */
     public static void StoreToFirestore(String CollectionName, String document, HashMap<String, String> data ) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String TAG = "!!!";
-        final CollectionReference collectionReference = db.collection("Ingredients");
+        final CollectionReference collectionReference = db.collection(CollectionName);
 
         collectionReference
                 .document(document)

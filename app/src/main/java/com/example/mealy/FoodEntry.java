@@ -64,9 +64,6 @@ public class FoodEntry extends DialogFragment {
         InitializeSaveButton();
         InitializeTextViews();
 
-        //StoreToFirestore();
-
-
         return view;
     }
 
@@ -130,8 +127,6 @@ public class FoodEntry extends DialogFragment {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     Firestore.StoreToFirestore("Ingredients", ingredientName, data);
                 }
-
-                // figure out how to destroy the fragment and insert it here
             }
         });
     }
@@ -166,12 +161,12 @@ public class FoodEntry extends DialogFragment {
 
 
     private boolean ValidData(){
-        String ingredientName = GetIngredientName();
-        HashMap<String, String> data = GetData();
-        /*
-        Keys:
 
-         */
+        String ingredientName = IngredientName.getText().toString();
+        String categoryName = categorySpinner.getSelectedItem().toString();
+        String ingredientQuantity = IngredientQuantity.getText().toString();
+        String unit = quantityUnits.getSelectedItem().toString();
+        String expiryDate = ExpiryDate.getText().toString();
 
 
         boolean isValid = true;
@@ -181,7 +176,7 @@ public class FoodEntry extends DialogFragment {
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(data.get("Category")) || Objects.equals(data.get("Category"), "Select A Category")) {
+        if (Validate.IsEmpty(categoryName) || Objects.equals(categoryName, "Select A Category")) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -189,19 +184,12 @@ public class FoodEntry extends DialogFragment {
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(data.get("Quantity"))) {
+        if (Validate.IsEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(data.get("Quantity Unit")) || Objects.equals(data.get("Quantity Unit"), "Select Unit")) {
-            TextView errorText = (TextView) quantityUnits.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);
-            errorText.setText("Select Unit");
-            isValid =  false;
-        }
-        if (Validate.ValidDate(data.get("Quantity Unit")) || Objects.equals(data.get("Quantity Unit"), "Select Unit")) {
+        if (Validate.IsEmpty(unit) || Objects.equals(unit, "Select Unit")) {
             TextView errorText = (TextView) quantityUnits.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -209,8 +197,15 @@ public class FoodEntry extends DialogFragment {
             isValid =  false;
         }
 
-        // TODO Validate expiry date
-
+        try {
+            if (Validate.datePassed(expiryDate)) {
+                ExpiryDate.setError("Ingredient Expired");
+                isValid = false;
+            }
+        } catch (Exception e) {
+            ExpiryDate.setError("Invalid Date, Use Format: yyyy-MM-dd");
+            isValid = false;
+        }
 
         return isValid;
 

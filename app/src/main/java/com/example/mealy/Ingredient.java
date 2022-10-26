@@ -9,6 +9,16 @@ public class Ingredient {
     int amount;
     String unit;
     String category;
+    String expiryDate;
+
+    public Ingredient(String name, String description, int amount, String unit, String category, String expiryDate){
+        this.name = name;
+        this.description = description;
+        this.amount = amount;
+        this.unit = unit;
+        this.category = category;
+        this.expiryDate = expiryDate;
+    }
 
     public String getName() {
         return name;
@@ -50,13 +60,11 @@ public class Ingredient {
         this.category = category;
     }
 
-
-    public Ingredient(String name, String description, int amount, String unit, String category){
-        this.name = name;
-        this.description = description;
-        this.amount = amount;
-        this.unit = unit;
-        this.category = category;
+    public String getExpiryDate() {
+        return expiryDate;
     }
 
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 }
