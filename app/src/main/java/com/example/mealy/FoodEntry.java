@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class FoodEntry extends DialogFragment{
+public class FoodEntry extends DialogFragment {
 
     Spinner categorySpinner;
     Spinner quantityUnits;
@@ -42,10 +42,11 @@ public class FoodEntry extends DialogFragment{
     EditText IngredientName;
     EditText IngredientQuantity;
 
+    View view;
 
 
-    public FoodEntry(){
-
+    public FoodEntry() {
+        // Constructor: TODO
     }
 
     @Override
@@ -56,18 +57,22 @@ public class FoodEntry extends DialogFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.food_entry, container, false);
-        InitializeCategorySpinner(view);
-        quantityUnitsSpinner(view);
-        SaveButton(view);
-        IngredientNameTextView(view);
-        QuantityTextView(view);
+        // Inflates View
+        view = inflater.inflate(R.layout.food_entry, container, false);
+
+        // Initializes Interface
+        InitializeCategorySpinner();
+        InitializeQuantityUnitsSpinner();
+        InitializeSaveButton();
+        InitializeTextViews();
+
+        StoreToFirestore();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String TAG = "!!!";
         final CollectionReference collectionReference = db.collection("Ingredients");
 
-        Save.setOnClickListener( new View.OnClickListener() {
+        Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("AHAHA", "This is my message");
@@ -77,11 +82,11 @@ public class FoodEntry extends DialogFragment{
                 final String ingredientQuantity = IngredientQuantity.getText().toString();
                 final String unit = quantityUnits.getSelectedItem().toString();
                 HashMap<String, String> data = new HashMap<>();
-                if (ingredientName.length()>0 &&
+                if (ingredientName.length() > 0 &&
                         (categoryName != "Select A Category") &&
-                        IngredientQuantity.length()>0 &&
+                        IngredientQuantity.length() > 0 &&
                         (unit != "Select unit")
-                        ) { //&& categoryName.length()>0
+                ) { //&& categoryName.length()>0
                     data.put("Category", categoryName);
                     data.put("Quantity", ingredientQuantity);
                     data.put("Quantity Unit", unit);
@@ -112,14 +117,14 @@ public class FoodEntry extends DialogFragment{
         return view;
     }
 
-    private void InitializeCategorySpinner(View view) {
+    private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
         categories = new String[]{"Select A Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
-    private void quantityUnitsSpinner(View view) {
+    private void InitializeQuantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
         whole = new String[]{"Select unit", "single", "Dozen", "Five Pack"};
@@ -158,15 +163,16 @@ public class FoodEntry extends DialogFragment{
         });
     }
 
-    private void SaveButton(View view) {
+    private void InitializeSaveButton() {
         Save = (Button) view.findViewById(R.id.addIngredient);
     }
 
-    private void IngredientNameTextView(View view) {
+    private void InitializeTextViews() {
         IngredientName = (EditText) view.findViewById(R.id.ingredientName);
+        IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
     }
 
-    private void QuantityTextView(View view) {
-        IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
+    private void StoreToFirestore() {
+
     }
 }

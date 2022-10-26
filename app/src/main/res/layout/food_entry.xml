@@ -43,7 +43,6 @@
             android:hint="Name"
             android:minHeight="48dp"
             android:inputType="textPersonName"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
             android:maxLength="30"
             android:layout_gravity="end"
             android:textColorHint="#757575"
