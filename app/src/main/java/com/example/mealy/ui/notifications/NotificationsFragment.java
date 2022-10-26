@@ -54,9 +54,15 @@ public class NotificationsFragment extends Fragment {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeArrayList.add(new Recipe("Meat Rat",
                 "Yummy for my tummy",
-                1, 3,
+                5, 3,
                 "Grilled",
                 R.drawable.meat_rat));
+
+        recipeArrayList.add(new Recipe("Meat Skull",
+                "Going to hell",
+                3, 4,
+                "Fried",
+                R.drawable.meatskull));
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
