@@ -1,4 +1,5 @@
 public class Recipe {
+    /*
     private String title;
     private int time;
     private int numServings;
@@ -86,6 +87,6 @@ public class Recipe {
     public recipeIngredientDelete(RecipeIngredient ingredient) {
         this.recipeIngredientList.remove(ingredient);
     }
-
+*/
 
 }

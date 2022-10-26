@@ -7,12 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class FoodEntry extends DialogFragment{
 
@@ -26,7 +37,12 @@ public class FoodEntry extends DialogFragment{
     String[] volume;
     String[] current;
     RadioGroup unitsRadioGroup;
-    View view;
+
+    Button Save;
+    EditText IngredientName;
+    EditText IngredientQuantity;
+
+
 
     public FoodEntry(){
 
@@ -35,24 +51,75 @@ public class FoodEntry extends DialogFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.food_entry, container, false);
-        InitializeCategorySpinner();
-        quantityUnitsSpinner();
+        View view = inflater.inflate(R.layout.food_entry, container, false);
+        InitializeCategorySpinner(view);
+        quantityUnitsSpinner(view);
+        SaveButton(view);
+        IngredientNameTextView(view);
+        QuantityTextView(view);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String TAG = "!!!";
+        final CollectionReference collectionReference = db.collection("Ingredients");
+
+        Save.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("AHAHA", "This is my message");
+
+                final String ingredientName = IngredientName.getText().toString();
+                final String categoryName = categorySpinner.getSelectedItem().toString();
+                final String ingredientQuantity = IngredientQuantity.getText().toString();
+                final String unit = quantityUnits.getSelectedItem().toString();
+                HashMap<String, String> data = new HashMap<>();
+                if (ingredientName.length()>0 &&
+                        (categoryName != "Select A Category") &&
+                        IngredientQuantity.length()>0 &&
+                        (unit != "Select unit")
+                        ) { //&& categoryName.length()>0
+                    data.put("Category", categoryName);
+                    data.put("Quantity", ingredientQuantity);
+                    data.put("Quantity Unit", unit);
+                    collectionReference
+                            .document(ingredientName)
+                            .set(data)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // These are a method which gets executed when the task is succeeded
+                                    Log.d(TAG, "Data has been added successfully!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // These are a method which gets executed if there’s any problem
+                                    Log.d(TAG, "Data could not be added!" + e.toString());
+                                }
+                            });
+                    IngredientName.setText("");
+                    IngredientQuantity.setText("");
+                }
+                // figure out how to destroy the fragment and insert it here
+            }
+        });
+
         return view;
     }
 
-    private void InitializeCategorySpinner() {
+    private void InitializeCategorySpinner(View view) {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
         categories = new String[]{"Select A Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
-    private void quantityUnitsSpinner() {
+    private void quantityUnitsSpinner(View view) {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
         whole = new String[]{"Select unit", "single", "Dozen", "Five Pack"};
@@ -89,8 +156,17 @@ public class FoodEntry extends DialogFragment{
                 }
             }
         });
+    }
 
+    private void SaveButton(View view) {
+        Save = (Button) view.findViewById(R.id.addIngredient);
+    }
 
+    private void IngredientNameTextView(View view) {
+        IngredientName = (EditText) view.findViewById(R.id.ingredientName);
+    }
 
+    private void QuantityTextView(View view) {
+        IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
     }
 }
