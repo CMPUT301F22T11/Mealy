@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,15 +15,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
+import com.example.mealy.Recipe;
+import com.example.mealy.RecipeList;
+import com.example.mealy.comparators.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 // This is where I will temporarily put my RecipeList view
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
-    private Spinner sortSpinner;
-    private ListView recipeList;
+    private Spinner sortSpinner; // for selecting sorting category
+    private ListView recipeListView; // for selecting list of recipes
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,11 +40,52 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // assign UI elements
         sortSpinner = root.findViewById(R.id.recipesort);
-        recipeList = root.findViewById(R.id.recipestorage);
+        recipeListView = root.findViewById(R.id.recipestorage);
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // create sorting spinner with sort categories
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Prep Time", "Servings", "Category"));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        sortSpinner.setAdapter(adapter);
+
+        // add sample items
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+        recipeArrayList.add(new Recipe("Meat Rat",
+                "Yummy for my tummy",
+                1, 3,
+                "Grilled",
+                R.drawable.meat_rat));
+
+        // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        // Create the adapter and set it to the arraylist
+        RecipeList recipeList = new RecipeList(getActivity(), recipeArrayList);
+
+        // create the instance of the ListView to set the numbersViewAdapter
+        ListView storage = root.findViewById(R.id.recipestorage);
+
+        // set the numbersViewAdapter for ListView
+        storage.setAdapter(recipeList);
+
+        // set the spinner to sort things correctly
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = sortSpinner.getItemAtPosition(i).toString();
+                CompareRecipes compare = new CompareRecipes(selectedItem);
+
+                Collections.sort(recipeArrayList, compare.returnComparator());
+                recipeList.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return root;
     }
 

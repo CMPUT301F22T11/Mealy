@@ -1,92 +1,73 @@
+package com.example.mealy;
+
+import java.time.LocalDate;
+
+/**
+ * Recipes
+ */
 public class Recipe {
-    /*
-    private String title;
-    private int time;
-    private int numServings;
-    private String category;
-    private String comments;
-    private List<RecipeIngredient> recipeIngredientList;
+    String title;
+    String comments;
+    Integer servings;
+    int preptime; // Change later to proper format
+    String category;
+    int imageID;
 
-
-    // Getters
     public String getTitle() {
-        return this.title;
-    }
-    
-    public int getTime() {
-        return this.time;
-    }
-    
-    public int getNumServings() {
-        return this.numServings;
+        return title;
     }
 
-    public String getCategory() {
-        return this.category;
-    }
-
-    public String getComments() {
-        return this.comments;
-    }
-
-    public List<RecipeIngredient> getRicipeIngredientList() {
-        return this.recipeIngredientList;
-    }
-
-    // Setters
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public void setNumServings(int numServings) {
-        this.numServings = numServings;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     public void setComments(String comments) {
         this.comments = comments;
     }
 
-    public void setRecipeIngredientList(List<RecipeIngredient> recipeIngredientList) {
-        this.recipeIngredientList = new ArrayList<>();
+    public String getComments() { return this.comments; }
 
-        for (RecipeIngredient x : recipeIngredientList) {
-            this.recipeIngredientList.add(x);
-        }
+    public int getServings() {
+        return servings;
     }
 
-    // Constructor.
-    public Recipe(String title, int time, int numServings, String category, String comments, List<RecipeIngredient> recipeIngredientList) {
-        this.title = title;
-        this.time = time;
-        this.numServings = numServings;
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public String getServingsString() {
+        return servings.toString();
+    }
+
+    public int getPreptime() { return preptime; }
+
+    public void setPreptime(int preptime) {
+        this.preptime = preptime;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public Recipe(String title,
+                      String comments,
+                      int servings,
+                      int preptime,
+                      String category,
+                      int imageID) {
+        this.title = title;
         this.comments = comments;
-        this.recipeIngredientList = new ArrayList<>();
-
-        for (RecipeIngredient x : recipeIngredientList) {
-            this.recipeIngredientList.add(x);
-        }
-
+        this.servings = servings;
+        this.preptime = preptime;
+        this.category = category;
+        this.imageID = imageID;
     }
-
-    // Add ingredient to the recipe.
-    public recipeIngredientAdd(RecipeIngredient ingredient) {
-        this.recipeIngredientList.add(ingredient);
-
-    }
-
-    // Delete given ingredient from the recipe.
-    public recipeIngredientDelete(RecipeIngredient ingredient) {
-        this.recipeIngredientList.remove(ingredient);
-    }
-*/
-
 }

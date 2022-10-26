@@ -11,14 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.mealy.Ingredient;
+import com.example.mealy.Recipe;
 
 import java.util.ArrayList;
 
-public class RecipeList extends ArrayAdapter<Ingredient> {
+public class RecipeList extends ArrayAdapter<Recipe> {
 
     // invoke the suitable constructor of the ArrayAdapter class
-    public RecipeList(@NonNull Context context, ArrayList<Ingredient> arrayList) {
+    public RecipeList(@NonNull Context context, ArrayList<Recipe> arrayList) {
 
         // pass the context and arrayList for the super
         // constructor of the ArrayAdapter class
@@ -38,20 +38,20 @@ public class RecipeList extends ArrayAdapter<Ingredient> {
         }
 
         // get the position of the view from the ArrayAdapter
-        Ingredient currentIngredient = getItem(position);
+        Recipe currentRecipe = getItem(position);
 
         // then according to the position of the view assign the desired image for the same
-        ImageView ingredientImage = currentItemView.findViewById(R.id.imageView);
-        assert ingredientImage != null;
-        ingredientImage.setImageResource(currentIngredient.getImageID());
+        ImageView recipeImage = currentItemView.findViewById(R.id.imageView);
+        assert recipeImage != null;
+        recipeImage.setImageResource(currentRecipe.getImageID());
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.textView1);
-        textView1.setText(currentIngredient.getName());
+        textView1.setText(currentRecipe.getTitle());
 
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.textView2);
-        textView2.setText(currentIngredient.getExpirationInText());
+        textView2.setText(currentRecipe.getServingsString());
 
         // then return the recyclable view
         return currentItemView;
