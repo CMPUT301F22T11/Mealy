@@ -27,13 +27,16 @@ public class FoodEntry extends DialogFragment {
     private final FoodEntry fragment = this;
     Spinner categorySpinner;
     Spinner quantityUnits;
+    Spinner locationSpinner;
     ArrayAdapter<CharSequence> categoryAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
+    ArrayAdapter<CharSequence> locationAdapter;
     String[] categories;
     String[] whole;
     String[] weight;
     String[] volume;
     String[] current;
+    String[] locations;
     RadioGroup unitsRadioGroup;
 
     Button Save;
@@ -62,24 +65,37 @@ public class FoodEntry extends DialogFragment {
         InitializeCategorySpinner();
         InitializeQuantityUnitsSpinner();
         InitializeSaveButton();
+        InitializeLocationSpinner();
         InitializeTextViews();
+
 
         return view;
     }
 
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
-        categories = new String[]{"Select A Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
+        categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
+
+        // Todo, add categories and set default values for each category
+    }
+
+    private void InitializeLocationSpinner() {
+        locationSpinner = (Spinner) view.findViewById(R.id.locationDropdown);
+        locations = new String[]{"Select Location", "Pantry", "Fridge", "Freezer"};
+        locationAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
+        locationSpinner.setAdapter(locationAdapter);
+
+        // Todo, add locations
     }
 
     private void InitializeQuantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
         whole = new String[]{"Select Unit", "single", "Dozen", "Five Pack"};
-        weight = new String[]{"Select Unit", "lb", "kg", "g"};
-        volume = new String[]{"Select Unit", "L", "ml", "oz"};
+        weight = new String[]{"Select Unit", "lb", "kg", "g", "oz"};
+        volume = new String[]{"Select Unit", "L", "ml", "fl oz"};
         current = whole;
         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
         quantityUnits.setAdapter(unitsAdapter);
@@ -119,7 +135,6 @@ public class FoodEntry extends DialogFragment {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("AHAHA", "This is my message");
 
                 if (ValidData()) {
                     String ingredientName = GetIngredientName();
@@ -167,6 +182,7 @@ public class FoodEntry extends DialogFragment {
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
         String expiryDate = ExpiryDate.getText().toString();
+        String location = locationSpinner.getSelectedItem().toString();
 
 
         boolean isValid = true;
@@ -176,16 +192,17 @@ public class FoodEntry extends DialogFragment {
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(categoryName) || Objects.equals(categoryName, "Select A Category")) {
+        if (Validate.IsEmpty(categoryName) || Objects.equals(categoryName, "Select Category")) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
-            errorText.setText("Select A Category");
+            errorText.setText("Select Category");
             isValid =  false;
         }
 
         if (Validate.IsEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
+
             isValid =  false;
         }
 
@@ -196,6 +213,15 @@ public class FoodEntry extends DialogFragment {
             errorText.setText("Select Unit");
             isValid =  false;
         }
+
+        if (Validate.IsEmpty(location) || Objects.equals(location, "Select Location")) {
+            TextView errorText = (TextView) locationSpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Select Location");
+            isValid =  false;
+        }
+
 
         try {
             if (Validate.datePassed(expiryDate)) {
