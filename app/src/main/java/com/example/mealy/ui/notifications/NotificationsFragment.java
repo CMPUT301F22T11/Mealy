@@ -1,5 +1,6 @@
 package com.example.mealy.ui.notifications;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +12,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.Ingredient;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 // This is where I will temporarily put my RecipeList view
 public class NotificationsFragment extends Fragment {
@@ -32,6 +37,7 @@ public class NotificationsFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView recipeListView; // for selecting list of recipes
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel =
@@ -50,19 +56,34 @@ public class NotificationsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sortSpinner.setAdapter(adapter);
 
+        // add sample ingredient for recipe list
+        Ingredient rat_hair = new Ingredient("rat hair",
+                "hair from a rat",
+                100,
+                "strands",
+                "protein",
+                "pantry",
+                LocalDate.parse("2025-12-13"),
+                R.drawable.rathair);
+
+        List ingredientList = new ArrayList();
+        ingredientList.add(rat_hair);
+
         // add sample items
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeArrayList.add(new Recipe("Meat Rat",
                 "Yummy for my tummy",
-                5, 3,
+                5, 3, 10,
                 "Grilled",
-                R.drawable.meat_rat));
+                R.drawable.meat_rat,
+                ingredientList));
 
         recipeArrayList.add(new Recipe("Meat Skull",
                 "Going to hell",
-                3, 4,
+                3, 4, 30,
                 "Fried",
-                R.drawable.meatskull));
+                R.drawable.meatskull,
+                ingredientList));
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 

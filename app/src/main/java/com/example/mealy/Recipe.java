@@ -1,6 +1,6 @@
 package com.example.mealy;
 
-import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Recipes
@@ -9,9 +9,11 @@ public class Recipe {
     String title;
     String comments;
     Integer servings;
-    int preptime; // Change later to proper format
+    int preptimeHours;
+    int preptimeMins;
     String category;
     int imageID;
+    private List<Ingredient> recipeIngredients;
 
     public String getTitle() {
         return title;
@@ -36,14 +38,16 @@ public class Recipe {
     }
 
     public String getServingsString() {
-        return servings.toString();
+        return "Serves " + servings.toString();
     }
 
-    public int getPreptime() { return preptime; }
+    public int getPreptimeHours() { return preptimeHours; }
 
-    public void setPreptime(int preptime) {
-        this.preptime = preptime;
-    }
+    public void setPreptimeHours(int preptimeHours) {this.preptimeHours = preptimeHours;}
+
+    public int getPreptimeMins() { return preptimeMins; }
+
+    public void setPreptimeMins(int preptimeMins) {this.preptimeMins = preptimeMins;}
 
     public String getCategory() {
         return category;
@@ -57,17 +61,27 @@ public class Recipe {
         return imageID;
     }
 
+    public List<Ingredient> getRecipeIngredients() { return recipeIngredients; }
+
+    public void addIngredient(Ingredient ingredient) { recipeIngredients.add(ingredient); }
+
+    public void removeIngredient(Ingredient ingredient) {recipeIngredients.remove(ingredient); }
+
     public Recipe(String title,
                       String comments,
                       int servings,
-                      int preptime,
+                      int preptimeHours,
+                      int preptimeMins,
                       String category,
-                      int imageID) {
+                      int imageID,
+                      List ingredients){
         this.title = title;
         this.comments = comments;
         this.servings = servings;
-        this.preptime = preptime;
+        this.preptimeHours = preptimeHours;
+        this.preptimeMins = preptimeMins;
         this.category = category;
         this.imageID = imageID;
+        this.recipeIngredients = ingredients;
     }
 }
