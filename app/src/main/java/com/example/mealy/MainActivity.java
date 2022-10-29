@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 new FoodEntry().show(getSupportFragmentManager(),"test");
             }
         });
-
-
-
     }
 
 }
