@@ -21,11 +21,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
+import com.example.mealy.functions.DateFunc;
 
 public class FoodEntry extends DialogFragment {
     private final FoodEntry fragment = this;
@@ -43,12 +45,12 @@ public class FoodEntry extends DialogFragment {
     String[] locations;
     RadioGroup unitsRadioGroup;
 
-    Button Save;
-    Button dateButton;
     DatePickerDialog datePickerDialog;
+    Button ExpiryDate;
+
+    Button Save;
     EditText IngredientName;
     EditText IngredientQuantity;
-    EditText ExpiryDate;
     EditText DescriptionText;
 
     View view;
@@ -74,6 +76,7 @@ public class FoodEntry extends DialogFragment {
         InitializeSaveButton();
         InitializeLocationSpinner();
         InitializeTextViews();
+        InitializeDatePicker();
 
         return view;
     }
@@ -173,7 +176,6 @@ public class FoodEntry extends DialogFragment {
     private void InitializeTextViews() {
         IngredientName = (EditText) view.findViewById(R.id.ingredientName);
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
-        ExpiryDate = (EditText) view.findViewById(R.id.expiryDate);
         DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
     }
 
@@ -196,7 +198,7 @@ public class FoodEntry extends DialogFragment {
         String categoryName = categorySpinner.getSelectedItem().toString();
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
-        String expiryDate = ExpiryDate.getText().toString();
+        String expiryDate = DateFunc.MakeStringDate(ExpiryDate.getText().toString());
         String description = DescriptionText.getText().toString();
 
         data.put("Category", categoryName);
@@ -215,6 +217,40 @@ public class FoodEntry extends DialogFragment {
      */
     private String GetIngredientName() {
         return IngredientName.getText().toString();
+    }
+
+    private void InitializeDatePicker() {
+        ExpiryDate = view.findViewById(R.id.datePickerButton);
+
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            {
+                // months index from 0-11
+                month = month + 1;
+                ExpiryDate.setText(DateFunc.MakeIntString(day, month, year));
+            }
+        };
+
+        // create the date from whatever was input by the user
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(getContext(), style, dateSetListener, year, month, day);
+        // the minimum expiration date is today
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 86400000);
+
+        ExpiryDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                datePickerDialog.show();
+
+            }
+        });
     }
 
     /**
@@ -273,21 +309,14 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
-
-        try {
-            if (Validate.datePassed(expiryDate)) {
-                ExpiryDate.setError("Ingredient Expired");
-                isValid = false;
-            }
-        } catch (Exception e) {
-            ExpiryDate.setError("Invalid Date, Use Format: yyyy-MM-dd");
+        if (expiryDate.equals("Expiry Date")){
+            ExpiryDate.setError("");
             isValid = false;
         }
 
         return isValid;
 
     }
-
 
 
 }
