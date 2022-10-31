@@ -1,5 +1,6 @@
 package com.example.mealy;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +16,18 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.mealy.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+    // for image upload
+    public static Context contextOfApplication;
 
     Button testButton;
     Button Home_Add_Recipe_Entry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // for image upload
+        contextOfApplication = getApplicationContext();
+
 
         com.example.mealy.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -57,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
                 new RecipeEntry().show(getSupportFragmentManager(),"test");
             }
         });
+    }
+
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
     }
 
 }
