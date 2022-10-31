@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.mealy.Ingredient;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 
 public class SortByExp implements Comparator<Ingredient> {
@@ -18,6 +19,8 @@ public class SortByExp implements Comparator<Ingredient> {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public int compare(Ingredient a, Ingredient b) {
-        return a.getExpiration().compareTo(b.getExpiration()) * asc;
+        LocalDate l1 = LocalDate.parse(a.getExpiryDate());
+        LocalDate l2 = LocalDate.parse((b.getExpiryDate()));
+        return l1.compareTo(l2) * asc;
     }
 }

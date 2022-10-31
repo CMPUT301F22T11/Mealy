@@ -12,8 +12,9 @@ public class Ingredient {
     String unit;
     String category;
     String location;
-    LocalDate expiration;
-    int imageID;
+    String expiryDate;
+    //LocalDate expiration;
+    //int imageID;
 
     public String getName() {
         return name;
@@ -63,6 +64,15 @@ public class Ingredient {
         this.location = location;
     }
 
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    /*
     public LocalDate getExpiration() {
         return expiration;
     }
@@ -78,6 +88,7 @@ public class Ingredient {
     public int getImageID() {
         return imageID;
     }
+     */
 
     public Ingredient(String name,
                       String description,
@@ -85,16 +96,16 @@ public class Ingredient {
                       String unit,
                       String category,
                       String location,
-                      LocalDate localDate,
-                      int imageID){
+                      String expiryDate){
         this.name = name;
         this.description = description;
         this.amount = amount;
         this.unit = unit;
         this.category = category;
         this.location = location;
-        this.expiration = localDate;
-        this.imageID = imageID;
+        this.expiryDate = expiryDate;
+        //this.expiration = localDate;
+        //this.imageID = imageID;
     }
 
 }

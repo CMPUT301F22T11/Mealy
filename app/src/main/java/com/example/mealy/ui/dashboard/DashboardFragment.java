@@ -69,16 +69,14 @@ public class DashboardFragment extends Fragment {
                 1, "Whole",
                 "Baked",
                 "Fridge",
-                LocalDate.parse("2022-12-03"),
-                R.drawable.meat_rat));
+                "2022-12-03"));
 
         foodList.add(new Ingredient("Meat Skull",
                 "Going to hell",
                 1, "Whole",
                 "Fried",
                 "Head",
-                LocalDate.parse("2023-12-03"),
-                R.drawable.meatskull));
+                "2023-12-03"));
 
         //ingredients.setAdapter(cityAdapter);
 

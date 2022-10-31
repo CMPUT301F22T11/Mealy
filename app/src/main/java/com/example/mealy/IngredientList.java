@@ -43,7 +43,7 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
         // then according to the position of the view assign the desired image for the same
         ImageView ingredientImage = currentItemView.findViewById(R.id.imageView);
         assert ingredientImage != null;
-        ingredientImage.setImageResource(currentIngredient.getImageID());
+        //ingredientImage.setImageResource(R.drawable.meat_rat);
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.textView1);
@@ -51,7 +51,7 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
 
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.textView2);
-        textView2.setText(currentIngredient.getExpirationInText());
+        textView2.setText(currentIngredient.getExpiryDate());
 
         // then return the recyclable view
         return currentItemView;
