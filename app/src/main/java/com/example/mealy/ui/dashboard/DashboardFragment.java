@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -33,6 +34,8 @@ public class DashboardFragment extends Fragment {
 
     private Spinner spinner;
     private ListView ingredients;
+    private Button flip;
+    private int asc;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,6 +48,8 @@ public class DashboardFragment extends Fragment {
 
         spinner = root.findViewById(R.id.ingredientsort);
         ingredients = root.findViewById(R.id.storage);
+        flip = root.findViewById(R.id.flip);
+        asc = 1;
 
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Desc", "Exp", "Location", "Category"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, options);
@@ -87,11 +92,26 @@ public class DashboardFragment extends Fragment {
         // set the numbersViewAdapter for ListView
         storage.setAdapter(ingredientList);
 
+        flip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                asc *= -1;
+
+                int selection = spinner.getSelectedItemPosition();
+                String selectedItem = spinner.getItemAtPosition(selection).toString();
+                Compare compare = new Compare(selectedItem, asc);
+
+                Collections.sort(foodList, compare.returnComparator());
+                ingredientList.notifyDataSetChanged();
+
+            }
+        });
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = spinner.getItemAtPosition(i).toString();
-                Compare compare = new Compare(selectedItem);
+                Compare compare = new Compare(selectedItem, asc);
 
                 Collections.sort(foodList, compare.returnComparator());
                 ingredientList.notifyDataSetChanged();
