@@ -1,202 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-
-
-    <TextView
-        android:id="@+id/title"
-        android:minHeight="48dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Add/Edit Recipe"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:background="#EFEEFF"
-        />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/recipeNameTextView"
-            android:layout_width="0dp"
+            android:id="@+id/Recipe_Entry_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Recipe Name: "
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/RecipeName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Name"
+            android:background="#EFEEFF"
             android:minHeight="48dp"
-            android:inputType="textPersonName"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
-            android:maxLength="30"
-            android:layout_gravity="end"
-            android:textColorHint="#757575"
-            android:autofillHints="Recipe" />
+            android:text="@string/Recipe_Entry_add_edit_recipe"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/PrepTimeLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:layout_weight="1"
-            android:text="Prep Time: "
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/prepTime"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:minHeight="48dp" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/Recipe_Entry_recipeNameLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_recipe_name"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/ServingsLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:layout_weight="1"
-            android:text="Servings"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/Recipe_Entry_RecipeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:autofillHints="Recipe"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
+                android:ems="10"
+                android:hint="@string/Recipe_Entry_name"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:minHeight="48dp"
+                android:textColorHint="#757575" />
 
-        <EditText
-            android:id="@+id/Servings"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/Recipe_Entry_PrepTimeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_prep_time"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/Recipe_Entry_prepTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/Recipe_Entry_preparation_time"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:textColorHint="#757575"
+                android:autofillHints="" />
 
-        <TextView
-            android:id="@+id/categoryTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Category: "
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        </LinearLayout>
 
-        <Spinner
-            android:id="@+id/categoryDropdown"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:spinnerMode="dropdown"
-            android:contentDescription="Test"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/Recipe_Entry_ServingsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_servings"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/Recipe_Entry_Servings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/Recipe_Entry_enter_servings"
+                android:inputType="number"
+                android:textColorHint="#757575"
+                tools:ignore="TouchTargetSizeCheck" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/CommentsLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:layout_weight="1"
-            android:text="Comments:"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/Comments"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:minHeight="48dp" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/Recipe_Entry_CategoryTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_categoryTextView"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+            <Spinner
+                android:id="@+id/Recipe_Entry_CategoryDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/Recipe_Entry_category"
+                android:minHeight="48dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/addIngredientToRecipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_add" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/saveButton"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SAVE" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/Recipe_Entry_CommentsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_comments"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/Recipe_Entry_Comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/Recipe_Entry_enter_comments"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:textColorHint="#757575"
+                android:autofillHints="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/Recipe_Entry_AddImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:contentDescription="@string/Recipe_Entry_add_image_to_recipe"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/Recipe_Entry_addIngredientToRecipe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_menu_add"
+                tools:ignore="ImageContrastCheck"
+                android:contentDescription="@string/Recipe_Entry_add_ingredient_to_recipe"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Recipe_Entry_saveButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_save" />
+        </LinearLayout>
+
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>

@@ -5,4 +5,18 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Recipe_Entry_prep_time">Prep Time:</string>
+    <string name="Recipe_Entry_preparation_time">Preparation time</string>
+    <string name="Recipe_Entry_name">Name</string>
+    <string name="Recipe_Entry_recipe_name">Recipe Name:</string>
+    <string name="Recipe_Entry_enter_comments">Enter Comments</string>
+    <string name="Recipe_Entry_comments">Comments:</string>
+    <string name="Recipe_Entry_category">Category</string>
+    <string name="Recipe_Entry_categoryTextView">Category:</string>
+    <string name="Recipe_Entry_servings">Servings</string>
+    <string name="Recipe_Entry_add_edit_recipe">Add/Edit Recipe</string>
+    <string name="Recipe_Entry_save">SAVE</string>
+    <string name="Recipe_Entry_add_ingredient_to_recipe">Add Ingredient to Recipe</string>
+    <string name="Recipe_Entry_enter_servings">Enter Servings</string>
+    <string name="Recipe_Entry_add_image_to_recipe">Add Image to Recipe</string>
 </resources>

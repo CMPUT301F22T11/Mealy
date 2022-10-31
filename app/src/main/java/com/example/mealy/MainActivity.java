@@ -17,7 +17,7 @@ import com.example.mealy.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     Button testButton;
-
+    Button Home_Add_Recipe_Entry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         testButton = findViewById(R.id.buttonTest);
-
+        Home_Add_Recipe_Entry = findViewById(R.id.Home_Add_Recipe_Entry);
         //This is for testing, to set the button to your view, modify it in test view
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // Food Entry Layout For Testing
                 new FoodEntry().show(getSupportFragmentManager(),"test");
+            }
+        });
+
+        Home_Add_Recipe_Entry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new RecipeEntry().show(getSupportFragmentManager(),"test");
             }
         });
     }
