@@ -46,11 +46,11 @@ public class RecipeList extends ArrayAdapter<Recipe> {
         recipeImage.setImageResource(currentRecipe.getImageID());
 
         // then according to the position of the view assign the desired TextView 1 for the same
-        TextView textView1 = currentItemView.findViewById(R.id.textView1);
+        TextView textView1 = currentItemView.findViewById(R.id.recipeNameDisplay);
         textView1.setText(currentRecipe.getTitle());
 
         // then according to the position of the view assign the desired TextView 2 for the same
-        TextView textView2 = currentItemView.findViewById(R.id.textView2);
+        TextView textView2 = currentItemView.findViewById(R.id.servingDisplay);
         textView2.setText(currentRecipe.getServingsString());
 
         // then return the recyclable view
