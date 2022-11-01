@@ -11,16 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * This is just to test your fragment. It's not a proper fragment
- */
-
 public class RecipeClickFragment extends DialogFragment {
 
     TextView title;
     Button viewButton;
     Button editButton;
     Button deleteButton;
+
+    DialogFragment recipeView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +41,9 @@ public class RecipeClickFragment extends DialogFragment {
         viewButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // This should bring us to our view fragment
-                System.out.println("Clicked view button!");
+                recipeView = new RecipeViewFragment();
+                recipeView.setArguments(bundle); // pass recipe info
+                recipeView.show(getChildFragmentManager(), "test");
             }
         });
 

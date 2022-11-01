@@ -132,7 +132,7 @@ public class RecipeFragment extends Fragment {
                 // launch dialog fragment from within list
                 // https://stackoverflow.com/questions/18436524/launch-a-dialog-fragment-on-button-click-from-a-custom-base-adaptergetview-img
 
-                recipeOptions = new RecipeClickFragment(); // later maybe pass things like position of item in list
+                recipeOptions = new RecipeClickFragment();
                 recipeOptions.setArguments(bundle); // pass recipe info
                 recipeOptions.show(getChildFragmentManager(), "test");
             }
