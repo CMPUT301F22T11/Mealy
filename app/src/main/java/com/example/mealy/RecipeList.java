@@ -10,12 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.mealy.Recipe;
+import com.example.mealy.ui.notifications.NotificationsFragment;
 
 import java.util.ArrayList;
 
 public class RecipeList extends ArrayAdapter<Recipe> {
+
+    ConstraintLayout recipeEntryBox;
+    DialogFragment recipeOptions;
+    Context context;
 
     // invoke the suitable constructor of the ArrayAdapter class
     public RecipeList(@NonNull Context context, ArrayList<Recipe> arrayList) {
@@ -23,6 +32,7 @@ public class RecipeList extends ArrayAdapter<Recipe> {
         // pass the context and arrayList for the super
         // constructor of the ArrayAdapter class
         super(context, 0, arrayList);
+        this.context = context;
     }
 
     @NonNull
@@ -52,6 +62,27 @@ public class RecipeList extends ArrayAdapter<Recipe> {
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.servingDisplay);
         textView2.setText(currentRecipe.getServingsString());
+
+        // set onClick functionality for each recipe box
+        recipeEntryBox = currentItemView.findViewById(R.id.RecipeBoxConstraintLayout);
+
+        // set each recipe box so that we can open up another dialog
+        recipeEntryBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get the recipe data of the box we selected
+                System.out.println("Clicked the entry box");
+
+                // launch dialog fragment from within list
+                // https://stackoverflow.com/questions/18436524/launch-a-dialog-fragment-on-button-click-from-a-custom-base-adaptergetview-img
+                FragmentActivity activity = (FragmentActivity)(context);
+                FragmentManager fm = activity.getSupportFragmentManager();
+
+                recipeOptions = new RecipeClickFragment(); // later maybe pass things like position of item in list
+                recipeOptions.show(fm, "test");
+            }
+        });
+
 
         // then return the recyclable view
         return currentItemView;

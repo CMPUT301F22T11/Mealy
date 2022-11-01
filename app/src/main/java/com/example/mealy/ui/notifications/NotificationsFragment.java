@@ -1,5 +1,6 @@
 package com.example.mealy.ui.notifications;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,10 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -35,11 +36,14 @@ public class NotificationsFragment extends Fragment {
     private FragmentNotificationsBinding binding;
 
     private Spinner sortSpinner; // for selecting sorting category
-    private ListView recipeListView; // for selecting list of recipes
+    private ListView recipeListView; // list of recipes
+    private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState)
+    {
+
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
 
@@ -96,13 +100,11 @@ public class NotificationsFragment extends Fragment {
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Create the adapter and set it to the arraylist
-        RecipeList recipeList = new RecipeList(getActivity(), recipeArrayList);
+        RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
 
-        // create the instance of the ListView to set the numbersViewAdapter
+        // create the instance of the ListView to set the recipe adapter
         ListView storage = root.findViewById(R.id.recipestorage);
-
-        // set the numbersViewAdapter for ListView
-        storage.setAdapter(recipeList);
+        storage.setAdapter(recipeAdapter);
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -112,7 +114,7 @@ public class NotificationsFragment extends Fragment {
                 CompareRecipes compare = new CompareRecipes(selectedItem);
 
                 Collections.sort(recipeArrayList, compare.returnComparator());
-                recipeList.notifyDataSetChanged();
+                recipeAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -123,6 +125,7 @@ public class NotificationsFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {
