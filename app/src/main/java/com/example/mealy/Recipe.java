@@ -1,5 +1,8 @@
 package com.example.mealy;
 
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +17,16 @@ public class Recipe implements Serializable {
     int preptimeMins;
     String category;
     int imageID;
+    ImageView image;
+
+    public void setImageView(ImageView imageView) {
+        this.image = imageView;
+    }
+
+    public ImageView getImageView(ImageView imageView) {
+        return this.image;
+    }
+
     private List<Ingredient> recipeIngredients;
 
     public String getTitle() {

@@ -1,5 +1,7 @@
 package com.example.mealy.ui.recipes;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,21 +23,37 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.example.mealy.Ingredient;
 import com.example.mealy.IngredientList;
+import com.example.mealy.MainActivity;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
 import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.InputStream;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -96,10 +116,12 @@ public class RecipeFragment extends Fragment {
         List ingredientList = new ArrayList();
         ingredientList.add(rat_hair);
 
-
         // PULL FROM FIREBASE
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final CollectionReference recipeCollection = db.collection("Recipe");
+
+        // get recipe table
+        FirebaseFirestore dbf = FirebaseFirestore.getInstance();
+        final CollectionReference recipeCollection = dbf.collection("Recipe");
+
 
         recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -114,6 +136,11 @@ public class RecipeFragment extends Fragment {
                     // Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
 
                     try {
+                        // fetch recipe image
+                        // StorageReference storageReference;
+                        // storageReference = FirebaseStorage.getInstance().getReference("Recipe_Image/mahamud.jpg");
+
+                        // fetch rest of recipe info
                         String category = (String) doc.getData().get("Category");
                         String comments = (String) doc.getData().get("Comments");
                         String preptime = (String) doc.getData().get("Preparation Time");
@@ -170,8 +197,6 @@ public class RecipeFragment extends Fragment {
         ListView storage = root.findViewById(R.id.recipestorage);
         storage.setAdapter(recipeAdapter);
 
-
-
         // storage is the listview of our recipes
         // we can set it's on click method so when we click we associate recipes with it
 
@@ -195,8 +220,6 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-
-
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -216,7 +239,6 @@ public class RecipeFragment extends Fragment {
 
         return root;
     }
-
 
     @Override
     public void onDestroyView() {
