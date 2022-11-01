@@ -45,6 +45,7 @@ public class RecipeFragment extends Fragment {
     DialogFragment recipeOptions;
 
     int recipeIndex;
+    int asc; // for sort order
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,6 +57,9 @@ public class RecipeFragment extends Fragment {
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        asc = 1;
+        // have some flip button to change sort order
 
         // assign UI elements
         sortSpinner = root.findViewById(R.id.recipesort);
@@ -74,8 +78,7 @@ public class RecipeFragment extends Fragment {
                 "strands",
                 "protein",
                 "pantry",
-                LocalDate.parse("2025-12-13"),
-                R.drawable.rathair);
+                "2025-12-13");
 
         List ingredientList = new ArrayList();
         ingredientList.add(rat_hair);
@@ -145,7 +148,7 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = sortSpinner.getItemAtPosition(i).toString();
-                CompareRecipes compare = new CompareRecipes(selectedItem);
+                CompareRecipes compare = new CompareRecipes(selectedItem, asc);
 
                 Collections.sort(recipeArrayList, compare.returnComparator());
                 recipeAdapter.notifyDataSetChanged();

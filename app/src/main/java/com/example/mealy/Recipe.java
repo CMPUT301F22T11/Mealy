@@ -69,13 +69,13 @@ public class Recipe implements Serializable {
     public void removeIngredient(Ingredient ingredient) {recipeIngredients.remove(ingredient); }
 
     public Recipe(String title,
-                      String comments,
-                      int servings,
-                      int preptimeHours,
-                      int preptimeMins,
-                      String category,
-                      int imageID,
-                      List ingredients){
+                  String comments,
+                  int servings,
+                  int preptimeHours,
+                  int preptimeMins,
+                  String category,
+                  int imageID,
+                  List ingredients){
         this.title = title;
         this.comments = comments;
         this.servings = servings;

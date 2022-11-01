@@ -4,15 +4,15 @@ import com.example.mealy.Ingredient;
 
 import java.util.Comparator;
 
-public class SortByCategory implements Comparator<Ingredient> {
+public class SortByName implements Comparator<Ingredient> {
     private int asc;
 
-    public SortByCategory(int asc) {
+    public SortByName(int asc) {
         super();
         this.asc = asc;
     }
 
     public int compare(Ingredient a, Ingredient b) {
-        return a.getCategory().compareTo(b.getCategory()) * asc;
+        return a.getName().compareTo(b.getName()) * asc;
     }
 }
