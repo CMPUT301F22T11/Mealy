@@ -2,6 +2,7 @@ package com.example.mealy.ui.recipes;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
@@ -18,16 +20,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.Ingredient;
+import com.example.mealy.IngredientList;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
 import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
 import java.util.List;
 
 // This is where I will temporarily put my RecipeList view
@@ -68,7 +78,13 @@ public class RecipeFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sortSpinner.setAdapter(adapter);
 
-        // add sample ingredient for recipe list
+        // list that will store all our recipe objects
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+
+        // Create the adapter and set it to the arraylist
+        RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
+
+        // add sample ingredient for recipe list (change later)
         Ingredient rat_hair = new Ingredient("rat hair",
                 "hair from a rat",
                 100,
@@ -80,8 +96,52 @@ public class RecipeFragment extends Fragment {
         List ingredientList = new ArrayList();
         ingredientList.add(rat_hair);
 
+
+        // PULL FROM FIREBASE
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final CollectionReference recipeCollection = db.collection("Recipe");
+
+        recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                recipeArrayList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    // Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
+
+                    try {
+                        String category = (String) doc.getData().get("Category");
+                        String comments = (String) doc.getData().get("Comments");
+                        String preptime = (String) doc.getData().get("Preparation Time");
+                        String title = (String) doc.getData().get("Recipe Name");
+                        String servings = (String) doc.getData().get("Servings");
+
+                        int preptimeHours = Integer.parseInt(preptime);
+                        int preptimeMins = 0;
+                        int servingsString = Integer.parseInt(servings);
+
+                        Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,
+                                R.drawable.meat_rat, ingredientList);
+
+                        recipeArrayList.add(recipe); // Adding new recipe using Firebase data
+
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+
+                }
+                recipeAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+
+            }
+        });
+
+        /*
+
         // add sample items
-        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeArrayList.add(new Recipe("Meat Rat",
                 "Yummy for my tummy",
                 5, 3, 10,
@@ -102,12 +162,9 @@ public class RecipeFragment extends Fragment {
                 "Fried",
                 R.drawable.rathair,
                 ingredientList));
-
+        */
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-        // Create the adapter and set it to the arraylist
-        RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
 
         // create the instance of the ListView to set the recipe adapter
         ListView storage = root.findViewById(R.id.recipestorage);
