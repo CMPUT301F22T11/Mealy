@@ -15,8 +15,6 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.Ingredient;
@@ -24,10 +22,9 @@ import com.example.mealy.R;
 import com.example.mealy.Recipe;
 import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
-import com.example.mealy.comparators.CompareRecipes;
+import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

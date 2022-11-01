@@ -1,4 +1,4 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.recipes;
 
 import com.example.mealy.Recipe;
 
