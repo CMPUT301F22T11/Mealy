@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.mealy.functions.DateFunc;
+import com.example.mealy.functions.Firestore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealy.databinding.ActivityMainBinding;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     // for image upload
@@ -48,13 +52,14 @@ public class MainActivity extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Open whatever fragment you want
 
-                //Test Fragment. Just give the layout as an input for TestFragment, Format: TestFragment(R.layout.xmlFileName)
-                //new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
+                HashMap<String, String> data = new HashMap<>();
+                data.put("Test", "text");
+                Ingredient ingredient =  new Ingredient("Name", "Brehhh", "4.5", "lb", "Weight", "Meat", "Fridge", "2022-12-12");
+                Firestore.StoreToFirestore("Ingredients", "Name", data);
 
-                // Food Entry Layout For Testing
-                new FoodEntry().show(getSupportFragmentManager(),"test");
+                new DisplayIngredientInfo(ingredient).show(getSupportFragmentManager(), "text");
+                //new FoodEntry().show(getSupportFragmentManager(),"test");
             }
         });
 

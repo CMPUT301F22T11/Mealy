@@ -66,14 +66,14 @@ public class DashboardFragment extends Fragment {
         ArrayList<Ingredient> foodList = new ArrayList<>();
         foodList.add(new Ingredient("Meat Rat",
                 "Yummy for my tummy",
-                1, "Whole",
+                "1", "Whole","Whole",
                 "Baked",
                 "Fridge",
                 "2022-12-03"));
 
         foodList.add(new Ingredient("Meat Skull",
                 "Going to hell",
-                1, "Whole",
+                "1", "Whole","Whole",
                 "Fried",
                 "Head",
                 "2023-12-03"));
