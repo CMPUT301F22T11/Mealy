@@ -1,6 +1,5 @@
-package com.example.mealy.ui.notifications;
+package com.example.mealy.ui.recipes;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +13,16 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.Ingredient;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
+import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
@@ -31,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 // This is where I will temporarily put my RecipeList view
-public class NotificationsFragment extends Fragment {
+public class RecipeFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
@@ -39,13 +42,17 @@ public class NotificationsFragment extends Fragment {
     private ListView recipeListView; // list of recipes
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
 
+    DialogFragment recipeOptions;
+
+    int recipeIndex;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
 
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        RecipeViewModel notificationsViewModel =
+                new ViewModelProvider(this).get(RecipeViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -105,6 +112,33 @@ public class NotificationsFragment extends Fragment {
         // create the instance of the ListView to set the recipe adapter
         ListView storage = root.findViewById(R.id.recipestorage);
         storage.setAdapter(recipeAdapter);
+
+
+
+        // storage is the listview of our recipes
+        // we can set it's on click method so when we click we associate recipes with it
+
+        storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // get recipe that user clicked on
+                recipeIndex = i;
+                Recipe selectedRecipe = recipeArrayList.get(i);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Recipe", selectedRecipe);
+
+                // launch dialog fragment from within list
+                // https://stackoverflow.com/questions/18436524/launch-a-dialog-fragment-on-button-click-from-a-custom-base-adaptergetview-img
+
+                recipeOptions = new RecipeClickFragment(); // later maybe pass things like position of item in list
+                recipeOptions.setArguments(bundle); // pass recipe info
+                recipeOptions.show(getChildFragmentManager(), "test");
+            }
+        });
+
+
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -1,11 +1,12 @@
 package com.example.mealy;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Recipes
  */
-public class Recipe {
+public class Recipe implements Serializable {
     String title;
     String comments;
     Integer servings;
