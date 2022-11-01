@@ -85,6 +85,14 @@ public class NotificationsFragment extends Fragment {
                 R.drawable.meatskull,
                 ingredientList));
 
+        recipeArrayList.add(new Recipe("Rat Hair",
+                "Going to hell",
+                3, 4, 30,
+                "Fried",
+                R.drawable.rathair,
+                ingredientList));
+
+
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Create the adapter and set it to the arraylist
