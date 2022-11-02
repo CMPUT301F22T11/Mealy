@@ -19,11 +19,14 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.DisplayIngredientInfo;
 import com.example.mealy.Ingredient;
 import com.example.mealy.IngredientList;
 import com.example.mealy.R;
 import com.example.mealy.comparators.Compare;
 import com.example.mealy.databinding.FragmentDashboardBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,7 +46,6 @@ public class DashboardFragment extends Fragment {
     final String TAG = "Logging";
 
     private Spinner spinner;
-    private ListView ingredients;
     private Button flip;
     private int asc;
     FirebaseFirestore db;
@@ -62,9 +64,8 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         spinner = root.findViewById(R.id.ingredientsort);
-        ingredients = root.findViewById(R.id.storage);
         flip = root.findViewById(R.id.flip);
-        // create the instance of the ListView to set the numbersViewAdapter
+        // create the instance of the ListView
         storage = root.findViewById(R.id.storage);
         asc = 1;
 
@@ -78,22 +79,6 @@ public class DashboardFragment extends Fragment {
 
         foodList = new ArrayList<>();
 
-        /*
-        foodList.add(new Ingredient("Meat Rat",
-                "Yummy for my tummy",
-                "1", "Whole","Whole",
-                "Baked",
-                "Fridge",
-                "2022-12-03"));
-
-        foodList.add(new Ingredient("Meat Skull",
-                "Going to hell",
-                "1", "Whole","Whole",
-                "Fried",
-                "Head",
-                "2023-12-03"));
-        */
-
         //ingredients.setAdapter(cityAdapter);
 
         // Now create the instance of the NumebrsViewAdapter and pass
@@ -103,7 +88,13 @@ public class DashboardFragment extends Fragment {
         // set the numbersViewAdapter for ListView
         storage.setAdapter(ingredientList);
 
-
+        storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayIngredientInfo disp = new DisplayIngredientInfo((ingredientList.getItem(i)));
+                disp.show(getChildFragmentManager(), TAG);
+            }
+        });
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -118,23 +109,20 @@ public class DashboardFragment extends Fragment {
                     String category = (String) doc.getData().get("Category");
                     String desc = (String) doc.getData().get("Description");
                     String exp = (String) doc.getData().get("Expiry Date");
-                    // TODO: Firebase needs Location
-                    // String location = (String) doc.getData().get("Location")
+                    String unitC = (String) doc.getData().get("Unit Category");
                     String unit = (String) doc.getData().get("Unit");
                     String amount = (String) doc.getData().get("Amount");
-                    String location = "TEMP";
-                    foodList.add(new Ingredient(
-                            name,
-                            desc,
-                            Integer.parseInt(amount),
-                            unit,
-                            category,
-                            location,
-                            exp)); // Adding Ingredients from FireStore
+                    String location = (String) doc.getData().get("Location");
+                    Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
+                    foodList.add(ingred); // Adding Ingredients from FireStore
                 }
                 ingredientList.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
             }
         });
+
+
+
+
 
         flip.setOnClickListener(new View.OnClickListener() {
             @Override
