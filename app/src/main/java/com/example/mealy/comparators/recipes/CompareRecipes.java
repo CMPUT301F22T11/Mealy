@@ -10,16 +10,16 @@ public class CompareRecipes {
 
     public CompareRecipes(String str, int asc) {
         if (str.equals("Title")) {
-            this.comparator = new SortByTitle();
+            this.comparator = new SortByRecipeTitle(asc);
         } else if (str.equals("PrepTime")) {
-            this.comparator = new SortByPrepTime();
+            this.comparator = new SortByPrepTime(asc);
         } else if (str.equals("Servings")) {
-            this.comparator = new SortByServings();
+            this.comparator = new SortByServings(asc);
         } else if (str.equals("Category")) {
             this.comparator = new SortByRecipeCategory(asc);
         } else {
             // should never happen
-            this.comparator = new SortByTitle();
+            this.comparator = new SortByRecipeTitle(asc);
         }
     }
 

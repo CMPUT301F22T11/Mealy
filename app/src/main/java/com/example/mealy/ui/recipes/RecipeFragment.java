@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -68,11 +69,12 @@ public class RecipeFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView recipeListView; // list of recipes
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
+    private Button flipButton; // for flipping the recipe items
 
     DialogFragment recipeOptions;
 
     int recipeIndex;
-    int asc; // for sort order
+    int asc = 1; // for sort order
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -91,6 +93,7 @@ public class RecipeFragment extends Fragment {
         // assign UI elements
         sortSpinner = root.findViewById(R.id.recipesort);
         recipeListView = root.findViewById(R.id.recipestorage);
+        flipButton = root.findViewById(R.id.flip_recipe_sort);
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Prep Time", "Servings", "Category"));
@@ -103,6 +106,22 @@ public class RecipeFragment extends Fragment {
 
         // Create the adapter and set it to the arraylist
         RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
+
+        // set flip button on click
+        flipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                asc *= -1;
+
+                int selection = sortSpinner.getSelectedItemPosition();
+                String selectedItem = sortSpinner.getItemAtPosition(selection).toString();
+                CompareRecipes compare = new CompareRecipes(selectedItem, asc);
+
+                Collections.sort(recipeArrayList, compare.returnComparator());
+                recipeAdapter.notifyDataSetChanged();
+
+            }
+        });
 
         // add sample ingredient for recipe list (change later)
         Ingredient rat_hair = new Ingredient("rat hair",
@@ -121,7 +140,6 @@ public class RecipeFragment extends Fragment {
         // get recipe table
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
         final CollectionReference recipeCollection = dbf.collection("Recipe");
-
 
         recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
