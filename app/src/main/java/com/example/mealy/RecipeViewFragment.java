@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * This fragment represents the recipe view screen.
+ * This simply shows all the information of the clicked recipe
+ * and occurs after clicking 'view' from the RecipeClickFragment
+ */
 public class RecipeViewFragment extends DialogFragment {
 
     TextView title;

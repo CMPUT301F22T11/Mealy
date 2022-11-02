@@ -18,6 +18,10 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
+/**
+ * A class representing a recipe list adapter.
+ * This allows us to modify and track recipes in our list.
+ */
 public class RecipeList extends ArrayAdapter<Recipe> {
 
     ConstraintLayout recipeEntryBox;

@@ -57,6 +57,11 @@ import java.util.Collections;
 
 import java.util.List;
 
+/**
+ * This fragment represents the recipe screen.
+ * Here, we have a ListView for our recipe and all its items,
+ * as well as a few extra UI elements for sorting.
+ */
 // This is where I will temporarily put my RecipeList view
 public class RecipeFragment extends Fragment {
 

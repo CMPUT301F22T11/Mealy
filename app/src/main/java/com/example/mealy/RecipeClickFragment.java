@@ -11,6 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * This fragment appears once you click on a
+ * recipe in the recipe list.
+ *
+ * It allows a user to choose to view, edit or delete the clicked recipe.
+ */
 public class RecipeClickFragment extends DialogFragment {
 
     TextView title;
