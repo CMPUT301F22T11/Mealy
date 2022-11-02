@@ -1,9 +1,12 @@
 package com.example.mealy;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.mealy.functions.DateFunc;
+import com.example.mealy.functions.Firestore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +17,21 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealy.databinding.ActivityMainBinding;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
+    // for image upload
+    public static Context contextOfApplication;
 
     Button testButton;
-
+    Button Home_Add_Recipe_Entry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // for image upload
+        contextOfApplication = getApplicationContext();
+
 
         com.example.mealy.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -36,20 +47,33 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         testButton = findViewById(R.id.buttonTest);
-
+        Home_Add_Recipe_Entry = findViewById(R.id.Home_Add_Recipe_Entry);
         //This is for testing, to set the button to your view, modify it in test view
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Open whatever fragment you want
 
-                //Test Fragment. Just give the layout as an input for TestFragment, Format: TestFragment(R.layout.xmlFileName)
-                //new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
+                HashMap<String, String> data = new HashMap<>();
+                data.put("Test", "text");
+                Ingredient ingredient =  new Ingredient("Name", "Brehhh", "4.5", "lb", "Weight", "Meat", "Fridge", "2022-12-12");
+                Firestore.StoreToFirestore("Ingredients", "Name", data);
 
-                // Food Entry Layout For Testing
-                new FoodEntry().show(getSupportFragmentManager(),"test");
+                new DisplayIngredientInfo(ingredient).show(getSupportFragmentManager(), "text");
+                //new FoodEntry().show(getSupportFragmentManager(),"test");
             }
         });
+
+        Home_Add_Recipe_Entry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new RecipeEntry().show(getSupportFragmentManager(),"test");
+            }
+        });
+    }
+
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
     }
 
 }

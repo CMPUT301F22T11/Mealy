@@ -8,8 +8,9 @@ import java.time.LocalDate;
 public class Ingredient {
     String name;
     String description;
-    int amount;
+    String amount;
     String unit;
+    String unitCategory;
     String category;
     String location;
     String expiryDate;
@@ -18,8 +19,9 @@ public class Ingredient {
 
     public Ingredient(String name,
                       String description,
-                      int amount,
+                      String amount,
                       String unit,
+                      String unitCategory,
                       String category,
                       String location,
                       String expiryDate){
@@ -27,6 +29,7 @@ public class Ingredient {
         this.description = description;
         this.amount = amount;
         this.unit = unit;
+        this.unitCategory = unitCategory;
         this.category = category;
         this.location = location;
         this.expiryDate = expiryDate;
@@ -43,7 +46,7 @@ public class Ingredient {
         return description;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
@@ -63,6 +66,8 @@ public class Ingredient {
         return expiryDate;
     }
 
+    public String getUnitCategory() {return unitCategory;};
+
     public void setName(String name) {
         this.name = name;
     }
@@ -71,7 +76,7 @@ public class Ingredient {
         this.description = description;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -90,4 +95,6 @@ public class Ingredient {
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    public void setUnitCategory(String unitCategory) {this.unitCategory = unitCategory;};
 }

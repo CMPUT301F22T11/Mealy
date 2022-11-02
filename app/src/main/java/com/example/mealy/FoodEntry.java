@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +48,10 @@ public class FoodEntry extends DialogFragment {
     String[] current;
     String[] locations;
     RadioGroup unitsRadioGroup;
+    RadioButton wholeButton;
+    RadioButton weightButton;
+    RadioButton volumeButton;
+    String unitCategory;
 
     DatePickerDialog datePickerDialog;
     Button ExpiryDate;
@@ -56,14 +63,17 @@ public class FoodEntry extends DialogFragment {
 
     View view;
 
+    Ingredient ingredient;
+    boolean edit;
+
 
     public FoodEntry() {
-        // Constructor: TODO
+        edit = false;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public FoodEntry(Ingredient ingredient) {
+        this.ingredient = ingredient;
+        edit = true;
     }
 
     @Override
@@ -78,6 +88,10 @@ public class FoodEntry extends DialogFragment {
         InitializeLocationSpinner();
         InitializeTextViews();
         InitializeDatePicker();
+
+        if (edit) {
+            EditMode();
+        }
 
         return view;
     }
@@ -115,10 +129,14 @@ public class FoodEntry extends DialogFragment {
     private void InitializeQuantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
+        wholeButton = view.findViewById(R.id.whole);
+        volumeButton = view.findViewById(R.id.volume);
+        weightButton = view.findViewById(R.id.weight);
         whole = new String[]{"Select Unit", "single", "Dozen", "Five Pack"};
         weight = new String[]{"Select Unit", "lb", "kg", "g", "oz"};
         volume = new String[]{"Select Unit", "L", "ml", "fl oz"};
         current = whole;
+        unitCategory = "Whole";
         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
@@ -132,16 +150,19 @@ public class FoodEntry extends DialogFragment {
                         current = whole;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Whole";
                         break;
                     case R.id.weight:
                         current = weight;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Weight";
                         break;
                     case R.id.volume:
                         current = volume;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Volume";
                         break;
                     default:
                         Log.wtf("This shouldn't happen", String.valueOf(checkedId));
@@ -160,12 +181,22 @@ public class FoodEntry extends DialogFragment {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String collection = "Ingredients";
 
                 if (ValidData()) {
+                    if (edit) {
+                        String ingredientName = GetIngredientName();
+                        HashMap<String, String> data = GetData();
+                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        Firestore.DeleteFromFirestore(collection, ingredient.getName());
+                        Firestore.StoreToFirestore(collection, ingredientName, data);
+                    }
+                    else {
                     String ingredientName = GetIngredientName();
                     HashMap<String, String> data = GetData();
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    Firestore.StoreToFirestore("Ingredients", ingredientName, data);
+                    Firestore.StoreToFirestore(collection, ingredientName, data);
+                    }
                 }
             }
         });
@@ -179,6 +210,30 @@ public class FoodEntry extends DialogFragment {
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
         DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
     }
+
+    /**
+     * Sets default values to ingredient values that we need to edit
+     */
+    private void EditMode() {
+        IngredientName.setText(ingredient.getName());
+        IngredientQuantity.setText(ingredient.getAmount());
+        DescriptionText.setText(ingredient.getDescription());
+
+        // this sets the button to true if its equal to the ingredient unit category
+        wholeButton.setChecked(ingredient.getUnitCategory().equals("Whole"));
+        weightButton.setChecked(ingredient.getUnitCategory().equals("Weight"));
+        volumeButton.setChecked(ingredient.getUnitCategory().equals("Volume"));
+
+        // sets spinners to their appropriate value. Goes to default value if item is not in spinner
+        quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
+        categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
+        locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
+        ExpiryDate.setText(DateFunc.MakeDateString(ingredient.getExpiryDate()));
+    }
+
+
+
+
 
     /**
      * Takes all inputted data (except for ingredient name) and stores it into a HashMap
@@ -201,12 +256,16 @@ public class FoodEntry extends DialogFragment {
         String unit = quantityUnits.getSelectedItem().toString();
         String expiryDate = DateFunc.MakeStringDate(ExpiryDate.getText().toString());
         String description = DescriptionText.getText().toString();
+        String location = locationSpinner.getSelectedItem().toString();
 
         data.put("Category", categoryName);
         data.put("Quantity", ingredientQuantity);
         data.put("Quantity Unit", unit);
+        data.put("Unit Category", unitCategory);
         data.put("Expiry Date", expiryDate);
         data.put("Description", description);
+        data.put("Location", location);
+
 
         return data;
     }
@@ -286,6 +345,15 @@ public class FoodEntry extends DialogFragment {
 
         if (Validate.IsEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
+            isValid = false;
+        }
+        try {
+            if (Float.parseFloat(ingredientQuantity) <= 0) {
+                IngredientQuantity.setError("Can't have 0 or negative quantities");
+                isValid = false;
+            }
+        } catch (Exception e) {
+            IngredientQuantity.setError("Invalid Number");
             isValid = false;
         }
 

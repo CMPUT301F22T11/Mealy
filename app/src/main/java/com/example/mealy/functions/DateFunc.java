@@ -165,7 +165,7 @@ public class DateFunc {
     public static String MakeDateString(String date)
     {
         String[] spliced = date.split("-");
-        spliced[1] =  GetMonthFormat(Integer.getInteger(spliced[1]));
+        spliced[1] =  GetMonthFormat(Integer.parseInt(spliced[1]));
         String[] str = {spliced[1], spliced[2], spliced[0]};
 
         return  TextUtils.join(" ",str);
