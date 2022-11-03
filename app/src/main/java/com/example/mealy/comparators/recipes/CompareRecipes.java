@@ -21,7 +21,7 @@ public class CompareRecipes {
     public CompareRecipes(String field, int asc) {
         if (field.equals("Title")) {
             this.comparator = new SortByRecipeTitle(asc);
-        } else if (field.equals("PrepTime")) {
+        } else if (field.equals("Prep Time")) {
             this.comparator = new SortByPrepTime(asc);
         } else if (field.equals("Servings")) {
             this.comparator = new SortByServings(asc);
