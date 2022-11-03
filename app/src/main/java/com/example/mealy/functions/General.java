@@ -7,4 +7,10 @@ public class General {
         float density = context.getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
     }
+
+    public static String blankIfVoid(String string) {
+        String emptyString;
+        return Validate.IsEmpty(string) ? "" : string;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.mealy.ui.dashboard;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,25 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.DisplayIngredientInfo;
 import com.example.mealy.Ingredient;
 import com.example.mealy.IngredientList;
 import com.example.mealy.R;
 import com.example.mealy.comparators.Compare;
 import com.example.mealy.databinding.FragmentDashboardBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,10 +43,16 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
 
+    final String TAG = "Logging";
+
     private Spinner spinner;
-    private ListView ingredients;
     private Button flip;
     private int asc;
+    FirebaseFirestore db;
+
+    private ListView storage;
+    private IngredientList ingredientList;
+    private ArrayList<Ingredient> foodList;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,8 +64,9 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         spinner = root.findViewById(R.id.ingredientsort);
-        ingredients = root.findViewById(R.id.storage);
         flip = root.findViewById(R.id.flip);
+        // create the instance of the ListView
+        storage = root.findViewById(R.id.storage);
         asc = 1;
 
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Desc", "Exp", "Location", "Category"));
@@ -56,39 +74,58 @@ public class DashboardFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
 
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = db.collection("Ingredients");
 
-        /*
-        String selected = spinner.getSelectedItem().toString();
-        Compare compare = new Compare(selected);
-
-         */
-
-        ArrayList<Ingredient> foodList = new ArrayList<>();
-        foodList.add(new Ingredient("Meat Rat",
-                "Yummy for my tummy",
-                "1", "Whole","Whole",
-                "Baked",
-                "Fridge",
-                "2022-12-03"));
-
-        foodList.add(new Ingredient("Meat Skull",
-                "Going to hell",
-                "1", "Whole","Whole",
-                "Fried",
-                "Head",
-                "2023-12-03"));
+        foodList = new ArrayList<>();
 
         //ingredients.setAdapter(cityAdapter);
 
-        // Now create the instance of the NumebrsViewAdapter and pass
+        // Now create the instance of the NumbersViewAdapter and pass
         // the context and arrayList created above
-        IngredientList ingredientList = new IngredientList(getActivity(), foodList);
-
-        // create the instance of the ListView to set the numbersViewAdapter
-        ListView storage = root.findViewById(R.id.storage);
+        ingredientList = new IngredientList(getActivity(), foodList);
 
         // set the numbersViewAdapter for ListView
         storage.setAdapter(ingredientList);
+
+        storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayIngredientInfo disp = new DisplayIngredientInfo((ingredientList.getItem(i)));
+                disp.show(getChildFragmentManager(), TAG);
+            }
+        });
+
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+                // Clear the old list
+                foodList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    Log.d(TAG, (doc.getId()));
+                    String name = (String) doc.getId();
+                    String category = (String) doc.getData().get("Category");
+                    String desc = (String) doc.getData().get("Description");
+                    String exp = (String) doc.getData().get("Expiry Date");
+                    String location = (String) doc.getData().get("Location");
+                    String amount = (String) doc.getData().get("Quantity");
+                    String unitC = (String) doc.getData().get("Unit Category");
+                    String unit = (String) doc.getData().get("Quantity Unit");
+
+
+                    Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
+                    foodList.add(ingred); // Adding Ingredients from FireStore
+                }
+                ingredientList.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+            }
+        });
+
+
+
+
 
         flip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +157,12 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
+
         return root;
     }
+
+
 
     @Override
     public void onDestroyView() {

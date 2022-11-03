@@ -53,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                HashMap<String, String> data = new HashMap<>();
+               /* HashMap<String, String> data = new HashMap<>();
                 data.put("Test", "text");
                 Ingredient ingredient =  new Ingredient("Name", "Brehhh", "4.5", "lb", "Weight", "Meat", "Fridge", "2022-12-12");
                 Firestore.StoreToFirestore("Ingredients", "Name", data);
-
                 new DisplayIngredientInfo(ingredient).show(getSupportFragmentManager(), "text");
-                //new FoodEntry().show(getSupportFragmentManager(),"test");
+                */
+                new FoodEntry().show(getSupportFragmentManager(),"food_entry");
             }
         });
 

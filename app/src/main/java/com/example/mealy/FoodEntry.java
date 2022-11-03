@@ -184,19 +184,17 @@ public class FoodEntry extends DialogFragment {
                 final String collection = "Ingredients";
 
                 if (ValidData()) {
-                    if (edit) {
-                        String ingredientName = GetIngredientName();
-                        HashMap<String, String> data = GetData();
-                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        Firestore.DeleteFromFirestore(collection, ingredient.getName());
-                        Firestore.StoreToFirestore(collection, ingredientName, data);
-                    }
-                    else {
                     String ingredientName = GetIngredientName();
                     HashMap<String, String> data = GetData();
-                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    Firestore.StoreToFirestore(collection, ingredientName, data);
+
+                    if (edit) {
+                        getParentFragmentManager().beginTransaction().remove(fragment).commit();
+                        Firestore.DeleteFromFirestore(collection, ingredient.getName());
                     }
+                    else {
+                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    }
+                    Firestore.StoreToFirestore(collection, ingredientName, data);
                 }
             }
         });
@@ -220,7 +218,7 @@ public class FoodEntry extends DialogFragment {
         DescriptionText.setText(ingredient.getDescription());
 
         // this sets the button to true if its equal to the ingredient unit category
-        wholeButton.setChecked(ingredient.getUnitCategory().equals("Whole"));
+        wholeButton.setChecked(true); // true in case the field is empty
         weightButton.setChecked(ingredient.getUnitCategory().equals("Weight"));
         volumeButton.setChecked(ingredient.getUnitCategory().equals("Volume"));
 
@@ -330,12 +328,12 @@ public class FoodEntry extends DialogFragment {
 
         boolean isValid = true;
 
-        if (Validate.IsEmpty(ingredientName)) {
+        if (Validate.isEmpty(ingredientName)) {
             IngredientName.setError("Ingredient Name cant be empty");
             isValid = false;
         }
 
-        if (Validate.IsEmpty(categoryName) || Objects.equals(categoryName, "Select Category")) {
+        if (Validate.isEmpty(categoryName) || Objects.equals(categoryName, "Select Category")) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -343,7 +341,7 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
-        if (Validate.IsEmpty(ingredientQuantity)) {
+        if (Validate.isEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
             isValid = false;
         }
@@ -357,7 +355,7 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
-        if (Validate.IsEmpty(unit) || Objects.equals(unit, "Select Unit")) {
+        if (Validate.isEmpty(unit) || Objects.equals(unit, "Select Unit")) {
             TextView errorText = (TextView) quantityUnits.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -365,7 +363,7 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
-        if (Validate.IsEmpty(location) || Objects.equals(location, "Select Location")) {
+        if (Validate.isEmpty(location) || Objects.equals(location, "Select Location")) {
             TextView errorText = (TextView) locationSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -373,12 +371,12 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
-        if (Validate.IsEmpty(description)) {
+        if (Validate.isEmpty(description)) {
             DescriptionText.setError("Please write a description");
             isValid = false;
         }
 
-        if (expiryDate.equals("Expiry Date")){
+        if (expiryDate.equals("Expiry Date") || Validate.IsEmpty(expiryDate)){
             ExpiryDate.setError("");
             isValid = false;
         }
