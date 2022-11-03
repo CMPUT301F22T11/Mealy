@@ -1,5 +1,7 @@
 package com.example.mealy;
 
+import com.example.mealy.functions.General;
+
 import java.time.LocalDate;
 
 /**
@@ -39,34 +41,34 @@ public class Ingredient {
     }
 
     public String getName() {
-        return name;
+        return General.blankIfVoid(name);
     }
 
     public String getDescription() {
-        return description;
+        return General.blankIfVoid(description);
     }
 
     public String getAmount() {
-        return amount;
+        return General.blankIfVoid(amount);
     }
 
     public String getUnit() {
-        return unit;
+        return General.blankIfVoid(unit);
     }
 
     public String getCategory() {
-        return category;
+        return General.blankIfVoid(category);
     }
 
     public String getLocation() {
-        return location;
+        return General.blankIfVoid(location);
     }
 
     public String getExpiryDate() {
-        return expiryDate;
+        return General.blankIfVoid(expiryDate);
     }
 
-    public String getUnitCategory() {return unitCategory;};
+    public String getUnitCategory() {return General.blankIfVoid(unitCategory);};
 
     public void setName(String name) {
         this.name = name;

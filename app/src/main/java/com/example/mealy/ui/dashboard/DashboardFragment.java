@@ -81,7 +81,7 @@ public class DashboardFragment extends Fragment {
 
         //ingredients.setAdapter(cityAdapter);
 
-        // Now create the instance of the NumebrsViewAdapter and pass
+        // Now create the instance of the NumbersViewAdapter and pass
         // the context and arrayList created above
         ingredientList = new IngredientList(getActivity(), foodList);
 
@@ -96,6 +96,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
@@ -109,10 +110,12 @@ public class DashboardFragment extends Fragment {
                     String category = (String) doc.getData().get("Category");
                     String desc = (String) doc.getData().get("Description");
                     String exp = (String) doc.getData().get("Expiry Date");
-                    String unitC = (String) doc.getData().get("Unit Category");
-                    String unit = (String) doc.getData().get("Unit");
-                    String amount = (String) doc.getData().get("Amount");
                     String location = (String) doc.getData().get("Location");
+                    String amount = (String) doc.getData().get("Quantity");
+                    String unitC = (String) doc.getData().get("Unit Category");
+                    String unit = (String) doc.getData().get("Quantity Unit");
+
+
                     Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
                     foodList.add(ingred); // Adding Ingredients from FireStore
                 }
