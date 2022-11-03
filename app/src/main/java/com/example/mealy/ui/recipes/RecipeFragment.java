@@ -127,9 +127,10 @@ public class RecipeFragment extends Fragment {
         // add sample ingredient for recipe list (change later)
         Ingredient rat_hair = new Ingredient("rat hair",
                 "hair from a rat",
-                100,
+                "100",
                 "strands",
                 "protein",
+                "rodent",
                 "pantry",
                 "2025-12-13");
 
