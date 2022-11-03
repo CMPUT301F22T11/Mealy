@@ -163,12 +163,15 @@ public class DateFunc {
      * @return date in "String" format ("Month day Year") (e.g. JAN 2 2023)
      */
     public static String MakeDateString(String date)
-    {
-        String[] spliced = date.split("-");
-        spliced[1] =  GetMonthFormat(Integer.getInteger(spliced[1]));
-        String[] str = {spliced[1], spliced[2], spliced[0]};
+    {   if (Validate.isEmpty(date)) {
+            return "";
+        } else {
+            String[] spliced = date.split("-");
+            spliced[1] = GetMonthFormat(Integer.parseInt(spliced[1]));
+            String[] str = {spliced[1], spliced[2], spliced[0]};
 
-        return  TextUtils.join(" ",str);
+            return TextUtils.join(" ", str);
+        }
     }
 
     /**

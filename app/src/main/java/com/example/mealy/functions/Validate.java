@@ -17,20 +17,34 @@ public class Validate {
      */
     public static boolean NoEmptyValues(HashMap<String, String> data) {
         for (String name: data.keySet() ) {
-            if (IsEmpty(data.get(name))){return false;};
+            if (isEmpty(data.get(name))){return false;};
         }
         return true;
     }
 
+
     /**
      * Checks if a string is empty or null
+     * (Depreciated: Use isEmpty instead)
      * @param string Some String
      * @return Returns true if the string is empty or null
      */
+    @Deprecated
     public static boolean IsEmpty(String string) {
         if (string == null) {return true;}
         else {return string.isEmpty();}
     }
+
+    /**
+     * Checks if a string is empty or null
+     * @param string Any string
+     * @return True if the string is empty or null
+     */
+    public static boolean isEmpty(String string) {
+        if (string == null) {return true;}
+        else {return string.isEmpty();}
+    }
+
 
 
     /**
@@ -44,7 +58,7 @@ public class Validate {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         // If the string is empty, it's not valid
-        if (IsEmpty(date)) {
+        if (isEmpty(date)) {
             return false;
         }
         // If the date is less than 10 characters long, it's not valid

@@ -43,5 +43,29 @@ public class Firestore {
                 });
     }
 
+    public static void DeleteFromFirestore(String CollectionName, String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String TAG = "!!!";
+        final CollectionReference collectionReference = db.collection(CollectionName);
+
+        collectionReference
+                .document(document)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // These are a method which gets executed when the task is succeeded
+                        Log.d(TAG, "Data has been removed successfully!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // These are a method which gets executed if there’s any problem
+                        Log.d(TAG, "Data could not be removed!" + e.toString());
+                    }
+                });
+    }
+
 
 }

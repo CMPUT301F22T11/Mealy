@@ -38,6 +38,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * This is the recipe entry class which creates a fragment for the user to enter
+ * in a recipe to be added to the database.
+ */
 public class RecipeEntry extends DialogFragment {
     private final RecipeEntry fragment = this;
     EditText RecipeName;
@@ -64,15 +68,29 @@ public class RecipeEntry extends DialogFragment {
 
     View view;
 
+    /**
+     * This is the constructor for Recipe Entry
+     */
     public RecipeEntry(){
         // constructor
     }
 
+    /**
+     * This is the override for the oncreate
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * This is the override for the onCreateView for Recipe Entry
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.recipe_entry, container, false);
@@ -92,6 +110,9 @@ public class RecipeEntry extends DialogFragment {
         return view;
     }
 
+    /**
+     * This function initializes the category spinner in the recipe entry fragment
+     */
     private void InitializeCategorySpinner() {
         CategorySpinner = view.findViewById(R.id.Recipe_Entry_CategoryDropdown);
         RecipeCategories = new String[]{"Select A Category", "Breakfast", "Lunch", "Dinner", "Other"};
@@ -99,6 +120,9 @@ public class RecipeEntry extends DialogFragment {
         CategorySpinner.setAdapter(categoryAdapter);
     }
 
+    /**
+     * This function initializes the save button in the recipe entry fragment
+     */
     private void InitializeSaveButton() {
         Save = (Button) view.findViewById(R.id.Recipe_Entry_saveButton);
 
@@ -114,6 +138,9 @@ public class RecipeEntry extends DialogFragment {
         });
     }
 
+    /**
+     * This function initializes all the edit texts in the recipe entry fragment
+     */
     private void InitializeEditText() {
         RecipeName = view.findViewById(R.id.Recipe_Entry_RecipeName);
         PrepTime = view.findViewById(R.id.Recipe_Entry_prepTime);
@@ -123,13 +150,19 @@ public class RecipeEntry extends DialogFragment {
         IVPreviewImage = view.findViewById(R.id.IVPreviewImage);
     }
 
+    /**
+     * THis function initializes the add photo button in the recipe entry fragment
+     */
     private void InitializeAddPhoto() {
         AddPhoto = view.findViewById(R.id.Recipe_Entry_AddImage);
         AddPhoto.setOnClickListener(view -> imageChooser());
     }
 
 
-
+    /**
+     * This function builds a hash map from the data that is pulled from the entry boxes
+     * @return data as a hash map to be uploaded on firebase
+     */
     private HashMap<String, String> GetData() {
 
         HashMap<String, String> data = new HashMap<>();
@@ -152,10 +185,17 @@ public class RecipeEntry extends DialogFragment {
         return data;
     }
 
+    /**
+     * This funciton returns the recipe name from the recipe name box
+     * @return
+     */
     private String GetRecipeName() {
         return RecipeName.getText().toString();
     }
 
+    /**
+     * This funciton allows the user to choose a photo from their gallery
+     */
     //https://www.geeksforgeeks.org/how-to-select-an-image-from-gallery-in-android/
     void imageChooser() {
 
@@ -170,6 +210,12 @@ public class RecipeEntry extends DialogFragment {
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
     }
 
+    /**
+     * This function converts the image to make it uploadable to the firebase storage
+     * @param requestCode make sure that the image wants to be uploaded
+     * @param resultCode if the image was successfully uploaded
+     * @param data bit data of time image
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -212,6 +258,9 @@ public class RecipeEntry extends DialogFragment {
         }
     }
 
+    /**
+     * This function uploads the image up to the firebase storage
+     */
     private void uploadImage()
     {
         if (filePath != null) {
