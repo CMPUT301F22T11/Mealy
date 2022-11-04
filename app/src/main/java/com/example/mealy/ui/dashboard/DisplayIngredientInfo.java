@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.dashboard;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.DateFunc;
 import com.example.mealy.functions.DeletePrompt;
 
@@ -38,7 +39,7 @@ public class DisplayIngredientInfo extends DialogFragment {
         unit = ingredient.getUnit();
         category = ingredient.getCategory();
         location = ingredient.getLocation();
-        expiryDate = DateFunc.MakeDateString(ingredient.getExpiryDate());
+        expiryDate = DateFunc.makeDateString(ingredient.getExpiryDate());
     }
 
 

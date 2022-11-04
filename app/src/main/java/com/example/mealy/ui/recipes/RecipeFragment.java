@@ -21,11 +21,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mealy.DisplayRecipeInfo;
-import com.example.mealy.Ingredient;
+import com.example.mealy.ui.dashboard.Ingredient;
 import com.example.mealy.R;
-import com.example.mealy.Recipe;
-import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
 import com.google.android.gms.tasks.OnFailureListener;

@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.dashboard;
 
 import com.example.mealy.functions.General;
 

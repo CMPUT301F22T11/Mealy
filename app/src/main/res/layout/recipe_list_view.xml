@@ -28,8 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
-            <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
-            <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
+        <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
+        <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
 
         <TextView
             android:id="@+id/recipeNameDisplay"

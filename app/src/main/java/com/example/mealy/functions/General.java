@@ -8,9 +8,14 @@ public class General {
         return Math.round((float) dp * density);
     }
 
+    /**
+     * If the string is empty or void, returns an empty string.
+     * Else it returns the original string
+     * @param string String to check if its void
+     * @return empty string or original string
+     */
     public static String blankIfVoid(String string) {
-        String emptyString;
-        return Validate.IsEmpty(string) ? "" : string;
+        return Validate.isEmpty(string) ? "" : string;
     }
 
 }

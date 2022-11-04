@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.dashboard;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -19,16 +19,14 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
@@ -226,7 +224,7 @@ public class FoodEntry extends DialogFragment {
         quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
         categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
         locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
-        ExpiryDate.setText(DateFunc.MakeDateString(ingredient.getExpiryDate()));
+        ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
     }
 
 
@@ -252,7 +250,7 @@ public class FoodEntry extends DialogFragment {
         String categoryName = categorySpinner.getSelectedItem().toString();
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
-        String expiryDate = DateFunc.MakeStringDate(ExpiryDate.getText().toString());
+        String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
         String description = DescriptionText.getText().toString();
         String location = locationSpinner.getSelectedItem().toString();
 
@@ -287,7 +285,7 @@ public class FoodEntry extends DialogFragment {
             {
                 // months index from 0-11
                 month = month + 1;
-                ExpiryDate.setText(DateFunc.MakeIntString(day, month, year));
+                ExpiryDate.setText(DateFunc.makeIntString(day, month, year));
             }
         };
 

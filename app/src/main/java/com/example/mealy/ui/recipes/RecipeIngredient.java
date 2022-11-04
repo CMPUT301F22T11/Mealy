@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class RecipeIngredient implements Parcelable {
     private String category;
 
 
-        // Getters
+    // Getters
     /**
      * Get the title for this Recipe Ingredient.
      * @return
@@ -146,11 +146,11 @@ public class RecipeIngredient implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeString(this.title);
-    parcel.writeString(this.description);
-    parcel.writeString(this.amount);
-    parcel.writeString(this.unit);
-    parcel.writeString(this.category);
+        parcel.writeString(this.title);
+        parcel.writeString(this.description);
+        parcel.writeString(this.amount);
+        parcel.writeString(this.unit);
+        parcel.writeString(this.category);
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.mealy.R;
 
 import org.w3c.dom.Text;
 

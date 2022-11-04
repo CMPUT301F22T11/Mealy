@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.DeletePrompt;
 
 public class DisplayRecipeInfo extends DialogFragment {

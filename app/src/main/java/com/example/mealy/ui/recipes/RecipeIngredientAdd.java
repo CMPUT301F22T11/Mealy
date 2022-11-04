@@ -1,5 +1,4 @@
-package com.example.mealy;
-
+package com.example.mealy.ui.recipes;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.google.android.gms.tasks.OnCompleteListener;
