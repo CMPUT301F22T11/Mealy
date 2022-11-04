@@ -10,8 +10,12 @@ import com.example.mealy.ui.dashboard.Ingredient;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Test case for the Comparator class. This also may represent the Ingredient storage, as it uses
+ * an ArrayList as well.
+ */
 public class CompareTest {
-
+    // Create a variety of ingredients. Their relative ordering is placed in the tests themselves.
     Ingredient ingred1 = new Ingredient(
             "Apple",
             "Red",
@@ -49,6 +53,11 @@ public class CompareTest {
             "Pantry",
             "2030-04-20");
 
+    /**
+     * Create an ArrayList representing the ingredientList in Storage. Add ingredients
+     * out of order.
+     * @return ArrayList<Ingredient>
+     */
     public ArrayList<Ingredient> makeIngredientList() {
         ArrayList<Ingredient> foodList = new ArrayList<>();
         foodList.add(ingred1);
@@ -58,6 +67,11 @@ public class CompareTest {
         return foodList;
     }
 
+    /**
+     * Compare the categories of the 4 different ingredients. Firstly it will
+     * sort in ascending order, then it will verify that the descending order
+     * is correct.
+     */
     @Test
     public void testCompareCategory() {
         // Ordering should be Apple -> Asparagus -> Turmeric -> Burger
@@ -84,6 +98,11 @@ public class CompareTest {
                 && foodList.get(3) == ingred3);
     }
 
+    /**
+     * Compare the descriptions of the 4 different ingredients. Firstly it will
+     * sort in ascending order, then it will verify that the descending order
+     * is correct.
+     */
     @Test
     public void testCompareDesc() {
         // Ordering should be Apple -> Asparagus -> Turmeric -> Burger
@@ -109,6 +128,11 @@ public class CompareTest {
 
     }
 
+    /**
+     * Compare the expiration of the 4 different ingredients. Firstly it will
+     * sort in ascending order, then it will verify that the descending order
+     * is correct.
+     */
     @Test
     public void testCompareExp() {
         // Ordering should be Apple -> Asparagus -> Turmeric -> Burger
@@ -134,6 +158,11 @@ public class CompareTest {
 
     }
 
+    /**
+     * Compare the location of the 4 different ingredients. Firstly it will
+     * sort in ascending order, then it will verify that the descending order
+     * is correct.
+     */
     @Test
     public void testCompareLocation() {
         // Ordering should be Apple -> Asparagus -> Turmeric -> Burger
@@ -161,6 +190,11 @@ public class CompareTest {
 
     }
 
+    /**
+     * Compare the name of the 4 different ingredients. Firstly it will
+     * sort in ascending order, then it will verify that the descending order
+     * is correct.
+     */
     @Test
     public void testCompareName() {
         // Ordering should be Apple -> Asparagus -> Turmeric -> Burger
@@ -187,83 +221,3 @@ public class CompareTest {
 
 
 }
-/*
-public class CityListTest {
-    private CityList mockCityList() {
-        CityList cityList = new CityList();
-        cityList.add(mockCity());
-        return cityList;
-    }
-    private City mockCity() {
-        return new City("Edmonton", "Alberta");
-    }
-
-    @Test
-    void testAdd() {
-        CityList cityList = mockCityList();
-        assertEquals(1, cityList.getCities().size());
-        City city = new City("Regina", "Saskatchewan");
-        cityList.add(city);
-        assertEquals(2, cityList.getCities().size());
-        assertTrue(cityList.getCities().contains(city));
-    }
-
-    @Test
-    void testAddException() {
-        CityList cityList = mockCityList();
-        City city = new City("Yellowknife", "Northwest Territories");
-        cityList.add(city);
-        assertThrows( IllegalArgumentException.class, () -> {
-            cityList.add(city); });
-    }
-
-    @Test
-    void testGetCities() {
-        CityList cityList = mockCityList();
-        assertEquals(0,
-                mockCity().compareTo(cityList.getCities().get(0)));
-        City city = new City("Charlottetown", "Prince Edward Island");
-        cityList.add(city);
-        assertEquals(0, city.compareTo(cityList.getCities().get(0)));
-        assertEquals(0,
-                mockCity().compareTo(cityList.getCities().get(1)));
-    }
-
-    @Test
-    void testHasCity() {
-        CityList cityList = mockCityList();
-        City city = new City("Charlottetown", "Prince Edward Island");
-        assertFalse(cityList.hasCity(city));
-        cityList.add(city);
-        assertTrue(cityList.hasCity(city));
-    }
-
-    @Test
-    void testDeleteCity() {
-        CityList cityList = mockCityList();
-        City city = new City("Charlottetown", "Prince Edward Island");
-        cityList.add(city);
-        cityList.delete(city);
-        assertFalse(cityList.hasCity(city));
-    }
-
-    @Test
-    void testDeleteException() {
-        CityList cityList = mockCityList();
-        City city = new City("Charlottetown", "Prince Edward Island");
-        assertThrows( IllegalArgumentException.class, () -> {
-            cityList.delete(city); });
-    }
-
-    @Test
-    void testCountCities() {
-        CityList cityList = mockCityList();
-        assertEquals(0, cityList.countCities());
-        City city = new City("Charlottetown", "Prince Edward Island");
-        cityList.add(city);
-        assertEquals(1, cityList.countCities());
-
-    }
-
-}
- */
