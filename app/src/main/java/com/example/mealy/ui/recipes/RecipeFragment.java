@@ -19,10 +19,10 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.DisplayRecipeInfo;
 import com.example.mealy.Ingredient;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
-import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
@@ -54,6 +54,8 @@ public class RecipeFragment extends Fragment {
     private Button flipButton; // for flipping the recipe items
 
     DialogFragment recipeOptions;
+
+    final String TAG = "Logging";
 
     int recipeIndex;
     int asc = 1; // for sort order
@@ -204,20 +206,9 @@ public class RecipeFragment extends Fragment {
         storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayRecipeInfo disp = new DisplayRecipeInfo(recipeAdapter.getItem(i));
+                disp.show(getChildFragmentManager(), TAG);
 
-                // get recipe that user clicked on
-                recipeIndex = i;
-                Recipe selectedRecipe = recipeArrayList.get(i);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Recipe", selectedRecipe);
-
-                // launch dialog fragment from within list
-                // https://stackoverflow.com/questions/18436524/launch-a-dialog-fragment-on-button-click-from-a-custom-base-adaptergetview-img
-
-                recipeOptions = new RecipeClickFragment();
-                recipeOptions.setArguments(bundle); // pass recipe info
-                recipeOptions.show(getChildFragmentManager(), "test");
             }
         });
 
