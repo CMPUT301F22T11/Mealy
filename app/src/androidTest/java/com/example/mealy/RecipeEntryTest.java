@@ -69,7 +69,7 @@ public class RecipeEntryTest {
         solo.clickOnButton("Recipe"); //Click add recipe button
 
         // Get view for EditText and Spinner and enter the parameters
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato Soup");
+        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTime), "1");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Servings), "1");
         solo.pressSpinnerItem(0, 2);
@@ -79,7 +79,7 @@ public class RecipeEntryTest {
         // True if there is a recipe called Tomato Soup
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         CollectionReference recipeRef = rootRef.collection("Recipe");
-        Query query = recipeRef.whereEqualTo("Recipe Name", "Tomato Soup");
+        Query query = recipeRef.whereEqualTo("Recipe Name", "Tomato");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -92,7 +92,7 @@ public class RecipeEntryTest {
         });
 
         // Deleting the entry from the Firestore
-        Firestore.DeleteFromFirestore("Recipe", "Tomato Soup");
+        Firestore.DeleteFromFirestore("Recipe", "Tomato");
 
         // False if there is not a recipe called Tomato Soup
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
