@@ -1,5 +1,11 @@
 package com.example.mealy.ui.recipes;
 
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,12 +32,23 @@ import com.example.mealy.Recipe;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Instant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,11 +70,8 @@ public class RecipeFragment extends Fragment {
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
     private Button flipButton; // for flipping the recipe items
 
-    DialogFragment recipeOptions;
-
     final String TAG = "Logging";
 
-    int recipeIndex;
     int asc = 1; // for sort order
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -107,21 +121,21 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-        // add sample ingredient for recipe list (change later)
-        Ingredient rat_hair = new Ingredient("rat hair",
-                "hair from a rat",
+        // add sample ingredient for recipe list (change later once add ingredient to recipe is functional)
+        Ingredient sample = new Ingredient("sample",
+                "sample_text",
                 "100",
-                "strands",
+                "kg",
                 "protein",
-                "rodent",
+                "fried",
                 "pantry",
                 "2025-12-13");
 
         List ingredientList = new ArrayList();
-        ingredientList.add(rat_hair);
+        ingredientList.add(sample);
 
         // PULL FROM FIREBASE
-
+        // https://www.youtube.com/watch?v=xzCsJF9WtPU
         // get recipe table
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
         final CollectionReference recipeCollection = dbf.collection("Recipe");
@@ -136,13 +150,9 @@ public class RecipeFragment extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-                    // Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-
                     try {
-                        // fetch recipe image
-                        // StorageReference storageReference;
-                        // storageReference = FirebaseStorage.getInstance().getReference("Recipe_Image/mahamud.jpg");
 
+                        // fetch recipe info
                         // fetch rest of recipe info
                         String category = (String) doc.getData().get("Category");
                         String comments = (String) doc.getData().get("Comments");
@@ -155,44 +165,47 @@ public class RecipeFragment extends Fragment {
                         int servingsString = Integer.parseInt(servings);
 
                         Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,
-                                R.drawable.meat_rat, ingredientList);
+                                ingredientList);
+
+                        // fetch recipe image and store in bitmap
+                        StorageReference mStorageReference;
+
+                        // find the proper reference image
+                        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + recipe.getTitle());
+
+                        try {
+                            final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
+                            mStorageReference.getFile(localFile)
+                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            // successfully put stuff in file;
+                                            System.out.println("Image received");
+                                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                            recipe.setBitmap(bitmap);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // did not put stuff in file
+                                            System.out.println("No image detected!");
+                                        }
+                                    });
+
+                        } catch (IOException e) {
+                            System.out.println("Firebase failure!");
+                            e.printStackTrace();
+                        }
 
                         recipeArrayList.add(recipe); // Adding new recipe using Firebase data
 
                     } catch (Exception e) {
                         System.out.println("Error with firebase pull, incorrect formatting");
                     }
-
                 }
                 recipeAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-
             }
         });
-
-        /*
-
-        // add sample items
-        recipeArrayList.add(new Recipe("Meat Rat",
-                "Yummy for my tummy",
-                5, 3, 10,
-                "Grilled",
-                R.drawable.meat_rat,
-                ingredientList));
-
-        recipeArrayList.add(new Recipe("Meat Skull",
-                "Going to hell",
-                3, 4, 30,
-                "Fried",
-                R.drawable.meatskull,
-                ingredientList));
-
-        recipeArrayList.add(new Recipe("Rat Hair",
-                "Going to hell",
-                3, 4, 30,
-                "Fried",
-                R.drawable.rathair,
-                ingredientList));
-        */
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
