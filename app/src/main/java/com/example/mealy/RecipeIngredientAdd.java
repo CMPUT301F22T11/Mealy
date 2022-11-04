@@ -215,7 +215,7 @@ public class RecipeIngredientAdd extends DialogFragment {
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**
-             * For an item is selected on the spinner, if the user selects the last entry ('New Category'), reveal the
+             * For an item that is selected on the spinner, if the user selects the last entry ('New Category'), reveal the
              * EditText element that allows the user to enter in a new ingredient entry.
              */
             @Override
