@@ -30,7 +30,7 @@ import com.example.mealy.functions.Firestore;
  * Test class for MainActivity. All the UI tests are written here. Robotium test framework is used
  */
 @RunWith(AndroidJUnit4.class)
-public class RecipeEntryTest {
+public class FoodEntryTest {
     /**
      * Test class for MainActivity. All the UI tests are written here. Robotium test framework is
      used
@@ -59,27 +59,33 @@ public class RecipeEntryTest {
     }
 
     /**
-     * Testing the add recipe functions then checks the Firestore to see if the value is in there
+     * Testing the add Ingredient functions then checks the Firestore to see if the value is in there
      * This is also able to test the Firestore functions DeleteFromFirestore and StoreToFirestore
      */
     @Test
-    public void addRecipe(){
+    public void addIngredient(){
         // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnButton("Recipe"); //Click add recipe button
+        solo.clickOnButton("Ingredient"); //Click add recipe button
 
         // Get view for EditText and Spinner and enter the parameters
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato");
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTime), "1");
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Servings), "1");
-        solo.pressSpinnerItem(0, 2);
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Comments), "THIS IS A TEST COMMENT");
-        solo.clickOnButton("SAVE"); //Click save recipe button
+        solo.enterText((EditText) solo.getView(R.id.ingredientName), "Tomato");
+        solo.enterText((EditText) solo.getView(R.id.quantity), "6");
+        solo.pressSpinnerItem(0, 1);
+        solo.pressSpinnerItem(1, 1);
+        solo.pressSpinnerItem(2, 2);
 
-        // True if there is a recipe called Tomato Soup
+        solo.enterText((EditText) solo.getView(R.id.descriptionText), "THIS IS A TEST DESCRIPTION");
+
+        solo.clickOnButton("Expiry Date");
+        solo.clickOnButton("OK");
+
+        solo.clickOnButton("Save"); //Click save recipe button
+
+        // True if there is an Ingredient called Tomato
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        CollectionReference recipeRef = rootRef.collection("Recipe");
-        Query query = recipeRef.whereEqualTo("Recipe Name", "Tomato");
+        CollectionReference recipeRef = rootRef.collection("Ingredients");
+        Query query = recipeRef.whereEqualTo("Description", "THIS IS A TEST DESCRIPTION");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -92,9 +98,9 @@ public class RecipeEntryTest {
         });
 
         // Deleting the entry from the Firestore
-        Firestore.DeleteFromFirestore("Recipe", "Tomato");
+        Firestore.DeleteFromFirestore("Ingredients", "Tomato");
 
-        // False if there is not a recipe called Tomato Soup
+        // False if there is not an Ingredient called Tomato
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

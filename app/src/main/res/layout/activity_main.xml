@@ -48,11 +48,7 @@
         android:id="@+id/Home_Add_Recipe_Entry"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-
         android:layout_marginStart="60dp"
-        android:text="Add Recipe"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonTest"
-
         android:layout_marginEnd="16sp"
         android:layout_marginBottom="8dp"
         android:text="+ Recipe"
