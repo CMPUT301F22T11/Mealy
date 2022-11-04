@@ -1,9 +1,11 @@
 package com.example.mealy;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.*;
 
@@ -30,6 +32,7 @@ import com.example.mealy.functions.Firestore;
  * Test class for MainActivity. All the UI tests are written here. Robotium test framework is used
  */
 @RunWith(AndroidJUnit4.class)
+@FixMethodOrder(MethodSorters.DEFAULT)
 public class FoodEntryTest {
     /**
      * Test class for MainActivity. All the UI tests are written here. Robotium test framework is
@@ -50,20 +53,14 @@ public class FoodEntryTest {
     }
 
     /**
-     * Gets the Activity
-     * @throws Exception
-     */
-    @Test
-    public void start() throws Exception{
-        Activity activity = rule.getActivity();
-    }
-
-    /**
      * Testing the add Ingredient functions then checks the Firestore to see if the value is in there
+     * Afterwards, it will go to the IngredientList to DisplayIngredientInfo to see if the values
+     * are correct and to observe the functionality of DisplayIngredientInfo
      * This is also able to test the Firestore functions DeleteFromFirestore and StoreToFirestore
      */
     @Test
-    public void addIngredient(){
+    public void addViewIngredient(){
+
         // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnButton("Ingredient"); //Click add recipe button
@@ -97,6 +94,17 @@ public class FoodEntryTest {
             }
         });
 
+        // Viewing the ingredient that we just added using the DisplayIngredientInfo
+        solo.clickOnView(solo.getView(R.id.navigation_dashboard));
+        solo.clickOnText("Tomato");
+        assertTrue(solo.waitForText("Raw Food", 1, 2000));
+        assertTrue(solo.waitForText("Fridge", 1, 2000));
+        assertTrue(solo.waitForText("single", 1, 2000));
+        assertTrue(solo.waitForText("THIS IS A TEST DESCRIPTION", 1, 2000));
+        solo.clickOnButton("Close");
+
+
+
         // Deleting the entry from the Firestore
         Firestore.DeleteFromFirestore("Ingredients", "Tomato");
 
@@ -111,6 +119,7 @@ public class FoodEntryTest {
 
             }
         });
+
     }
 
 }
