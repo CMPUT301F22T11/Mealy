@@ -179,7 +179,6 @@ public class Recipe implements Serializable {
      * @param: preptimeHours The amount of hours it takes to prep the recipe
      * @param: preptimeMins The amount of minutes it takes to prep the recipe
      * @param: category The category that this recipe belongs to
-     * @param: imageID The ID of the image associated with this recipe
      * @param: ingredients A list of ingredients that are in this recipe
      */
     public Recipe(String title,
@@ -196,7 +195,6 @@ public class Recipe implements Serializable {
         this.preptimeHours = preptimeHours;
         this.preptimeMins = preptimeMins;
         this.category = category;
-        // this.imageID = imageID;
         this.recipeIngredients = ingredients;
     }
 }

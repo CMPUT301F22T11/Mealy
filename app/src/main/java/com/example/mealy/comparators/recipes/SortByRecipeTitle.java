@@ -4,6 +4,9 @@ import com.example.mealy.Recipe;
 
 import java.util.Comparator;
 
+/**
+ * This class functions to compare recipes by title
+ */
 public class SortByRecipeTitle implements Comparator<Recipe> {
 
     private int asc;

@@ -125,17 +125,17 @@ public class RecipeFragment extends Fragment {
         });
 
         // add sample ingredient for recipe list (change later)
-        Ingredient rat_hair = new Ingredient("rat hair",
-                "hair from a rat",
+        Ingredient sample = new Ingredient("sample",
+                "sample_text",
                 "100",
-                "strands",
+                "kg",
                 "protein",
-                "rodent",
+                "fried",
                 "pantry",
                 "2025-12-13");
 
         List ingredientList = new ArrayList();
-        ingredientList.add(rat_hair);
+        ingredientList.add(sample);
 
         // PULL FROM FIREBASE
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
@@ -178,8 +178,6 @@ public class RecipeFragment extends Fragment {
                         // find the proper reference image
                         mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + recipe.getTitle());
 
-                        System.out.println("Getting this: " + "Recipe_Image/" + recipe.getTitle());
-
                         try {
                             final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
                             mStorageReference.getFile(localFile)
@@ -195,12 +193,12 @@ public class RecipeFragment extends Fragment {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             // did not put stuff in file
-                                            System.out.println("Error occurred, I'm line 20!");
+                                            System.out.println("No image detected!");
                                         }
                                     });
 
                         } catch (IOException e) {
-                            System.out.println("I'm line 206!");
+                            System.out.println("Firebase failure!");
                             e.printStackTrace();
                         }
 
