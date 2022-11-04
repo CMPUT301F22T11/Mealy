@@ -27,7 +27,9 @@ public class RecipeIngredientList extends ArrayAdapter<RecipeIngredient> {
     private Context context;
 
     /**
-     * Constructor for the class. Parameters: context of the current activity, and an arraylist of Recipe Ingredients.
+     * Constructor for the class.
+     * @param context context of the current activity
+     * @param ingredients The arraylist of Recipe Ingredients.
      */
     public RecipeIngredientList(Context context, ArrayList<RecipeIngredient> ingredients){
         super(context,0, ingredients);
@@ -39,6 +41,11 @@ public class RecipeIngredientList extends ArrayAdapter<RecipeIngredient> {
     /**
      * Method that constructs the view for the list. Constructs all the xml elements (TextViews, ImageButtons, etc.). Currently,
      * the delete function for the entries of the list is not working.
+     *
+     * @param convertView THe old view to reuse
+     * @param parent The parent that this view will eventually be attached to
+     * @param position Get the current position of the item in the list within the adapter
+     * @return The view is created
      */
     @NonNull
     @Override
@@ -68,6 +75,7 @@ public class RecipeIngredientList extends ArrayAdapter<RecipeIngredient> {
              * specific entry, this method creates a dialog that gives the user a choice to continue with their action.
              * If they select yes, then the entry would be deleted from the list. However, this function has not
              * been implemented yet.
+             * @param view The current view of the app
              */
             @Override
             public void onClick(View view) {

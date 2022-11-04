@@ -109,10 +109,15 @@ public class RecipeEntry extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            /**
+             * Asks for an instance of recipe ingredient that was created, and returns it be adding it to the list of
+             * recipe ingredients.
+             * @param requestKey
+             * @param bundle bundle that stores the data of the recipe ingredient
+             */
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported
-//                String result = bundle.getString("bundleKey");
+
                 RecipeIngredient thisIngredient = (RecipeIngredient)  bundle.getParcelable("RecipeIngredient");
                 if (ingredientClicked == false) {
                     recipeIngredientAdapter.add(thisIngredient);
@@ -122,9 +127,6 @@ public class RecipeEntry extends DialogFragment {
                     recipeIngredientAdapter.notifyDataSetChanged();
 
                 }
-
-//                recipeIngredientAdapter.notifyDataSetChanged();
-                // Do something with the result
             }
         });
     }
@@ -147,6 +149,7 @@ public class RecipeEntry extends DialogFragment {
         InitializeEditText();
         InitializeAddPhoto();
         InitializeSaveButton();
+        InitializeIngredientList();
 
         // for image upload
         storage = FirebaseStorage.getInstance();
@@ -156,24 +159,40 @@ public class RecipeEntry extends DialogFragment {
             EditMode();
         }
 
+
+
+        return view;
+    }
+
+    /**
+     * This function initializes the recipe ingredient list that will store all the instance of the
+     * recipe ingredient class for this recipe.
+     */
+    private void InitializeIngredientList() {
         recipeIngredientAdapter = new RecipeIngredientList(this.getActivity(), listOfIngredients);
 
         ingredientList = view.findViewById(R.id.ingredient_list);
         ingredientList.setAdapter(recipeIngredientAdapter);
 
         ingredientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            /**
+             * This function is called when the user wants to edit a specific entry in the list of recipe
+             * ingredients. Allows the user to edit the entry.
+             * @param adapterView The adapterView where the click occurred
+             * @param view The current view of the app
+             * @param i Returns the index of the recipe ingredient that was selected
+             * @param l THe row id of the recipe ingredient that was clicked
+             */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ingredientIndex = i;
-                new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "test");
+                new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
                 ingredientClicked = true;
 
             }
         });
-
-        return view;
     }
-
     /**
      * This function initializes the category spinner in the recipe entry fragment
      */
@@ -229,14 +248,15 @@ public class RecipeEntry extends DialogFragment {
         IVPreviewImage = view.findViewById(R.id.IVPreviewImage);
 
         AddIngredient.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * This function initiates the RecipeIngredient fragment to be used to create an
+             * instance of a recipe ingredient class.
+             * @param view give the current view of the app
+             */
             @Override
             public void onClick(View view) {
-                // Open whatever fragment you want
 
-                //Test Fragment. Just give the layout as an input for TestFragment, Format: TestFragment(R.layout.xmlFileName)
-                //new TestFragment(R.layout.food_entry).show(getSupportFragmentManager(),"test");
-
-                // Food Entry Layout For Testing
                 ingredientClicked = false;
                 new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "test");
 
@@ -281,6 +301,12 @@ public class RecipeEntry extends DialogFragment {
         return data;
     }
 
+    /**
+     * This function builds a hashmap of an instance of the recipe ingredient created within the
+     * list of recipe ingredients, specified by the index.
+     * @param index Get the index of the ingredient in the list.
+     * @return Returns the recipe ingredient, with its attributes, as a hashmap. Used to upload to the firebase.
+     */
     private HashMap<String, String> GetDataIngredient(int index) {
 
         HashMap<String, String> thisData = new HashMap<>();
@@ -483,6 +509,13 @@ public class RecipeEntry extends DialogFragment {
 
         if (Validate.isEmpty(comments)) {
             Comments.setError("Please write a comment");
+            isValid = false;
+        }
+
+        if (listOfIngredients.size() == 0) {
+            Toast errorToast;
+            errorToast = Toast.makeText(this.getActivity(), "Error, please add an ingredient to the recipe", Toast.LENGTH_SHORT);
+            errorToast.show();
             isValid = false;
         }
 

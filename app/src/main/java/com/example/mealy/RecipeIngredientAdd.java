@@ -96,6 +96,10 @@ public class RecipeIngredientAdd extends DialogFragment {
         // Constructor: TODO
     }
 
+    /**
+     * This is the override for the oncreate
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +107,12 @@ public class RecipeIngredientAdd extends DialogFragment {
 
     /**
      * Creates the constructed view for the user to interact with. Initialize all XML elements (TextViews, Spinners, EditTexts, etc).
+     *
+     * @param inflater LayoutInflater object used to inflate any views in the fragment
+     * @param container May be used to generate LayoutParams of the view. Otherwise, this is NULL
+     * @param savedInstanceState This crated fragment may be re-constructed from a previous saved state, stored in this parameter. Otherwise, this is NULL.
+     *
+     * @return Returns the view created.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,19 +140,24 @@ public class RecipeIngredientAdd extends DialogFragment {
     private void InitializeGetAll() {
         collectionReference = db.collection("Ingredients");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
             /**
              * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
              * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
              */
+            @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
                 thisIngredient.add("Select an Ingredient:");
                 thisCategory.add("Select a Category:");
+                thisIngredient.add("New Ingredient");
+                thisCategory.add("New Category");
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String ingredient = (String) doc.getId();
-                    thisIngredient.add(ingredient); // Adding the cities and provinces from FireStore
+                    thisIngredient.add(ingredient);
                     String category = (String) doc.getData().get("Category");
                     boolean hasCategory = false;
                     for (String curCategory : thisCategory) {
@@ -154,8 +169,6 @@ public class RecipeIngredientAdd extends DialogFragment {
                         thisCategory.add(category);
                     }
                 }
-                thisIngredient.add("New Ingredient");
-                thisCategory.add("New Category");
                 nameAdapter.notifyDataSetChanged();
                 categoryAdapter.notifyDataSetChanged();
             }
@@ -176,11 +189,15 @@ public class RecipeIngredientAdd extends DialogFragment {
             /**
              * For an item is selected on the spinner, if the user selects the last entry ('New Ingredient'), reveal the
              * EditText element that allows the user to enter in a new ingredient entry.
+             * @param parentView The adapterView where the click occurred
+             * @param selectedItemView The current view of the app
+             * @param position Returns the index of the name that was selected
+             * @param id THe row id of the name that was clicked
              */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                if (position == thisIngredient.size()-1) {
+                if (position == 1) {
                     nameNewSelected = true;
                     RecipeIngredientName.setVisibility(View.VISIBLE);
                 }
@@ -194,6 +211,7 @@ public class RecipeIngredientAdd extends DialogFragment {
 
             /**
              * If nothing gets selected for the spinner, then make the EditText invisible.
+             * @param parentView The adapterView where the click occurred
              */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -216,12 +234,16 @@ public class RecipeIngredientAdd extends DialogFragment {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**
              * For an item that is selected on the spinner, if the user selects the last entry ('New Category'), reveal the
-             * EditText element that allows the user to enter in a new ingredient entry.
+             * EditText element that allows the user to enter in a new category.
+             * @param parentView The adapterView where the click occurred
+             * @param selectedItemView The current view of the app
+             * @param position Returns the index of the category that was selected
+             * @param id THe row id of the category that was clicked
              */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                if (position == thisCategory.size()-1) {
+                if (position == 1) {
                     categoryNewSelected = true;
                     RecipeIngredientCategory.setVisibility(View.VISIBLE);
                 }
@@ -303,6 +325,8 @@ public class RecipeIngredientAdd extends DialogFragment {
             /**
              * Once the save button is clicked, get the user's inputs for all the different fields, and use it to create a
              * new Recipe Ingredient. Using Parcelable, the Recipe Ingredient gets passed back to the Recipe DialogFragment.
+             *
+             * @param view returns the current view of the activity
              */
             @Override
             public void onClick(View view) {
@@ -361,6 +385,8 @@ public class RecipeIngredientAdd extends DialogFragment {
 
     /**
      * Gets the name for the Recipe Ingredient the user gave for this current instacne of a Recipe Ingredient.
+     *
+     * @return Returns the name of the recipe ingredient that was created.
      */
     private String GetRecipeIngredientName() {
         return RecipeIngredientName.getText().toString();
@@ -369,6 +395,8 @@ public class RecipeIngredientAdd extends DialogFragment {
     /**
      * Checks if the user has filled in all required fields. If not, then it returns an error prompting the user to
      * fill in said fields.
+     *
+     * @return returns true if the data is valid. False otherwise.
      */
     private boolean ValidData(){
 
