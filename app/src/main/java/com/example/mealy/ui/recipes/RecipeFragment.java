@@ -70,11 +70,8 @@ public class RecipeFragment extends Fragment {
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
     private Button flipButton; // for flipping the recipe items
 
-    DialogFragment recipeOptions;
-
     final String TAG = "Logging";
 
-    int recipeIndex;
     int asc = 1; // for sort order
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -124,7 +121,7 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-        // add sample ingredient for recipe list (change later)
+        // add sample ingredient for recipe list (change later once add ingredient to recipe is functional)
         Ingredient sample = new Ingredient("sample",
                 "sample_text",
                 "100",
@@ -153,8 +150,6 @@ public class RecipeFragment extends Fragment {
 
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-                    // Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-
                     try {
 
                         // fetch recipe info

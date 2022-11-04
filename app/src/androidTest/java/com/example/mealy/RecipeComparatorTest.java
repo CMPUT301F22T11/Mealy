@@ -58,7 +58,9 @@ public class RecipeComparatorTest {
         return recipeArrayList;
     }
 
-    // test title comparator
+    /**
+     * Test for comparing title sort functionality
+     */
     @Test
     public void testCompareTitle() {
         ArrayList<Recipe> recipeArrayList = makeRecipeList();
@@ -80,7 +82,9 @@ public class RecipeComparatorTest {
                 && recipeArrayList.get(2) == applePie);
     }
 
-    // test prep time comparator
+    /**
+     * Test for comparing prep time functionality
+     */
     @Test
     public void testComparePrepTime() {
         ArrayList<Recipe> recipeArrayList = makeRecipeList();
@@ -103,7 +107,9 @@ public class RecipeComparatorTest {
 
     }
 
-    // test category comparator
+    /**
+     * Test for comparing category functionality
+     */
     @Test
     public void testCompareCategory() {
         ArrayList<Recipe> recipeArrayList = makeRecipeList();
@@ -125,7 +131,9 @@ public class RecipeComparatorTest {
                 && recipeArrayList.get(2) == applePie);
     }
 
-    // test servings comparator
+    /**
+     * Test for comparing servings functionality
+     */
     @Test
     public void testServings() {
         ArrayList<Recipe> recipeArrayList = makeRecipeList();
