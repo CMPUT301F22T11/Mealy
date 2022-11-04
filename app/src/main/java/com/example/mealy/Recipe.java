@@ -1,5 +1,6 @@
 package com.example.mealy;
 
+import android.graphics.Bitmap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -21,16 +22,15 @@ public class Recipe implements Serializable {
     int preptimeMins;
     String category;
     int imageID;
-    ImageView image;
+    Bitmap bitmap; // image of recipe
 
-    /*
-    public void setImageView(ImageView imageView) {
-        this.image = imageView;
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
-    public ImageView getImageView(ImageView imageView) {
-        return this.image;
-    } */
+    public Bitmap getBitmap() {
+        return this.bitmap;
+    }
 
     private List<Ingredient> recipeIngredients;
 
@@ -172,7 +172,7 @@ public class Recipe implements Serializable {
                   int preptimeHours,
                   int preptimeMins,
                   String category,
-                  int imageID,
+                  // int imageID,
                   List ingredients){
         this.title = title;
         this.comments = comments;
@@ -180,7 +180,7 @@ public class Recipe implements Serializable {
         this.preptimeHours = preptimeHours;
         this.preptimeMins = preptimeMins;
         this.category = category;
-        this.imageID = imageID;
+        // this.imageID = imageID;
         this.recipeIngredients = ingredients;
     }
 }

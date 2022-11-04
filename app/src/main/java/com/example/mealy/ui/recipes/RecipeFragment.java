@@ -144,6 +144,7 @@ public class RecipeFragment extends Fragment {
 
         // PULL FROM FIREBASE
         // get image
+        // https://www.youtube.com/watch?v=xzCsJF9WtPU
         StorageReference mStorageReference;
         mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/rice"); // try rice.jpg
 
@@ -192,10 +193,8 @@ public class RecipeFragment extends Fragment {
                     // Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
 
                     try {
-                        // fetch recipe image
-                        // StorageReference storageReference;
-                        // storageReference = FirebaseStorage.getInstance().getReference("Recipe_Image/mahamud.jpg");
 
+                        // fetch recipe info
                         // fetch rest of recipe info
                         String category = (String) doc.getData().get("Category");
                         String comments = (String) doc.getData().get("Comments");
@@ -208,7 +207,36 @@ public class RecipeFragment extends Fragment {
                         int servingsString = Integer.parseInt(servings);
 
                         Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,
-                                R.drawable.meat_rat, ingredientList);
+                                ingredientList);
+
+                        // fetch recipe image and store in bitmap
+                        StorageReference mStorageReference;
+
+                        // find the proper reference image
+                        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/rice");
+
+                        try {
+                            final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
+                            mStorageReference.getFile(localFile)
+                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                            // successfully put stuff in file;
+                                            System.out.println("Image received");
+                                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                            recipe.setBitmap(bitmap);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // did not put stuff in file
+                                            System.out.println("Error occurred");
+                                        }
+                                    });
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         recipeArrayList.add(recipe); // Adding new recipe using Firebase data
 
