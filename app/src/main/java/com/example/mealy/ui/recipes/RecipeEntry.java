@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mealy.MainActivity;
+import com.example.mealy.R;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
