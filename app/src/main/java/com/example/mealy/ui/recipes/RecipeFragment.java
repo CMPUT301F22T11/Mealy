@@ -1,6 +1,8 @@
 package com.example.mealy.ui.recipes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,9 +48,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -138,6 +143,37 @@ public class RecipeFragment extends Fragment {
         ingredientList.add(rat_hair);
 
         // PULL FROM FIREBASE
+        // get image
+        StorageReference mStorageReference;
+        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/rice"); // try rice.jpg
+
+        ImageView testimg = root.findViewById(R.id.testFirebase);
+
+        try {
+            final File localFile = File.createTempFile("testimg", "jpg"); // temp file to store image
+            mStorageReference.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            // successfully put stuff in file
+                            // Toast.makeText(RecipeFragment.this, "Picture retrieved", Toast.LENGTH_SHORT).show();
+                            System.out.println("Image received");
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+
+                            testimg.setImageBitmap(bitmap);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // did not put stuff in file
+                            System.out.println("Error occurred");
+                        }
+                    });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // get recipe table
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
@@ -179,10 +215,8 @@ public class RecipeFragment extends Fragment {
                     } catch (Exception e) {
                         System.out.println("Error with firebase pull, incorrect formatting");
                     }
-
                 }
                 recipeAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-
             }
         });
 
