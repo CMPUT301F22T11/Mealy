@@ -55,7 +55,15 @@ public class RecipeList extends ArrayAdapter<Recipe> {
         // then according to the position of the view assign the desired image for the same
         ImageView recipeImage = currentItemView.findViewById(R.id.imageView);
         assert recipeImage != null;
-        recipeImage.setImageResource(currentRecipe.getImageID());
+
+        // check if this recipe has associated image
+        if (currentRecipe.hasImage()) {
+            recipeImage.setImageBitmap(currentRecipe.getBitmap());
+        } else {
+            // set placeholder
+            recipeImage.setImageResource(R.drawable.placeholder);
+        }
+
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.recipeNameDisplay);

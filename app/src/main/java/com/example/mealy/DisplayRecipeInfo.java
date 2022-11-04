@@ -3,6 +3,7 @@ package com.example.mealy;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,10 @@ public class DisplayRecipeInfo extends DialogFragment {
     private final String Servings;
     private final String Category;
     private final String Comments;
-    private final int recipeImage;
     private final Recipe recipe;
+
+    private boolean hasImage; // does this selected recipe have an image associated?
+    private Bitmap bitmap; // bitmap of recipe if exists
 
     TextView view_title;
     ImageView view_recipeImage;
@@ -43,7 +46,13 @@ public class DisplayRecipeInfo extends DialogFragment {
         Servings = recipe.getServingsString();
         Category = recipe.getCategory();
         Comments = recipe.getComments();
-        recipeImage = recipe.getImageID();
+
+        this.hasImage = recipe.hasImage();
+
+        // get the recipe image if it exists, otherwise do a placeholder
+        if (recipe.hasImage()) {
+            this.bitmap = recipe.getBitmap();
+        }
 
     }
 
@@ -77,9 +86,15 @@ public class DisplayRecipeInfo extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        // display image
+        // display image if exists
         view_recipeImage = view.findViewById(R.id.recipeViewImage);
-        view_recipeImage.setImageResource(recipeImage);
+
+        if (this.hasImage) {
+            view_recipeImage.setImageBitmap(bitmap);
+        } else {
+            // placeholder image
+            view_recipeImage.setImageResource(R.drawable.placeholder);
+        }
 
         // set category
         view_category = view.findViewById(R.id.recipeViewCategory);

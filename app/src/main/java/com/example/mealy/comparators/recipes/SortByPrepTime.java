@@ -3,7 +3,9 @@ package com.example.mealy.comparators.recipes;
 import com.example.mealy.Recipe;
 
 import java.util.Comparator;
-
+/**
+ * This class functions to compare recipes by prep time
+ */
 public class SortByPrepTime implements Comparator<Recipe>{
 
     private int asc;

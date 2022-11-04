@@ -1,5 +1,6 @@
 package com.example.mealy;
 
+import android.graphics.Bitmap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -20,19 +21,42 @@ public class Recipe implements Serializable {
     int preptimeHours;
     int preptimeMins;
     String category;
-    int imageID;
-    ImageView image;
 
-    /*
-    public void setImageView(ImageView imageView) {
-        this.image = imageView;
-    }
+    // int imageID;
 
-    public ImageView getImageView(ImageView imageView) {
-        return this.image;
-    } */
+    Bitmap bitmap; // image of recipe
+    boolean hasImage = false; // is this recipe associated with an image
 
     private List<Ingredient> recipeIngredients;
+
+    /**
+     * Set the bitmap of the recipe associated with this image
+     * @param: bitmap of recipe
+     */
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        this.hasImage = true;
+    }
+
+    /**
+     * Get the bitmap of the recipe associated with this image, if it exists
+     * @return: bitmap of recipe
+     */
+    public Bitmap getBitmap() {
+        if (hasImage) {
+            return this.bitmap;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Check if this recipe is associated with an image
+     * @return: true if has image, false otherwise
+     */
+    public boolean hasImage() {
+        return this.hasImage;
+    }
 
     /**
      * Get the title of the recipe
@@ -129,14 +153,6 @@ public class Recipe implements Serializable {
     }
 
     /**
-     * Get the imageID of this recipe
-     * @return: category of this recipe
-     */
-    public int getImageID() {
-        return imageID;
-    }
-
-    /**
      * Get the ingredients list of this recipe
      * @return: ingredients list of this recipe
      */
@@ -163,7 +179,6 @@ public class Recipe implements Serializable {
      * @param: preptimeHours The amount of hours it takes to prep the recipe
      * @param: preptimeMins The amount of minutes it takes to prep the recipe
      * @param: category The category that this recipe belongs to
-     * @param: imageID The ID of the image associated with this recipe
      * @param: ingredients A list of ingredients that are in this recipe
      */
     public Recipe(String title,
@@ -172,7 +187,7 @@ public class Recipe implements Serializable {
                   int preptimeHours,
                   int preptimeMins,
                   String category,
-                  int imageID,
+                  // int imageID,
                   List ingredients){
         this.title = title;
         this.comments = comments;
@@ -180,7 +195,6 @@ public class Recipe implements Serializable {
         this.preptimeHours = preptimeHours;
         this.preptimeMins = preptimeMins;
         this.category = category;
-        this.imageID = imageID;
         this.recipeIngredients = ingredients;
     }
 }
