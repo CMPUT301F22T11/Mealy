@@ -9,14 +9,15 @@
 
     <TextView
         android:id="@+id/r_ingredient_title"
+        android:minHeight="48sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/accent_red"
-        android:minHeight="48sp"
-        android:text="Add/Edit Ingredient for Recipe"
         android:textAlignment="center"
+        android:text="Add/Edit Ingredient for Recipe"
+        android:textSize="25sp"
         android:textColor="@color/black"
-        android:textSize="25sp" />
+        android:background="#EFEEFF"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -123,7 +124,6 @@
             android:id="@+id/r_ingredient_quantity_whole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/black"
             android:checked="true"
             android:text="Whole" />
 
@@ -232,7 +232,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SAVE" />
+            android:text="@string/Recipe_Ingredient_save"/>
     </LinearLayout>
 
 

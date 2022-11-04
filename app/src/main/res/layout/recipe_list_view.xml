@@ -28,8 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
-            <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
-            <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
+        <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
+        <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
 
         <TextView
             android:id="@+id/recipeNameDisplay"
@@ -39,7 +39,7 @@
             android:layout_marginTop="4dp"
             android:gravity="top"
             android:text="Recipe name"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
@@ -56,7 +56,7 @@
             android:layout_marginBottom="4dp"
             android:gravity="top|left"
             android:text="Servings Amount"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
