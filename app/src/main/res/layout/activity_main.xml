@@ -22,34 +22,45 @@
     <fragment
         android:id="@+id/nav_host_fragment_activity_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/mobile_navigation" />
 
     <Button
-        android:id="@+id/buttonTest"
+        android:id="@+id/Home_Add_Ingredient_Entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TestButton"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.755"
-        app:layout_constraintStart_toEndOf="@+id/Home_Add_Recipe_Entry"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment_activity_main"
-        app:layout_constraintVertical_bias="0.975" />
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="16sp"
+        android:text="+ Ingredient"
+        app:layout_constraintBaseline_toBaselineOf="@+id/Home_Add_Recipe_Entry"
+        app:layout_constraintEnd_toStartOf="@+id/Home_Add_Recipe_Entry"
+        app:layout_constraintStart_toEndOf="@+id/Home_Add_Meal_Entry" />
 
     <Button
         android:id="@+id/Home_Add_Recipe_Entry"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginStart="60dp"
-        android:text="Button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonTest"
+        android:layout_marginEnd="16sp"
+        android:layout_marginBottom="8dp"
+        android:text="+ Recipe"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/Home_Add_Meal_Entry"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="16sp"
+        android:text="+ Meal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/Home_Add_Ingredient_Entry"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

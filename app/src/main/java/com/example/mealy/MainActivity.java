@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.mealy.functions.DateFunc;
-import com.example.mealy.functions.Firestore;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,14 +12,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealy.databinding.ActivityMainBinding;
-
-import java.util.HashMap;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     // for image upload
     public static Context contextOfApplication;
 
-    Button testButton;
+    Button Home_Add_Ingredient_Entry;
     Button Home_Add_Recipe_Entry;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        testButton = findViewById(R.id.buttonTest);
+        Home_Add_Ingredient_Entry = findViewById(R.id.Home_Add_Ingredient_Entry);
         Home_Add_Recipe_Entry = findViewById(R.id.Home_Add_Recipe_Entry);
         //This is for testing, to set the button to your view, modify it in test view
-        testButton.setOnClickListener(new View.OnClickListener() {
+        Home_Add_Ingredient_Entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
