@@ -143,39 +143,7 @@ public class RecipeFragment extends Fragment {
         ingredientList.add(rat_hair);
 
         // PULL FROM FIREBASE
-        // get image
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
-        StorageReference mStorageReference;
-        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/rice"); // try rice.jpg
-
-        ImageView testimg = root.findViewById(R.id.testFirebase);
-
-        try {
-            final File localFile = File.createTempFile("testimg", "jpg"); // temp file to store image
-            mStorageReference.getFile(localFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            // successfully put stuff in file
-                            // Toast.makeText(RecipeFragment.this, "Picture retrieved", Toast.LENGTH_SHORT).show();
-                            System.out.println("Image received");
-                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-
-                            testimg.setImageBitmap(bitmap);
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // did not put stuff in file
-                            System.out.println("Error occurred");
-                        }
-                    });
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // get recipe table
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
         final CollectionReference recipeCollection = dbf.collection("Recipe");
@@ -213,7 +181,7 @@ public class RecipeFragment extends Fragment {
                         StorageReference mStorageReference;
 
                         // find the proper reference image
-                        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/rice");
+                        mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + recipe.getTitle());
 
                         try {
                             final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
@@ -230,11 +198,12 @@ public class RecipeFragment extends Fragment {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             // did not put stuff in file
-                                            System.out.println("Error occurred");
+                                            System.out.println("Error occurred, I'm line 20!");
                                         }
                                     });
 
                         } catch (IOException e) {
+                            System.out.println("I'm line 206!");
                             e.printStackTrace();
                         }
 
