@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/Recipe_Entry_PrepTimeLabel"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
@@ -73,15 +73,27 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/Recipe_Entry_prepTime"
+                android:id="@+id/Recipe_Entry_prepTimeHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/Recipe_Entry_preparation_time"
-                android:inputType="numberDecimal"
+                android:ems="2"
+                android:hint="@string/Recipe_Entry_preparation_timeHour"
+                android:inputType="number"
                 android:minHeight="48dp"
                 android:textColorHint="#757575"
                 android:autofillHints="" />
+
+            <EditText
+                android:id="@+id/Recipe_Entry_prepTimeMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:ems="2"
+                android:hint="@string/Recipe_Entry_preparation_timeMin"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:textColorHint="#757575" />
 
         </LinearLayout>
 

@@ -7,7 +7,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recipe_sort">Sort By</string>
     <string name="Recipe_Entry_prep_time">Prep Time:</string>
-    <string name="Recipe_Entry_preparation_time">Preparation time</string>
+    <string name="Recipe_Entry_preparation_timeHour">hh:</string>
+    <string name="Recipe_Entry_preparation_timeMin">:mm</string>
     <string name="Recipe_Entry_name">Name</string>
     <string name="Recipe_Entry_recipe_name">Recipe Name:</string>
     <string name="Recipe_Entry_enter_comments">Enter Comments</string>

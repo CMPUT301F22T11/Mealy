@@ -1,11 +1,8 @@
 package com.example.mealy.ui.recipes;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -40,16 +36,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.time.Instant;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -157,11 +149,12 @@ public class RecipeFragment extends Fragment {
                         String category = (String) doc.getData().get("Category");
                         String comments = (String) doc.getData().get("Comments");
                         String preptime = (String) doc.getData().get("Preparation Time");
+                        String preptimeM = (String) doc.getData().get("Preparation Time Min");
                         String title = (String) doc.getData().get("Recipe Name");
                         String servings = (String) doc.getData().get("Servings");
 
                         int preptimeHours = Integer.parseInt(preptime);
-                        int preptimeMins = 0;
+                        int preptimeMins = Integer.parseInt(preptimeM);
                         int servingsString = Integer.parseInt(servings);
 
                         Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,

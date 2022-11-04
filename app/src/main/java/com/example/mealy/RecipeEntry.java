@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -44,6 +45,7 @@ public class RecipeEntry extends DialogFragment {
     private final RecipeEntry fragment = this;
     EditText RecipeName;
     EditText PrepTime;
+    EditText PrepTimeMin;
     EditText Servings;
     Spinner CategorySpinner;
     EditText Comments;
@@ -119,7 +121,7 @@ public class RecipeEntry extends DialogFragment {
         storageReference = storage.getReference();
 
         if (edit) {
-            //EditMode();
+            EditMode();
         }
 
         return view;
@@ -166,7 +168,8 @@ public class RecipeEntry extends DialogFragment {
      */
     private void InitializeEditText() {
         RecipeName = view.findViewById(R.id.Recipe_Entry_RecipeName);
-        PrepTime = view.findViewById(R.id.Recipe_Entry_prepTime);
+        PrepTime = view.findViewById(R.id.Recipe_Entry_prepTimeHour);
+        PrepTimeMin = view.findViewById(R.id.Recipe_Entry_prepTimeMin);
         Servings = view.findViewById(R.id.Recipe_Entry_Servings);
         Comments = view.findViewById(R.id.Recipe_Entry_Comments);
         AddIngredient = view.findViewById(R.id.Recipe_Entry_addIngredientToRecipe);
@@ -192,6 +195,7 @@ public class RecipeEntry extends DialogFragment {
 
         String RecipeNameText = RecipeName.getText().toString();
         String PrepTimeText = PrepTime.getText().toString();
+        String PrepTimeMinText = PrepTimeMin.getText().toString();
         String ServingsText = Servings.getText().toString();
         String CategoryText = CategorySpinner.getSelectedItem().toString();
         String CommentsText = Comments.getText().toString();
@@ -201,6 +205,7 @@ public class RecipeEntry extends DialogFragment {
 
         data.put("Recipe Name", RecipeNameText);
         data.put("Preparation Time", PrepTimeText);
+        data.put("Preparation Time Min", PrepTimeMinText);
         data.put("Servings", ServingsText);
         data.put("Category", CategoryText);
         data.put("Comments", CommentsText);
@@ -343,6 +348,7 @@ public class RecipeEntry extends DialogFragment {
 
         String recipeName = RecipeName.getText().toString();
         String prepTime = PrepTime.getText().toString();
+        String prepTimeMin = PrepTimeMin.getText().toString();
         String servingSize = Servings.getText().toString();
         String categoryType = CategorySpinner.getSelectedItem().toString();
         String comments = Comments.getText().toString();
@@ -367,6 +373,12 @@ public class RecipeEntry extends DialogFragment {
             PrepTime.setError("Can't be empty");
             isValid = false;
         }
+
+        if (Validate.isEmpty(prepTimeMin)) {
+            PrepTime.setError("Can't be empty");
+            isValid = false;
+        }
+
         try {
             if (Float.parseFloat(servingSize) <= 0) {
                 Servings.setError("Can't have 0 or negative quantities");
@@ -386,25 +398,20 @@ public class RecipeEntry extends DialogFragment {
 
     }
 
-//    /**
-//     * Sets default values to ingredient values that we need to edit
-//     */
-//    private void EditMode() {
-//        IngredientName.setText(ingredient.getName());
-//        IngredientQuantity.setText(ingredient.getAmount());
-//        DescriptionText.setText(ingredient.getDescription());
-//
-//        // this sets the button to true if its equal to the ingredient unit category
-//        wholeButton.setChecked(true); // true in case the field is empty
-//        weightButton.setChecked(ingredient.getUnitCategory().equals("Weight"));
-//        volumeButton.setChecked(ingredient.getUnitCategory().equals("Volume"));
-//
-//        // sets spinners to their appropriate value. Goes to default value if item is not in spinner
-//        quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
-//        categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
-//        locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
-//        ExpiryDate.setText(DateFunc.MakeDateString(ingredient.getExpiryDate()));
-//    }
+    /**
+     * Sets default values to ingredient values that we need to edit
+     */
+    private void EditMode() {
+        RecipeName.setText(recipe.getTitle());
+        PrepTime.setText(Integer.toString(recipe.getPreptimeHours()));
+        PrepTimeMin.setText(Integer.toString(recipe.getPreptimeMins()));
+        Servings.setText(Integer.toString(recipe.getServings()));
+        Comments.setText(recipe.getComments());
+        IVPreviewImage.setImageBitmap(recipe.getBitmap());
+
+        // sets spinners to their appropriate value. Goes to default value if item is not in spinner
+        CategorySpinner.setSelection(Arrays.asList(RecipeCategories).indexOf(recipe.getCategory()));
+    }
 }
 
 

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class DisplayRecipeInfo extends DialogFragment {
         this.recipe = recipe;
         RecipeName = recipe.getTitle();
         PrepTime = "Prep Time: " + recipe.getPreptimeHours() + " hrs : " + recipe.getPreptimeMins() + " mins";
+        Log.d("preptimeh:", Integer.toString(recipe.getPreptimeHours()));
+        Log.d("preptimem:", Integer.toString(recipe.getPreptimeMins()));
         Servings = recipe.getServingsString();
         Category = recipe.getCategory();
         Comments = recipe.getComments();
@@ -73,13 +76,13 @@ public class DisplayRecipeInfo extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         new DeletePrompt("Recipe", RecipeName).show(getParentFragmentManager(),"delete_prompt");
                     }
+                })
+                .setPositiveButton("Edit", new DialogInterface.OnClickListener() { // lets you edit the food item
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new RecipeEntry(recipe).show(getParentFragmentManager(),"food_entry");
+                    }
                 }).create();
-//                .setPositiveButton("Edit", new DialogInterface.OnClickListener() { // lets you edit the food item
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        new RecipeEntry(recipe).show(getParentFragmentManager(),"food_entry");
-//                    }
-//                }).create();
     }
 
     @Nullable

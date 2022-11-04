@@ -70,7 +70,7 @@ public class RecipeEntryTest {
 
         // Get view for EditText and Spinner and enter the parameters
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato");
-        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTime), "1");
+        solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTimeHour), "1");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Servings), "1");
         solo.pressSpinnerItem(0, 2);
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Comments), "THIS IS A TEST COMMENT");
