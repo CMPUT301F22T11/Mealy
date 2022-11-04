@@ -60,6 +60,7 @@ public class RecipeEntryTest {
 
     /**
      * Testing the add recipe functions then checks the Firestore to see if the value is in there
+     * This is also able to test the Firestore functions DeleteFromFirestore and StoreToFirestore
      */
     @Test
     public void addRecipe(){
