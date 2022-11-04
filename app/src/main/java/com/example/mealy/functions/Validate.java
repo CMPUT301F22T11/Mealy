@@ -9,19 +9,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Validate {
-    /**
-     * Takes in a HashMap<String, String> and returns if every value of the hashmap has a value
-     * also checks for null values
-     * @param data A hashmap of <String, String>
-     * @return Returns true if every value isn't empty
-     */
-    public static boolean NoEmptyValues(HashMap<String, String> data) {
-        for (String name: data.keySet() ) {
-            if (isEmpty(data.get(name))){return false;};
-        }
-        return true;
-    }
-
 
     /**
      * Checks if a string is empty or null
@@ -42,7 +29,7 @@ public class Validate {
      */
     public static boolean isEmpty(String string) {
         if (string == null) {return true;}
-        else {return string.isEmpty();}
+        else {return string.trim().isEmpty();}
     }
 
 
@@ -53,7 +40,7 @@ public class Validate {
      * @param date String of date following "yyyy-MM-dd" format
      * @return Returns true if the date is valid
      */
-    public static boolean ValidDate(String date) {
+    public static boolean validDate(String date) {
         // Setting the date format to yyyy-MM-dd
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -93,19 +80,19 @@ public class Validate {
     }
 
     /**
-     * Checks if the date passed
-     * @param date the date you want to check
+     * Checks if the date passed ("yyyy-MM-dd")
+     * @param date the date you want to check (Must be in "yyyy-MM-dd" format)
      * @return Returns true if the date has already passed
-     * @throws Exception Date format is not valid. Use yyyy-MM-dd
+     * @throws Exception Date format is not valid. Use "yyyy-MM-dd"
      */
     public static boolean datePassed(String date) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (ValidDate(date)) {
-            Date today = new Date();
-            Date givenDate = sdf.parse(date);
+        if (validDate(date)) {
+            Date today = new Date(); // gets today's date
+            Date givenDate = sdf.parse(date); // converts string date to a date object
 
             assert givenDate != null;
-            return givenDate.compareTo(today) <= 0;
+            return givenDate.compareTo(today) <= 0; // checks if the date passed
         } else {
             throw new Exception("Invalid Date");
         }
