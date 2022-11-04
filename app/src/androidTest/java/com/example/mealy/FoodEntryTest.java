@@ -101,12 +101,13 @@ public class FoodEntryTest {
         assertTrue(solo.waitForText("Fridge", 1, 2000));
         assertTrue(solo.waitForText("single", 1, 2000));
         assertTrue(solo.waitForText("THIS IS A TEST DESCRIPTION", 1, 2000));
-        solo.clickOnButton("Close");
+        solo.clickOnButton("Delete");
+        solo.clickOnButton("Delete");
 
 
 
         // Deleting the entry from the Firestore
-        Firestore.DeleteFromFirestore("Ingredients", "Tomato");
+        //Firestore.DeleteFromFirestore("Ingredients", "Tomato");
 
         // False if there is not an Ingredient called Tomato
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
