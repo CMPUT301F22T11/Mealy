@@ -16,7 +16,7 @@
         android:text="Add/Edit Ingredient for Recipe"
         android:textSize="25sp"
         android:textColor="@color/black"
-        android:background="#EFEEFF"
+        android:background="@color/accent_red"
         />
 
     <LinearLayout
