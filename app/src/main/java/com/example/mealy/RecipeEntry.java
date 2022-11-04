@@ -1,14 +1,13 @@
 package com.example.mealy;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,16 +27,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
+import com.example.mealy.functions.Validate;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Objects;
 
 /**
  * This is the recipe entry class which creates a fragment for the user to enter
@@ -68,11 +66,24 @@ public class RecipeEntry extends DialogFragment {
 
     View view;
 
+    Recipe recipe;
+    boolean edit;
+
     /**
      * This is the constructor for Recipe Entry
      */
     public RecipeEntry(){
         // constructor
+        edit = false;
+    }
+
+    /**
+     * This is the constructor for Recipe Entry to edit
+     * @param recipe
+     */
+    public RecipeEntry(Recipe recipe) {
+        this.recipe = recipe;
+        edit = true;
     }
 
     /**
@@ -107,6 +118,10 @@ public class RecipeEntry extends DialogFragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        if (edit) {
+            //EditMode();
+        }
+
         return view;
     }
 
@@ -129,11 +144,19 @@ public class RecipeEntry extends DialogFragment {
         Save.setOnClickListener(view -> {
             // add data to firestore
             // validate data
-            String RecipeName = GetRecipeName();
-            HashMap<String, String> data = GetData();
-            requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            Firestore.StoreToFirestore("Recipe", RecipeName, data);
-            uploadImage();
+            if (ValidData()) {
+                String RecipeName = GetRecipeName();
+                HashMap<String, String> data = GetData();
+
+                if (edit) {
+                    getParentFragmentManager().beginTransaction().remove(fragment).commit();
+                    Firestore.DeleteFromFirestore("Recipe", RecipeName);
+                } else {
+                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+                Firestore.StoreToFirestore("Recipe", RecipeName, data);
+                uploadImage();
+            }
 
         });
     }
@@ -310,6 +333,78 @@ public class RecipeEntry extends DialogFragment {
                     });
         }
     }
+
+    /**
+     * Checks if a user inputted the data properly
+     *
+     * @return true if all data is inputted properly
+     */
+    private boolean ValidData() {
+
+        String recipeName = RecipeName.getText().toString();
+        String prepTime = PrepTime.getText().toString();
+        String servingSize = Servings.getText().toString();
+        String categoryType = CategorySpinner.getSelectedItem().toString();
+        String comments = Comments.getText().toString();
+        // validate image
+
+        boolean isValid = true;
+
+        if (Validate.isEmpty(recipeName)) {
+            RecipeName.setError("Can't be empty");
+            isValid = false;
+        }
+
+        if (Validate.isEmpty(categoryType) || Objects.equals(categoryType, "Select Category")) {
+            TextView errorText = (TextView) CategorySpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);
+            errorText.setText("Select Category");
+            isValid = false;
+        }
+
+        if (Validate.isEmpty(prepTime)) {
+            PrepTime.setError("Can't be empty");
+            isValid = false;
+        }
+        try {
+            if (Float.parseFloat(servingSize) <= 0) {
+                Servings.setError("Can't have 0 or negative quantities");
+                isValid = false;
+            }
+        } catch (Exception e) {
+            Servings.setError("Invalid Number");
+            isValid = false;
+        }
+
+        if (Validate.isEmpty(comments)) {
+            Comments.setError("Please write a comment");
+            isValid = false;
+        }
+
+        return isValid;
+
+    }
+
+//    /**
+//     * Sets default values to ingredient values that we need to edit
+//     */
+//    private void EditMode() {
+//        IngredientName.setText(ingredient.getName());
+//        IngredientQuantity.setText(ingredient.getAmount());
+//        DescriptionText.setText(ingredient.getDescription());
+//
+//        // this sets the button to true if its equal to the ingredient unit category
+//        wholeButton.setChecked(true); // true in case the field is empty
+//        weightButton.setChecked(ingredient.getUnitCategory().equals("Weight"));
+//        volumeButton.setChecked(ingredient.getUnitCategory().equals("Volume"));
+//
+//        // sets spinners to their appropriate value. Goes to default value if item is not in spinner
+//        quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
+//        categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
+//        locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
+//        ExpiryDate.setText(DateFunc.MakeDateString(ingredient.getExpiryDate()));
+//    }
 }
 
 
