@@ -65,8 +65,9 @@ public class RecipeEntryTest {
     public void addRecipe(){
         // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnButton("Recipe"); //Click add recipe button Button
-        // Get view for EditText and enter the parameters
+        solo.clickOnButton("Recipe"); //Click add recipe button
+
+        // Get view for EditText and Spinner and enter the parameters
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato Soup");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTime), "1");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Servings), "1");
@@ -89,10 +90,10 @@ public class RecipeEntryTest {
             }
         });
 
-        // Deleting the entry from the firebase
+        // Deleting the entry from the Firestore
         Firestore.DeleteFromFirestore("Recipe", "Tomato Soup");
 
-        // Checking if the Tomato Soup was deleted
+        // False if there is not a recipe called Tomato Soup
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
