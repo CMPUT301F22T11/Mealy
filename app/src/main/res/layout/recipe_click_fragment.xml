@@ -10,10 +10,10 @@
         android:id="@+id/recipeClickNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_200"
+        android:background="@color/accent_red"
         android:text="Recipe Name Here"
         android:textAlignment="center"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 
     <Button
