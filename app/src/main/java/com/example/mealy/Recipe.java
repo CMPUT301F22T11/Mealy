@@ -21,18 +21,42 @@ public class Recipe implements Serializable {
     int preptimeHours;
     int preptimeMins;
     String category;
-    int imageID;
+
+    // int imageID;
+
     Bitmap bitmap; // image of recipe
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
-    public Bitmap getBitmap() {
-        return this.bitmap;
-    }
+    boolean hasImage = false; // is this recipe associated with an image
 
     private List<Ingredient> recipeIngredients;
+
+    /**
+     * Set the bitmap of the recipe associated with this image
+     * @param: bitmap of recipe
+     */
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        this.hasImage = true;
+    }
+
+    /**
+     * Get the bitmap of the recipe associated with this image, if it exists
+     * @return: bitmap of recipe
+     */
+    public Bitmap getBitmap() {
+        if (hasImage) {
+            return this.bitmap;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Check if this recipe is associated with an image
+     * @return: true if has image, false otherwise
+     */
+    public boolean hasImage() {
+        return this.hasImage;
+    }
 
     /**
      * Get the title of the recipe
@@ -126,14 +150,6 @@ public class Recipe implements Serializable {
      */
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    /**
-     * Get the imageID of this recipe
-     * @return: category of this recipe
-     */
-    public int getImageID() {
-        return imageID;
     }
 
     /**

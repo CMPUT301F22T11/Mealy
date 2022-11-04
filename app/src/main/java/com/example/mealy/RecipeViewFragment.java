@@ -38,7 +38,14 @@ public class RecipeViewFragment extends DialogFragment {
 
         // display image
         recipeImage = currentView.findViewById(R.id.recipeViewImage);
-        recipeImage.setImageBitmap(selectedRecipe.getBitmap());
+
+        if (selectedRecipe.hasImage()) {
+            recipeImage.setImageBitmap(selectedRecipe.getBitmap());
+        } else {
+            // if there is no image, display instead a sample image
+            recipeImage.setImageResource(R.drawable.placeholder);
+        }
+
 
         // set category
         category = currentView.findViewById(R.id.recipeViewCategory);
