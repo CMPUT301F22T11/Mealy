@@ -15,6 +15,9 @@ import com.example.mealy.Ingredient;
 
 import java.util.ArrayList;
 
+/**
+ * This class extends from ArrayAdapter, and is used to insert the ingredient into the ingredientList
+ */
 public class IngredientList extends ArrayAdapter<Ingredient> {
 
     // invoke the suitable constructor of the ArrayAdapter class
@@ -41,6 +44,7 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
         Ingredient currentIngredient = getItem(position);
 
         // then according to the position of the view assign the desired image for the same
+        // currently disabled, image adding may be considered for ingredients at a later date.
         ImageView ingredientImage = currentItemView.findViewById(R.id.imageView);
         assert ingredientImage != null;
         //ingredientImage.setImageResource(R.drawable.meat_rat);

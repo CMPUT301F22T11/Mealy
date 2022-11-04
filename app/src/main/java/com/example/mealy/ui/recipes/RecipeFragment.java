@@ -1,22 +1,21 @@
 package com.example.mealy.ui.recipes;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,28 +25,22 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.DisplayRecipeInfo;
 import com.example.mealy.Ingredient;
-import com.example.mealy.IngredientList;
-import com.example.mealy.MainActivity;
 import com.example.mealy.R;
 import com.example.mealy.Recipe;
-import com.example.mealy.RecipeClickFragment;
 import com.example.mealy.RecipeList;
 import com.example.mealy.comparators.recipes.CompareRecipes;
 import com.example.mealy.databinding.FragmentNotificationsBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -56,10 +49,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
 import java.util.List;
 
 /**
@@ -78,6 +71,8 @@ public class RecipeFragment extends Fragment {
     private Button flipButton; // for flipping the recipe items
 
     DialogFragment recipeOptions;
+
+    final String TAG = "Logging";
 
     int recipeIndex;
     int asc = 1; // for sort order
@@ -229,20 +224,9 @@ public class RecipeFragment extends Fragment {
         storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayRecipeInfo disp = new DisplayRecipeInfo(recipeAdapter.getItem(i));
+                disp.show(getChildFragmentManager(), TAG);
 
-                // get recipe that user clicked on
-                recipeIndex = i;
-                Recipe selectedRecipe = recipeArrayList.get(i);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Recipe", selectedRecipe);
-
-                // launch dialog fragment from within list
-                // https://stackoverflow.com/questions/18436524/launch-a-dialog-fragment-on-button-click-from-a-custom-base-adaptergetview-img
-
-                recipeOptions = new RecipeClickFragment();
-                recipeOptions.setArguments(bundle); // pass recipe info
-                recipeOptions.show(getChildFragmentManager(), "test");
             }
         });
 

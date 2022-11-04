@@ -14,9 +14,9 @@
 
         <TextView
             android:id="@+id/Recipe_Entry_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EFEEFF"
+            android:background="@color/accent_red"
             android:minHeight="48dp"
             android:text="@string/Recipe_Entry_add_edit_recipe"
             android:textAlignment="center"
@@ -169,7 +169,7 @@
                 android:minHeight="48dp"
                 android:textColorHint="#757575"
                 android:autofillHints=""
-                android:inputType="text" />
+                android:inputType="textMultiLine" />
 
         </LinearLayout>
 

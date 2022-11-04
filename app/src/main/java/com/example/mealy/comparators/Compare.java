@@ -4,9 +4,18 @@ import com.example.mealy.Ingredient;
 
 import java.util.Comparator;
 
+/**
+ * Helper class which allows for easy selection of the comparators for ListView
+ */
 public class Compare {
     private Comparator<Ingredient> comparator;
 
+    /**
+     * This creates a Compare object, which essentially encapsulates the selection for
+     * sorting.
+     * @param str - what the user selected
+     * @param asc - what way they would like it organized (ascending or descending)
+     */
     public Compare(String str, int asc) {
         if (str.equals("Name")) {
             this.comparator = new SortByName(asc);
@@ -24,6 +33,10 @@ public class Compare {
         }
     }
 
+    /**
+     * Return the selected comparator.
+     * @return Comparator<Ingredient>
+     */
     public Comparator<Ingredient> returnComparator() {
         return this.comparator;
     }
