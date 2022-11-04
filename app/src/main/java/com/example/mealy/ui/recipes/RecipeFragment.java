@@ -178,6 +178,8 @@ public class RecipeFragment extends Fragment {
                         // find the proper reference image
                         mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + recipe.getTitle());
 
+                        System.out.println("Getting this: " + "Recipe_Image/" + recipe.getTitle());
+
                         try {
                             final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
                             mStorageReference.getFile(localFile)
