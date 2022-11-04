@@ -61,13 +61,12 @@ public class RecipeEntryTest {
     /**
      * Testing the add recipe functions then checks the Firestore to see if the value is in there
      */
-
     @Test
     public void addRecipe(){
-        //Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
+        // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnButton("Recipe"); //Click add recipe button Button
-        //Get view for EditText and enter the parameters
+        // Get view for EditText and enter the parameters
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_RecipeName), "Tomato Soup");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_prepTime), "1");
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Servings), "1");
@@ -75,11 +74,11 @@ public class RecipeEntryTest {
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Comments), "THIS IS A TEST COMMENT");
         solo.clickOnButton("SAVE"); //Click save recipe button
 
-        //True if there is a recipe called Tomato Soup
+        // True if there is a recipe called Tomato Soup
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = rootRef.collection("Recipe");
-        Query queryUsersByName = usersRef.whereEqualTo("Recipe Name", "Tomato Soup");
-        queryUsersByName.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        CollectionReference recipeRef = rootRef.collection("Recipe");
+        Query query = recipeRef.whereEqualTo("Recipe Name", "Tomato Soup");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 assertTrue(task.isSuccessful());
@@ -90,8 +89,20 @@ public class RecipeEntryTest {
             }
         });
 
-
+        // Deleting the entry from the firebase
         Firestore.DeleteFromFirestore("Recipe", "Tomato Soup");
+
+        // Checking if the Tomato Soup was deleted
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                assertTrue(task.isSuccessful());
+                for (DocumentSnapshot document : task.getResult()) {
+                    assertFalse(document.exists());
+                }
+
+            }
+        });
     }
 
 }
