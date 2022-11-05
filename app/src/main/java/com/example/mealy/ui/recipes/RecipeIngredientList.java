@@ -64,37 +64,11 @@ public class RecipeIngredientList extends ArrayAdapter<RecipeIngredient> {
         TextView ingredientName = view.findViewById(R.id.r_i_name);
         TextView amountName = view.findViewById(R.id.r_i_amount);
         TextView unitName = view.findViewById(R.id.r_i_unit);
-        ImageButton deleteIngredient = view.findViewById(R.id.r_i_delete);
+
 
         ingredientName.setText(ingredient.getTitle());
         amountName.setText(ingredient.getAmount());
         unitName.setText(ingredient.getUnit());
-
-
-        deleteIngredient.setOnClickListener(new View.OnClickListener() {
-            /**
-             * This method is currently not working; when the user clicks on the delete button for the
-             * specific entry, this method creates a dialog that gives the user a choice to continue with their action.
-             * If they select yes, then the entry would be deleted from the list. However, this function has not
-             * been implemented yet.
-             * @param view The current view of the app
-             */
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Delete Ingredient")
-                        .setMessage("Are you sure you want to delete this ingredient?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                ingredients.remove(position);
-
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        });
 
         return view;
 
