@@ -1,7 +1,9 @@
 package com.example.mealy.ui.recipes;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -179,8 +181,8 @@ public class RecipeEntry extends DialogFragment {
         ingredientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             /**
-             * This function is called when the user wants to edit a specific entry in the list of recipe
-             * ingredients. Allows the user to edit the entry.
+             * This function is called when the user wants to perform an action on the recipe ingredient. When the user selects an entry,
+             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient, or remove it.
              * @param adapterView The adapterView where the click occurred
              * @param view The current view of the app
              * @param i Returns the index of the recipe ingredient that was selected
@@ -188,10 +190,26 @@ public class RecipeEntry extends DialogFragment {
              */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ingredientIndex = i;
-                new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
-                ingredientClicked = true;
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Recipe Ingredient")
+                            .setMessage("Select an action")
+                            .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ingredientIndex = i;
+                                    new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                                    ingredientClicked = true;
 
+                                }
+                            })
+                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listOfIngredients.remove(i);
+                                    recipeIngredientAdapter.notifyDataSetChanged();
+
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
             }
         });
     }
