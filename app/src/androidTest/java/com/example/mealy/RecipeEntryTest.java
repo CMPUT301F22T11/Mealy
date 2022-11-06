@@ -92,7 +92,7 @@ public class RecipeEntryTest {
         });
 
         // Deleting the entry from the Firestore
-        Firestore.DeleteFromFirestore("Recipe", "Tomato");
+        Firestore.deleteFromFirestore("Recipe", "Tomato");
 
         // False if there is not a recipe called Tomato Soup
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

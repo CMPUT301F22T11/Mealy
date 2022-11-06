@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.mealy.ui.dashboard.Ingredient;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 
 import java.time.LocalDate;
 import java.util.Comparator;

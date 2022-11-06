@@ -1,4 +1,4 @@
-package com.example.mealy.ui.dashboard;
+package com.example.mealy.ui.ingredientStorage;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

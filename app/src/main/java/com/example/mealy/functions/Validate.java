@@ -12,18 +12,6 @@ public class Validate {
 
     /**
      * Checks if a string is empty or null
-     * (Depreciated: Use isEmpty instead)
-     * @param string Some String
-     * @return Returns true if the string is empty or null
-     */
-    @Deprecated
-    public static boolean IsEmpty(String string) {
-        if (string == null) {return true;}
-        else {return string.isEmpty();}
-    }
-
-    /**
-     * Checks if a string is empty or null
      * @param string Any string
      * @return True if the string is empty or null
      */
@@ -31,8 +19,6 @@ public class Validate {
         if (string == null) {return true;}
         else {return string.trim().isEmpty();}
     }
-
-
 
     /**
      * Checks if a string input of a date is valid and can be converted to a Date object

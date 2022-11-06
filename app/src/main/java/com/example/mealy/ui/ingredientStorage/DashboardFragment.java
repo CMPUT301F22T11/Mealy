@@ -1,4 +1,4 @@
-package com.example.mealy.ui.dashboard;
+package com.example.mealy.ui.ingredientStorage;
 
 import android.os.Build;
 import android.os.Bundle;

@@ -1,12 +1,7 @@
 package com.example.mealy.functions;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -29,7 +24,7 @@ public class DateFunc {
      * Gets the current date
      * @return Returns the current date in "Date" format ("yyyy-MM-dd")
      */
-    public static String GetTodaysDate() {
+    public static String getTodaysDate() {
         Date date = new Date();
         return sdf.format(date);
     }
@@ -39,7 +34,7 @@ public class DateFunc {
      * @param month month as an int
      * @return month as a string
      */
-    public static String GetMonthFormat(int month)
+    public static String getMonthFormat(int month)
     {
         if(month == 1)
             return "JAN";
@@ -75,7 +70,7 @@ public class DateFunc {
      * @param month month as a String ("JAN", "FEB", "MAR"...)
      * @return month as an int
      */
-    public static int MonthToInt(String month)
+    public static int monthToInt(String month)
     {
         if(Objects.equals(month, "JAN"))
             return 1;
@@ -144,7 +139,7 @@ public class DateFunc {
     {
         // if the day or month is below 10, it registers as (1,2,...) instead of (01, 02,...)
         // so we need to format the integer into that.
-        String newMonth = GetMonthFormat(month);
+        String newMonth = getMonthFormat(month);
         String newDay;
         String newYear;
 
@@ -167,7 +162,7 @@ public class DateFunc {
             return "";
         } else {
             String[] spliced = date.split("-");
-            spliced[1] = GetMonthFormat(Integer.parseInt(spliced[1]));
+            spliced[1] = getMonthFormat(Integer.parseInt(spliced[1]));
 
             return spliced[1] + " " + spliced[2] + " " + spliced[0];
         }
@@ -180,7 +175,7 @@ public class DateFunc {
      */
     public static String makeStringDate(String str) {
         String[] spliced = str.split(" ");
-        int month = MonthToInt(spliced[0]);
+        int month = monthToInt(spliced[0]);
 
         String newMonth;
         DecimalFormat formatter = new DecimalFormat("00");
@@ -196,7 +191,7 @@ public class DateFunc {
      * @param date Date object
      * @return Date in "Date" format ("yyyy-MM-dd")
      */
-    public static String MakeObjString(Date date) {
+    public static String makeObjString(Date date) {
         return sdf.format(date);
     }
 }
