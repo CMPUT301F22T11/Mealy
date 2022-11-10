@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -115,11 +116,25 @@ public class FoodEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
-        categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
+        categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other", "Add Category"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
         // Todo let user add categories
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String addItem = categorySpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                categorySpinner.setSelection(0);
+            }
+        });
+
     }
 
     /**

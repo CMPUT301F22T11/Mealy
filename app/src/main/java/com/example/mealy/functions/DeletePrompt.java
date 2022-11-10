@@ -42,14 +42,14 @@ public class DeletePrompt extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setTitle("Confirm Deletion?")
-                .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // deletes item from Firestore
                         Firestore.deleteFromFirestore(collectionName, document);
                     }
                 })
-                .setPositiveButton("Cancel", null).create();
+                .setNeutralButton("Cancel", null).create();
     }
 
 
