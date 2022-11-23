@@ -94,9 +94,11 @@ public class Meal implements Serializable {
      * @param: servings The servings of this recipe
      */
     public Meal(String title,
+                  Integer servings,
                   List recipes,
                   List ingredients){
         this.title = title;
+        this.servings = servings;
         this.mealRecipes = recipes;
         this.mealIngredients = ingredients;
     }

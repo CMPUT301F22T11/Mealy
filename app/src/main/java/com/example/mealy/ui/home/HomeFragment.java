@@ -13,10 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -39,10 +41,48 @@ public class HomeFragment extends Fragment {
         mealPlanListView = root.findViewById(R.id.mealplanlistview);
 
         // list that will store all our recipe objects
-        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+        ArrayList<Meal> mealArrayList = new ArrayList<>();
 
         // Create the adapter and set it to the arraylist
-        RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
+        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
+
+        // create the instance of the ListView to set the meal adapter
+        mealPlanListView.setAdapter(mealAdapter);
+
+        // set some sample meal plans
+        Ingredient apple = new Ingredient("Apple",
+                "Red",
+                "0",
+                "lb",
+                "Weight",
+                "Raw Food",
+                "Pantry",
+                "2022-12-05");
+
+        // make ingredient list
+        List sampleIngredients = new ArrayList<Ingredient>();
+        sampleIngredients.add(apple);
+
+        List<Recipe> sampleRecipes = new ArrayList();
+
+        Recipe applePie = new Recipe("Apple pie",
+                "Delicious apple pie made from real apple",
+                4, 1, 30,
+                "Baked", sampleIngredients);
+
+        Recipe friedApple = new Recipe("Fried apple",
+                "Apples that are fried in a vat of oil",
+                2, 0, 15,
+                "Fried", sampleIngredients);
+
+        sampleRecipes.add(applePie);
+        sampleRecipes.add(friedApple);
+
+        Meal sample = new Meal("Lunch", 3, sampleRecipes, sampleIngredients);
+
+        // add the meals to the list and connect it to the adapter
+        mealArrayList.add(sample);
+        mealAdapter.notifyDataSetChanged();
 
         return root;
     }
