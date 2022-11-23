@@ -68,6 +68,9 @@ public class HomeFragment extends Fragment {
                                 date_viewThis.setText(Date);
                             }
                         });
+//        float scalingFactor = 0.8f; // scale down to half the size
+//        calendarThis.setScaleX(scalingFactor);
+//        calendarThis.setScaleY(scalingFactor);
 
         return root;
     }
