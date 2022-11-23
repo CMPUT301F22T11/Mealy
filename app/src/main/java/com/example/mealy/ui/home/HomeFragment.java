@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
+import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeList;
 
@@ -25,6 +27,8 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
 
     private ListView mealPlanListView; // list of mealplans
+
+    final String TAG = "Logging";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +87,16 @@ public class HomeFragment extends Fragment {
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
         mealAdapter.notifyDataSetChanged();
+
+        // set it so that clicking on a meal plan displays the info
+        mealPlanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayMealInfo disp = new DisplayMealInfo(mealAdapter.getItem(i));
+                disp.show(getChildFragmentManager(), TAG);
+
+            }
+        });
 
         return root;
     }
