@@ -20,24 +20,55 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    CalendarView calendar;
-    TextView date_view;
-    View view;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
+        TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
+
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
 
-        calendar = view.findViewById(R.id.calendar);
-        date_view = (TextView) view.findViewById(R.id.dat);
+
+//
+        // Add Listener in calendar
+        calendarThis
+                .setOnDateChangeListener(
+                        new CalendarView
+                                .OnDateChangeListener() {
+                            @Override
+
+                            // In this Listener have one method
+                            // and in this method we will
+                            // get the value of DAYS, MONTH, YEARS
+                            public void onSelectedDayChange(
+                                    @NonNull CalendarView view,
+                                    int year,
+                                    int month,
+                                    int dayOfMonth)
+                            {
+
+                                // Store the value of date with
+                                // format in String type Variable
+                                // Add 1 in month because month
+                                // index is start with 0
+                                String Date
+                                        = dayOfMonth + "-"
+                                        + (month + 1) + "-" + year;
+
+                                // set this date in TextView for Display
+                                date_viewThis.setText(Date);
+                            }
+                        });
+
         return root;
     }
 
