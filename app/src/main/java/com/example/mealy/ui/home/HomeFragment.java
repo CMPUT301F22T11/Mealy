@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", 3, "11-11-2022", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
