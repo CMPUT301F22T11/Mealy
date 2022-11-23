@@ -9,10 +9,7 @@ import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.*;
 
-import android.app.Activity;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -151,8 +148,8 @@ public class RecipeIngredientTest {
         });
 
         // Deleting recipe ingredients from Firestore
-        Firestore.DeleteFromFirestore("RecipeIngredients", "Tomato");
-        Firestore.DeleteFromFirestore("RecipeIngredients", "Soup");
+        Firestore.deleteFromFirestore("RecipeIngredients", "Tomato");
+        Firestore.deleteFromFirestore("RecipeIngredients", "Soup");
         query = recipeRef.whereEqualTo("Name", "Tomato");
 
         // False if there is not a recipe ingredient called Tomato
@@ -184,7 +181,7 @@ public class RecipeIngredientTest {
 
 
         // Deleting the recipe from Firestore
-        Firestore.DeleteFromFirestore("Recipe", "Potato Soup");
+        Firestore.deleteFromFirestore("Recipe", "Potato Soup");
 
         // False if there is not a recipe called Potato Soup
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -273,7 +270,7 @@ public class RecipeIngredientTest {
         });
 
         // Deleting "Soup" from Firestore
-        Firestore.DeleteFromFirestore("RecipeIngredients", "Soup");
+        Firestore.deleteFromFirestore("RecipeIngredients", "Soup");
         query = recipeRef.whereEqualTo("Name", "Soup");
 
         // False if there is not a recipe ingredient called Donkey
@@ -305,7 +302,7 @@ public class RecipeIngredientTest {
 
 
         // Deleting the recipe from Firestore
-        Firestore.DeleteFromFirestore("Recipe", "Potato Soup");
+        Firestore.deleteFromFirestore("Recipe", "Potato Soup");
 
         // False if there is not a recipe called Potato Soup
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

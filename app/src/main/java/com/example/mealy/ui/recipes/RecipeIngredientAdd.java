@@ -1,10 +1,5 @@
 package com.example.mealy.ui.recipes;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,37 +10,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
-import com.example.mealy.functions.Firestore;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-
-import org.checkerframework.checker.units.qual.A;
 
 
 /**
@@ -411,12 +393,12 @@ public class RecipeIngredientAdd extends DialogFragment {
 
         boolean isValid = true;
 
-        if (Validate.IsEmpty(recipeIngredientNew)  && nameNewSelected == true) {
+        if (Validate.isEmpty(recipeIngredientNew)  && nameNewSelected == true) {
             RecipeIngredientName.setError("Please give an ingredient name");
             isValid =  false;
         }
 
-        if ((Validate.IsEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select a Category:")) && categoryNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select a Category:")) && categoryNewSelected == false) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -424,7 +406,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if ((Validate.IsEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select an Ingredient:")) &&  nameNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select an Ingredient:")) &&  nameNewSelected == false) {
             TextView errorText = (TextView) nameSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -432,12 +414,12 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(recipeIngredientAmount)) {
+        if (Validate.isEmpty(recipeIngredientAmount)) {
             RecipeIngredientAmount.setError("Please input amount");
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(recipeIngredientUnit) || Objects.equals(recipeIngredientUnit, "Select Unit")) {
+        if (Validate.isEmpty(recipeIngredientUnit) || Objects.equals(recipeIngredientUnit, "Select Unit")) {
             TextView errorText = (TextView) quantityUnits.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -445,12 +427,12 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(recipeIngredientDescription)) {
+        if (Validate.isEmpty(recipeIngredientDescription)) {
             RecipeIngredientDescription.setError("Ingredient description cannot be empty.");
             isValid =  false;
         }
 
-        if (Validate.IsEmpty(ingredientCategoryNew) && categoryNewSelected == true) {
+        if (Validate.isEmpty(ingredientCategoryNew) && categoryNewSelected == true) {
             RecipeIngredientCategory.setError("Please give a new category.");
             isValid =  false;
         }

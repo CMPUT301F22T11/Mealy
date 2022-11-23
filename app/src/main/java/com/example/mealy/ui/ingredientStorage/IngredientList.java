@@ -1,4 +1,4 @@
-package com.example.mealy.ui.dashboard;
+package com.example.mealy.ui.ingredientStorage;
 // taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/
 
 import android.content.Context;

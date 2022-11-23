@@ -238,16 +238,16 @@ public class RecipeEntry extends DialogFragment {
 
                 if (edit) {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
-                    Firestore.DeleteFromFirestore("Recipe", RecipeName);
+                    Firestore.deleteFromFirestore("Recipe", RecipeName);
                 } else {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
                 }
-                Firestore.StoreToFirestore("Recipe", RecipeName, data);
+                Firestore.storeToFirestore("Recipe", RecipeName, data);
                 for (int i = 0; i < listOfIngredients.size(); i++) {
                     HashMap<String, String> thisData = GetDataIngredient(i);
                     String ingredientName = listOfIngredients.get(i).getTitle();
-                    Firestore.StoreToFirestore("RecipeIngredients", ingredientName, thisData);
+                    Firestore.storeToFirestore("RecipeIngredients", ingredientName, thisData);
                 }
                 uploadImage();
             }

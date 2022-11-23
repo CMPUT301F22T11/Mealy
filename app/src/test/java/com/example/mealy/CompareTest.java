@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.example.mealy.comparators.Compare;
-import com.example.mealy.ui.dashboard.Ingredient;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Collections;

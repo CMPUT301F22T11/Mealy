@@ -2,7 +2,7 @@ package com.example.mealy.ui.recipes;
 
 import android.graphics.Bitmap;
 
-import com.example.mealy.ui.dashboard.Ingredient;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 
 import java.io.Serializable;
 import java.util.List;
