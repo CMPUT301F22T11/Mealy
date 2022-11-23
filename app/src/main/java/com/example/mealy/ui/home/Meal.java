@@ -49,6 +49,19 @@ public class Meal implements Serializable {
     // public void removeIngredient(Ingredient ingredient) {recipeIngredients.remove(ingredient); }
 
     /**
+     * Get the recipes list of this meal
+     * @return: recipes list of this meal
+     */
+    public List<Recipe> getMealRecipes() { return mealRecipes; }
+
+    /**
+     * Add an recipe to the recipes list of this meal
+     * @param: recipe to add
+     */
+    public void addRecipe(Recipe recipe) { mealRecipes.add(recipe); }
+
+
+    /**
      * Constructor for the recipe class.
      *
      * @param: title The title of the recipe
