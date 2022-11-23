@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
@@ -40,6 +42,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 /**
  * Fragment for users to input info about an ingredient
@@ -49,9 +52,11 @@ public class FoodEntry extends DialogFragment {
     Spinner categorySpinner;
     Spinner quantityUnits;
     Spinner locationSpinner;
-    ArrayAdapter<CharSequence> categoryAdapter;
+    ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
     ArrayAdapter<CharSequence> locationAdapter;
+    ArrayList<String> Location = new ArrayList<>();
+    ArrayList<String> Category = new ArrayList<>();
     String[] categories;
     String[] whole;
     String[] weight;
@@ -63,7 +68,7 @@ public class FoodEntry extends DialogFragment {
     RadioButton weightButton;
     RadioButton volumeButton;
     String unitCategory;
-    Map<String, Object> data;
+    Map<String, Object> categoryData;
 
     DatePickerDialog datePickerDialog;
     Button ExpiryDate;
@@ -78,6 +83,8 @@ public class FoodEntry extends DialogFragment {
 
     Ingredient ingredient;
     boolean edit;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * if no ingredient is provided, it's assumed you want to create a new ingredient
@@ -127,10 +134,14 @@ public class FoodEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
-        categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
-        categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
+        //categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
+        Category.add("Select Category");
+        Category.add("Add Category");
+        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
         categorySpinner.setAdapter(categoryAdapter);
         AddCategory = view.findViewById(R.id.newCategory);
+        readCategoryFirebase();
+
 
 
         // Todo let user add categories
@@ -141,12 +152,7 @@ public class FoodEntry extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position == 1) {
                     AddCategory.setVisibility(View.VISIBLE);
-                    //Map<String, Object> data =;
-                    if data == void {
 
-                    }
-                    Log.wtf(TAG, "DocumentSnapshot data: " + data);
-                    //AddCategory.setText(data.get("Category").toString());
                 } else {
                     AddCategory.setVisibility(View.GONE);
                 }
@@ -237,7 +243,10 @@ public class FoodEntry extends DialogFragment {
                 if (ValidData()) {
                     String ingredientName = GetIngredientName();
                     HashMap<String, String> data = GetData();
-
+                    if (AddCategory.getVisibility() == View.VISIBLE){
+                        categoryData.put(String.valueOf(categoryData.size()+1), AddCategory.getText().toString());
+                        Firestore.storeToFirestore("Spinner","Category", categoryData);
+                    }
                     if (edit) {
                         getParentFragmentManager().beginTransaction().remove(fragment).commit();
                         Firestore.deleteFromFirestore(collection, ingredient.getName());
@@ -448,20 +457,27 @@ public class FoodEntry extends DialogFragment {
 
     }
 
-
-    public static void readFromFirebase(String CollectionName, String document) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection(CollectionName).document(document);
+    public void readCategoryFirebase() {
+        String CollectionName = "Spinner";
+        String documentName = "Category";
+        DocumentReference docRef = db.collection(CollectionName).document(documentName);
+        Source source = Source.CACHE;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        data = document.getData();
-                        Log.d(TAG, "DocumentSnapshot data: " + data);
+                        categoryData = document.getData();
+                        Category = General.mapToArrayList(categoryData);
+                        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
+                        categorySpinner.setAdapter(categoryAdapter);
+
+                        Log.d(TAG, "DocumentSnapshot data: " + categoryData);
                     } else {
                         Log.d(TAG, "No such document");
+                        assert Category != null;
+                        Firestore.storeToFirestore("Spinner", documentName, General.listToMap(Category));
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -469,7 +485,5 @@ public class FoodEntry extends DialogFragment {
             }
         });
     }
-
-
 
 }

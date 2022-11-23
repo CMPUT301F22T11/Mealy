@@ -83,7 +83,6 @@ public class Firestore {
                 });
     }
 
-
     public static void deleteFromFirestore(String CollectionName, String document) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String TAG = "!!!";
