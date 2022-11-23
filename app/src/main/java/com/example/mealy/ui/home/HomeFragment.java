@@ -13,6 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
+import com.example.mealy.ui.recipes.Recipe;
+import com.example.mealy.ui.recipes.RecipeList;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -31,7 +35,14 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        //
         mealPlanListView = root.findViewById(R.id.mealplanlistview);
+
+        // list that will store all our recipe objects
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+
+        // Create the adapter and set it to the arraylist
+        RecipeList recipeAdapter = new RecipeList(getActivity(), recipeArrayList);
 
         return root;
     }

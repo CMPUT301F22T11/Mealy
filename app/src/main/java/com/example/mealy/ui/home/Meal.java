@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Meal implements Serializable {
     String title;
+    Integer servings;
 
     private List<Ingredient> mealIngredients;
     private List<Recipe> mealRecipes;
@@ -60,6 +61,29 @@ public class Meal implements Serializable {
      */
     public void addRecipe(Recipe recipe) { mealRecipes.add(recipe); }
 
+    /**
+     * Get the servings for the meal
+     * @return: servings of meal
+     */
+    public int getServings() {
+        return servings;
+    }
+
+    /**
+     * Set the servings for the meal
+     * @param: servings of meal
+     */
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    /**
+     * Get the servings for the meal in string format
+     * @return: servings of meal as a string
+     */
+    public String getServingsString() {
+        return "Serving size: " + servings.toString();
+    }
 
     /**
      * Constructor for the recipe class.
@@ -67,6 +91,7 @@ public class Meal implements Serializable {
      * @param: title The title of the recipe
      * @param: recipes The recipes involved in this meal plan
      * @param: ingredients The ingredients involved in this meal plan
+     * @param: servings The servings of this recipe
      */
     public Meal(String title,
                   List recipes,
