@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.example.mealy.ui.recipes.RecipeList;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -32,11 +35,15 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
+        TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
@@ -97,6 +104,39 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        // Add Listener in calendar
+        calendarThis
+                .setOnDateChangeListener(
+                        new CalendarView
+                                .OnDateChangeListener() {
+                            @Override
+
+                            // In this Listener have one method
+                            // and in this method we will
+                            // get the value of DAYS, MONTH, YEARS
+                            public void onSelectedDayChange(
+                                    @NonNull CalendarView view,
+                                    int year,
+                                    int month,
+                                    int dayOfMonth)
+                            {
+
+                                // Store the value of date with
+                                // format in String type Variable
+                                // Add 1 in month because month
+                                // index is start with 0
+                                String Date
+                                        = dayOfMonth + "-"
+                                        + (month + 1) + "-" + year;
+
+                                // set this date in TextView for Display
+                                date_viewThis.setText(Date);
+                            }
+                        });
+//        float scalingFactor = 0.8f; // scale down to half the size
+//        calendarThis.setScaleX(scalingFactor);
+//        calendarThis.setScaleY(scalingFactor);
 
         return root;
     }
