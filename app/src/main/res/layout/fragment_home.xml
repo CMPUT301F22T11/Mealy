@@ -31,16 +31,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
+        app:layout_constraintTop_toBottomOf="@+id/text_home"
+        app:layout_constraintBottom_toTopOf="@+id/date_view" />
 
-    <CalendarView
-        android:id="@+id/calendar"
+    <TextView
+        android:id="@+id/date_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Select a Date"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mealplanlistview"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/calendar" />
+
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="150dp">
     </CalendarView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
