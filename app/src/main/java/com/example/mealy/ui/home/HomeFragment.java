@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +15,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
+import com.example.mealy.ui.recipes.DisplayRecipeInfo;
+import com.example.mealy.ui.recipes.Recipe;
+import com.example.mealy.ui.recipes.RecipeList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+
+    private ListView mealPlanListView; // list of mealplans
+
+    final String TAG = "Logging";
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -35,8 +48,6 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-
 
 //
         // Add Listener in calendar
@@ -68,9 +79,62 @@ public class HomeFragment extends Fragment {
                                 date_viewThis.setText(Date);
                             }
                         });
-//        float scalingFactor = 0.8f; // scale down to half the size
-//        calendarThis.setScaleX(scalingFactor);
-//        calendarThis.setScaleY(scalingFactor);
+        //
+        mealPlanListView = root.findViewById(R.id.mealplanlistview);
+
+        // list that will store all our recipe objects
+        ArrayList<Meal> mealArrayList = new ArrayList<>();
+
+        // Create the adapter and set it to the arraylist
+        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
+
+        // create the instance of the ListView to set the meal adapter
+        mealPlanListView.setAdapter(mealAdapter);
+
+        // set some sample meal plans
+        Ingredient apple = new Ingredient("Apple",
+                "Red",
+                "0",
+                "lb",
+                "Weight",
+                "Raw Food",
+                "Pantry",
+                "2022-12-05");
+
+        // make ingredient list
+        List sampleIngredients = new ArrayList<Ingredient>();
+        sampleIngredients.add(apple);
+
+        List<Recipe> sampleRecipes = new ArrayList();
+
+        Recipe applePie = new Recipe("Apple pie",
+                "Delicious apple pie made from real apple",
+                4, 1, 30,
+                "Baked", sampleIngredients);
+
+        Recipe friedApple = new Recipe("Fried apple",
+                "Apples that are fried in a vat of oil",
+                2, 0, 15,
+                "Fried", sampleIngredients);
+
+        sampleRecipes.add(applePie);
+        sampleRecipes.add(friedApple);
+
+        Meal sample = new Meal("Lunch", 3, sampleRecipes, sampleIngredients);
+
+        // add the meals to the list and connect it to the adapter
+        mealArrayList.add(sample);
+        mealAdapter.notifyDataSetChanged();
+
+        // set it so that clicking on a meal plan displays the info
+        mealPlanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DisplayMealInfo disp = new DisplayMealInfo(mealAdapter.getItem(i));
+                disp.show(getChildFragmentManager(), TAG);
+
+            }
+        });
 
         return root;
     }
