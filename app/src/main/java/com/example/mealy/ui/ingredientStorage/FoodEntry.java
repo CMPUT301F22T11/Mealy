@@ -1,5 +1,7 @@
 package com.example.mealy.ui.ingredientStorage;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -20,17 +22,24 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Fragment for users to input info about an ingredient
@@ -54,6 +63,7 @@ public class FoodEntry extends DialogFragment {
     RadioButton weightButton;
     RadioButton volumeButton;
     String unitCategory;
+    Map<String, Object> data;
 
     DatePickerDialog datePickerDialog;
     Button ExpiryDate;
@@ -62,6 +72,7 @@ public class FoodEntry extends DialogFragment {
     EditText IngredientName;
     EditText IngredientQuantity;
     EditText DescriptionText;
+    EditText AddCategory;
 
     View view;
 
@@ -116,17 +127,29 @@ public class FoodEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
-        categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other", "Add Category"};
+        categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
+        AddCategory = view.findViewById(R.id.newCategory);
+
 
         // Todo let user add categories
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String addItem = categorySpinner.getSelectedItem().toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 1) {
+                    AddCategory.setVisibility(View.VISIBLE);
+                    //Map<String, Object> data =;
+                    if data == void {
+
+                    }
+                    Log.wtf(TAG, "DocumentSnapshot data: " + data);
+                    //AddCategory.setText(data.get("Category").toString());
+                } else {
+                    AddCategory.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -143,7 +166,7 @@ public class FoodEntry extends DialogFragment {
 
     private void InitializeLocationSpinner() {
         locationSpinner = (Spinner) view.findViewById(R.id.locationDropdown);
-        locations = new String[]{"Select Location", "Pantry", "Fridge", "Freezer"};
+        locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
         locationAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
         locationSpinner.setAdapter(locationAdapter);
 
@@ -424,6 +447,29 @@ public class FoodEntry extends DialogFragment {
         return isValid;
 
     }
+
+
+    public static void readFromFirebase(String CollectionName, String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection(CollectionName).document(document);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        data = document.getData();
+                        Log.d(TAG, "DocumentSnapshot data: " + data);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
 
 
 }
