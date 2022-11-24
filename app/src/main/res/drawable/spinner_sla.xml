@@ -11,7 +11,7 @@
     <item android:state_selected="true">
         <set>
             <objectAnimator
-                android:duration="@android:integer/config_shortAnimTime"
+                android:duration="@android:integer/config_mediumAnimTime"
                 android:propertyName="translationZ"
                 android:valueTo="5sp" />
         </set>
@@ -19,7 +19,7 @@
     <item>
         <set>
             <objectAnimator
-                android:duration="@android:integer/config_shortAnimTime"
+                android:duration="@android:integer/config_longAnimTime"
                 android:propertyName="translationZ"
                 android:valueTo="0sp" />
         </set>

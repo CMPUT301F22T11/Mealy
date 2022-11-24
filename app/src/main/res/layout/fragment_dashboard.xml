@@ -8,11 +8,12 @@
 
 
     <LinearLayout
-        android:id="@+id/group"
+        android:id="@+id/groupingred"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/storage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,10 +30,9 @@
             android:layout_marginStart="10sp"
             android:background="@drawable/spinner_bg"
             android:contentDescription="@string/ingredient_sort"
-            android:dropDownWidth="300dp"
+            android:dropDownWidth="298sp"
             android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
-            android:paddingRight="14sp"
-            android:popupBackground="@android:color/white"
+            android:paddingEnd="14sp"
             android:popupElevation="3sp"
             android:stateListAnimator="@drawable/spinner_sla"/>
             <!--
@@ -51,7 +51,7 @@
             android:minWidth="48dp"
             android:minHeight="40sp"
             android:src="@drawable/ic_baseline_swap_vert_24"
-            android:text="FLIP" />
+            tools:ignore="SpeakableTextPresentCheck" />
             <!--
             app:layout_constraintBottom_toTopOf="@+id/storage"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +71,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group" />
+        app:layout_constraintTop_toBottomOf="@+id/groupingred" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

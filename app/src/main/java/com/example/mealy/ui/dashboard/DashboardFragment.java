@@ -79,7 +79,7 @@ public class DashboardFragment extends Fragment {
         asc = 1;
 
         // initialize spinner with predefined categories
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Desc", "Exp", "Location", "Category"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Description", "Expiration", "Location", "Category"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(adapter);
