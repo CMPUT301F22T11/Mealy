@@ -4,9 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.CalendarView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.CalendarView;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +38,6 @@ public class HomeFragment extends Fragment {
     private ListView mealPlanListView; // list of mealplans
 
     final String TAG = "Logging";
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -120,7 +125,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", 3, "11-11-2022", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
@@ -135,6 +140,37 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        // Add Listener in calendar
+        calendarThis
+                .setOnDateChangeListener(
+                        new CalendarView
+                                .OnDateChangeListener() {
+                            @Override
+
+                            // In this Listener have one method
+                            // and in this method we will
+                            // get the value of DAYS, MONTH, YEARS
+                            public void onSelectedDayChange(
+                                    @NonNull CalendarView view,
+                                    int year,
+                                    int month,
+                                    int dayOfMonth)
+                            {
+
+                                // Store the value of date with
+                                // format in String type Variable
+                                // Add 1 in month because month
+                                // index is start with 0
+                                String Date
+                                        = dayOfMonth + "-"
+                                        + (month + 1) + "-" + year;
+
+                                // set this date in TextView for Display
+                                date_viewThis.setText(Date);
+                            }
+                        });
+
 
         return root;
     }

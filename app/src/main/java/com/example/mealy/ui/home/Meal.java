@@ -11,6 +11,7 @@ import java.util.List;
 public class Meal implements Serializable {
     String title;
     Integer servings;
+    String date; // the day that this meal is associated with
 
     private List<Ingredient> mealIngredients;
     private List<Recipe> mealRecipes;
@@ -86,6 +87,22 @@ public class Meal implements Serializable {
     }
 
     /**
+     * Get the servings for the meal
+     * @return: servings of meal
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Set the servings for the meal
+     * @param: servings of meal
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
      * Constructor for the recipe class.
      *
      * @param: title The title of the recipe
@@ -95,10 +112,12 @@ public class Meal implements Serializable {
      */
     public Meal(String title,
                   Integer servings,
+                  String date,
                   List recipes,
                   List ingredients){
         this.title = title;
         this.servings = servings;
+        this.date = date;
         this.mealRecipes = recipes;
         this.mealIngredients = ingredients;
     }

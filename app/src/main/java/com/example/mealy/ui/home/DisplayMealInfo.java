@@ -31,13 +31,13 @@ public class DisplayMealInfo extends DialogFragment {
 
     private String mealName;
     private String servingsString;
+    private String date;
     private Integer servings;
-
 
     private List<Recipe> mealRecipes;
     private List<Ingredient> mealIngredients;
 
-    TextView view_title;
+    TextView view_date;
     TextView view_servings;
 
     View view;
@@ -46,6 +46,7 @@ public class DisplayMealInfo extends DialogFragment {
     public DisplayMealInfo(Meal meal) {
         this.meal = meal;
         this.mealName = meal.getTitle();
+        this.date = meal.getDate();
         this.servingsString = meal.getServingsString();
         this.servings = meal.getServings();
         this.mealRecipes = meal.getMealRecipes();
@@ -75,6 +76,10 @@ public class DisplayMealInfo extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        // set date
+        view_date = view.findViewById(R.id.mealDate);
+        view_date.setText(date);
 
         // set servings
         view_servings = view.findViewById(R.id.mealServings);
