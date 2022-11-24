@@ -1,7 +1,9 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,12 +13,14 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +28,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentResultListener;
 
+import com.example.mealy.MainActivity;
+import com.example.mealy.R;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
@@ -33,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
@@ -65,6 +73,15 @@ public class RecipeEntry extends DialogFragment {
 
     ArrayAdapter<CharSequence> categoryAdapter;
 
+    ArrayAdapter<RecipeIngredient>recipeIngredientAdapter;
+
+    ArrayList<RecipeIngredient> listOfIngredients = new ArrayList<>();
+
+    ListView ingredientList;
+
+    boolean ingredientClicked = false;
+
+    int ingredientIndex;
 
     View view;
 
@@ -95,6 +112,27 @@ public class RecipeEntry extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            /**
+             * Asks for an instance of recipe ingredient that was created, and returns it be adding it to the list of
+             * recipe ingredients.
+             * @param requestKey
+             * @param bundle bundle that stores the data of the recipe ingredient
+             */
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+
+                RecipeIngredient thisIngredient = (RecipeIngredient)  bundle.getParcelable("RecipeIngredient");
+                if (ingredientClicked == false) {
+                    recipeIngredientAdapter.add(thisIngredient);
+                }
+                else {
+                    listOfIngredients.set(ingredientIndex, thisIngredient);
+                    recipeIngredientAdapter.notifyDataSetChanged();
+
+                }
+            }
+        });
     }
 
     /**
@@ -115,6 +153,7 @@ public class RecipeEntry extends DialogFragment {
         InitializeEditText();
         InitializeAddPhoto();
         InitializeSaveButton();
+        InitializeIngredientList();
 
         // for image upload
         storage = FirebaseStorage.getInstance();
@@ -124,9 +163,56 @@ public class RecipeEntry extends DialogFragment {
             EditMode();
         }
 
+
+
         return view;
     }
 
+    /**
+     * This function initializes the recipe ingredient list that will store all the instance of the
+     * recipe ingredient class for this recipe.
+     */
+    private void InitializeIngredientList() {
+        recipeIngredientAdapter = new RecipeIngredientList(this.getActivity(), listOfIngredients);
+
+        ingredientList = view.findViewById(R.id.ingredient_list);
+        ingredientList.setAdapter(recipeIngredientAdapter);
+
+        ingredientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            /**
+             * This function is called when the user wants to perform an action on the recipe ingredient. When the user selects an entry,
+             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient, or remove it.
+             * @param adapterView The adapterView where the click occurred
+             * @param view The current view of the app
+             * @param i Returns the index of the recipe ingredient that was selected
+             * @param l THe row id of the recipe ingredient that was clicked
+             */
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Recipe Ingredient")
+                            .setMessage("Select an action")
+                            .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ingredientIndex = i;
+                                    new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                                    ingredientClicked = true;
+
+                                }
+                            })
+                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listOfIngredients.remove(i);
+                                    recipeIngredientAdapter.notifyDataSetChanged();
+
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+            }
+        });
+    }
     /**
      * This function initializes the category spinner in the recipe entry fragment
      */
@@ -152,11 +238,17 @@ public class RecipeEntry extends DialogFragment {
 
                 if (edit) {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
-                    Firestore.DeleteFromFirestore("Recipe", RecipeName);
+                    Firestore.deleteFromFirestore("Recipe", RecipeName);
                 } else {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
                 }
-                Firestore.StoreToFirestore("Recipe", RecipeName, data);
+                Firestore.storeToFirestore("Recipe", RecipeName, data);
+                for (int i = 0; i < listOfIngredients.size(); i++) {
+                    HashMap<String, String> thisData = GetDataIngredient(i);
+                    String ingredientName = listOfIngredients.get(i).getTitle();
+                    Firestore.storeToFirestore("RecipeIngredients", ingredientName, thisData);
+                }
                 uploadImage();
             }
 
@@ -174,6 +266,22 @@ public class RecipeEntry extends DialogFragment {
         Comments = view.findViewById(R.id.Recipe_Entry_Comments);
         AddIngredient = view.findViewById(R.id.Recipe_Entry_addIngredientToRecipe);
         IVPreviewImage = view.findViewById(R.id.IVPreviewImage);
+
+        AddIngredient.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * This function initiates the RecipeIngredient fragment to be used to create an
+             * instance of a recipe ingredient class.
+             * @param view give the current view of the app
+             */
+            @Override
+            public void onClick(View view) {
+
+                ingredientClicked = false;
+                new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "test");
+
+            }
+        });
     }
 
     /**
@@ -211,6 +319,36 @@ public class RecipeEntry extends DialogFragment {
         data.put("Comments", CommentsText);
 
         return data;
+    }
+
+    /**
+     * This function builds a hashmap of an instance of the recipe ingredient created within the
+     * list of recipe ingredients, specified by the index.
+     * @param index Get the index of the ingredient in the list.
+     * @return Returns the recipe ingredient, with its attributes, as a hashmap. Used to upload to the firebase.
+     */
+    private HashMap<String, String> GetDataIngredient(int index) {
+
+        HashMap<String, String> thisData = new HashMap<>();
+
+        String name = listOfIngredients.get(index).getTitle();
+        String description = listOfIngredients.get(index).getDescription();
+        String amount = listOfIngredients.get(index).getAmount();
+        String unit = listOfIngredients.get(index).getUnit();
+        String category = listOfIngredients.get(index).getCategory();
+        String recipeName = RecipeName.getText().toString();
+
+        // Figure out how to attach image
+        // Figure out how to attach ingredient
+
+        thisData.put("Name", name);
+        thisData.put("Description", description);
+        thisData.put("Amount", amount);
+        thisData.put("Unit", unit);
+        thisData.put("Category", category);
+        thisData.put("Recipe Name", recipeName);
+
+        return thisData;
     }
 
     /**
@@ -391,6 +529,13 @@ public class RecipeEntry extends DialogFragment {
 
         if (Validate.isEmpty(comments)) {
             Comments.setError("Please write a comment");
+            isValid = false;
+        }
+
+        if (listOfIngredients.size() == 0) {
+            Toast errorToast;
+            errorToast = Toast.makeText(this.getActivity(), "Error, please add an ingredient to the recipe", Toast.LENGTH_SHORT);
+            errorToast.show();
             isValid = false;
         }
 

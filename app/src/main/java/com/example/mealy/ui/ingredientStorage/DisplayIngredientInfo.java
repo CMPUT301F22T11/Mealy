@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.ingredientStorage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,9 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.DateFunc;
 import com.example.mealy.functions.DeletePrompt;
 
+/**
+ * A fragment that takes in an ingredient object and displays its info
+ */
 public class DisplayIngredientInfo extends DialogFragment {
 
     private final String name;
@@ -28,20 +32,27 @@ public class DisplayIngredientInfo extends DialogFragment {
     private final Ingredient ingredient;
 
     View view;
-    private DisplayIngredientInfo fragment = this;
 
+    /**
+     * Takes in the ingredient info and stores it into the class
+     * @param ingredient The ingredient that you want to display the info of
+     */
     public DisplayIngredientInfo(Ingredient ingredient) {
         this.ingredient = ingredient;
         name = ingredient.getName();
         description = ingredient.getDescription();
         amount = ingredient.getAmount();
-        unit = ingredient.getUnit();
+        unit = " " + ingredient.getUnit(); // adding a space so it's not right next to the amount
         category = ingredient.getCategory();
         location = ingredient.getLocation();
-        expiryDate = DateFunc.MakeDateString(ingredient.getExpiryDate());
+        expiryDate = DateFunc.makeDateString(ingredient.getExpiryDate());
     }
 
-
+    /**
+     * Displays the ingredient name and gives the option to edit, close or delete the ingredient
+     * @param savedInstanceState idk tbh
+     * @return Builder for the Dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -56,21 +67,31 @@ public class DisplayIngredientInfo extends DialogFragment {
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        // Opens up a prompt to delete the ingredient from Firestore
                         new DeletePrompt("Ingredients", name).show(getParentFragmentManager(),"delete_prompt");
                     }
                 })
                 .setPositiveButton("Edit", new DialogInterface.OnClickListener() { // lets you edit the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        // opens up FoodEntry to modify the ingredient info
                         new FoodEntry(ingredient).show(getParentFragmentManager(),"food_entry");
                     }
                 }).create();
     }
 
+    /**
+     * Displays all the info of the the ingredient(except for the title, that is displayed by the Dialog)
+     * @param inflater inflater of view
+     * @param container container for view
+     * @param savedInstanceState idk tbh
+     * @return returns view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        // gets the textview IDs
         TextView description1 = view.findViewById(R.id.description);
         TextView amount1 = view.findViewById(R.id.quantityNumber);
         TextView unit1 = view.findViewById(R.id.quantityUnits);
@@ -78,6 +99,7 @@ public class DisplayIngredientInfo extends DialogFragment {
         TextView location1 = view.findViewById(R.id.location);
         TextView expiryDate1 = view.findViewById(R.id.expiryDate);
 
+        // Displays the info for the ingredient in each textview
         description1.setText(description);
         amount1.setText(amount);
         unit1.setText(unit);

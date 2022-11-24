@@ -1,6 +1,6 @@
 package com.example.mealy.comparators.recipes;
 
-import com.example.mealy.Recipe;
+import com.example.mealy.ui.recipes.Recipe;
 
 import java.util.Comparator;
 /**

@@ -1,12 +1,7 @@
 package com.example.mealy.functions;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -29,7 +24,7 @@ public class DateFunc {
      * Gets the current date
      * @return Returns the current date in "Date" format ("yyyy-MM-dd")
      */
-    public static String GetTodaysDate() {
+    public static String getTodaysDate() {
         Date date = new Date();
         return sdf.format(date);
     }
@@ -39,7 +34,7 @@ public class DateFunc {
      * @param month month as an int
      * @return month as a string
      */
-    public static String GetMonthFormat(int month)
+    public static String getMonthFormat(int month)
     {
         if(month == 1)
             return "JAN";
@@ -75,7 +70,7 @@ public class DateFunc {
      * @param month month as a String ("JAN", "FEB", "MAR"...)
      * @return month as an int
      */
-    public static int MonthToInt(String month)
+    public static int monthToInt(String month)
     {
         if(Objects.equals(month, "JAN"))
             return 1;
@@ -106,28 +101,31 @@ public class DateFunc {
         return 1;
     }
 
-    /**(NOT TESTED)
+    /**
      * Takes in day, month, year as an int. Returns the date in "Date" format ("yyyy-MM-dd")
      * @param day day of the month as int
      * @param month the month as int
      * @param year the year as int
      * @return Date in "Date" format ("yyyy-MM-dd")
      */
-    public static String MakeIntDate(int day, int month, int year)
+    public static String makeIntDate(int day, int month, int year)
     {
         // if the day or month is below 10, it registers as (1,2,...) instead of (01, 02,...)
         // so we need to format the integer into that.
         String newMonth = String.valueOf(month);
         String newDay = String.valueOf(day);
-        if (month < 10) {
-            DecimalFormat formatter = new DecimalFormat("00");
-            newMonth = formatter.format(month);
-        }
-        if (day < 10) {
-            DecimalFormat formatter = new DecimalFormat("00");
-            newDay = formatter.format(day);
-        }
-        return year + "-" + newMonth + "-" + newDay;
+        String newYear = String.valueOf(year);
+
+        DecimalFormat formatter = new DecimalFormat("00");
+        newMonth = formatter.format(month);
+
+        formatter = new DecimalFormat("00");
+        newDay = formatter.format(day);
+
+        formatter = new DecimalFormat("0000");
+        newYear = formatter.format(year);
+
+        return newYear + "-" + newMonth + "-" + newDay;
     }
 
     /**
@@ -137,24 +135,21 @@ public class DateFunc {
      * @param year the year as int
      * @return the date in "String" format ("Month day Year") (e.g. JAN 2 2023)
      */
-    public static String MakeIntString(int day, int month, int year)
+    public static String makeIntString(int day, int month, int year)
     {
         // if the day or month is below 10, it registers as (1,2,...) instead of (01, 02,...)
         // so we need to format the integer into that.
-        String newMonth = String.valueOf(month);
-        String newDay = String.valueOf(day);
+        String newMonth = getMonthFormat(month);
+        String newDay;
+        String newYear;
 
-        if (month < 10) {
-            DecimalFormat formatter = new DecimalFormat("00");
-            newMonth = formatter.format(month);
-        }
-        if (day < 10) {
-            DecimalFormat formatter = new DecimalFormat("00");
-            newDay = formatter.format(day);
-        }
+        DecimalFormat formatter = new DecimalFormat("00");
+        newDay = formatter.format(day);
 
-        newMonth = GetMonthFormat(month);
-        return  newMonth + " " + newDay + " " + year;
+        formatter = new DecimalFormat("0000");
+        newYear = formatter.format(year);
+
+        return  newMonth + " " + newDay + " " + newYear;
     }
 
     /**(NOT TESTED)
@@ -162,15 +157,14 @@ public class DateFunc {
      * @param date date in "Date" format ("yyyy-MM-dd")
      * @return date in "String" format ("Month day Year") (e.g. JAN 2 2023)
      */
-    public static String MakeDateString(String date)
+    public static String makeDateString(String date)
     {   if (Validate.isEmpty(date)) {
             return "";
         } else {
             String[] spliced = date.split("-");
-            spliced[1] = GetMonthFormat(Integer.parseInt(spliced[1]));
-            String[] str = {spliced[1], spliced[2], spliced[0]};
+            spliced[1] = getMonthFormat(Integer.parseInt(spliced[1]));
 
-            return TextUtils.join(" ", str);
+            return spliced[1] + " " + spliced[2] + " " + spliced[0];
         }
     }
 
@@ -179,17 +173,17 @@ public class DateFunc {
      * @param str Date in "String" Format ("Month day Year") (e.g. JAN 2 2023)
      * @return Date in "Date" format ("yyyy-MM-dd")
      */
-    public static String MakeStringDate(String str) {
+    public static String makeStringDate(String str) {
         String[] spliced = str.split(" ");
-        int month = MonthToInt(spliced[0]);
-        String newMonth = String.valueOf(month);
-        if (month < 10) {
-            DecimalFormat formatter = new DecimalFormat("00");
-            newMonth = formatter.format(month);
-        }
+        int month = monthToInt(spliced[0]);
+
+        String newMonth;
+        DecimalFormat formatter = new DecimalFormat("00");
+
+        newMonth = formatter.format(month);
         spliced[0] = newMonth;
-        String[] date = {spliced[2], spliced[0], spliced[1]};
-        return TextUtils.join("-" , date);
+
+        return spliced[2] + "-" + spliced[0] + "-" + spliced[1];
     }
 
     /**
@@ -197,10 +191,9 @@ public class DateFunc {
      * @param date Date object
      * @return Date in "Date" format ("yyyy-MM-dd")
      */
-    public static String MakeObjString(Date date) {
+    public static String makeObjString(Date date) {
         return sdf.format(date);
     }
-
 }
 
 

@@ -12,6 +12,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealy.databinding.ActivityMainBinding;
+import com.example.mealy.ui.ingredientStorage.FoodEntry;
+import com.example.mealy.ui.recipes.RecipeEntry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

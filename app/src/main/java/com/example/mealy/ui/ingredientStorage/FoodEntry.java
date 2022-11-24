@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.ingredientStorage;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -19,20 +19,21 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
+import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
 
+/**
+ * Fragment for users to input info about an ingredient
+ */
 public class FoodEntry extends DialogFragment {
     private final FoodEntry fragment = this;
     Spinner categorySpinner;
@@ -66,16 +67,29 @@ public class FoodEntry extends DialogFragment {
     Ingredient ingredient;
     boolean edit;
 
-
+    /**
+     * if no ingredient is provided, it's assumed you want to create a new ingredient
+     */
     public FoodEntry() {
         edit = false;
     }
 
+    /**
+     * if an ingredient is provided, it's assumed you want to edit an ingredient
+     * @param ingredient ingredient you want to edit
+     */
     public FoodEntry(Ingredient ingredient) {
         this.ingredient = ingredient;
         edit = true;
     }
 
+    /**
+     * Creates the view to add/edit ingredients
+     * @param inflater inflater for view
+     * @param container container for view
+     * @param savedInstanceState idk tbh
+     * @return the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflates View
@@ -105,7 +119,7 @@ public class FoodEntry extends DialogFragment {
         categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
-        // Todo, add categories and set default values for each category
+        // Todo let user add categories
     }
 
     /**
@@ -118,14 +132,13 @@ public class FoodEntry extends DialogFragment {
         locationAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
         locationSpinner.setAdapter(locationAdapter);
 
-        // Todo, add locations
+        // Todo let user add locations
     }
 
     /**
      * Sets up the quantity for units spinner. Sets onCheckedChangeListener for the unit type radio group. Changes spinner
      * values accordingly
      */
-
     private void InitializeQuantityUnitsSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
@@ -189,12 +202,12 @@ public class FoodEntry extends DialogFragment {
 
                     if (edit) {
                         getParentFragmentManager().beginTransaction().remove(fragment).commit();
-                        Firestore.DeleteFromFirestore(collection, ingredient.getName());
+                        Firestore.deleteFromFirestore(collection, ingredient.getName());
                     }
                     else {
                         requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     }
-                    Firestore.StoreToFirestore(collection, ingredientName, data);
+                    Firestore.storeToFirestore(collection, ingredientName, data);
                 }
             }
         });
@@ -226,7 +239,7 @@ public class FoodEntry extends DialogFragment {
         quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
         categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
         locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
-        ExpiryDate.setText(DateFunc.MakeDateString(ingredient.getExpiryDate()));
+        ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
     }
 
 
@@ -252,7 +265,7 @@ public class FoodEntry extends DialogFragment {
         String categoryName = categorySpinner.getSelectedItem().toString();
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
-        String expiryDate = DateFunc.MakeStringDate(ExpiryDate.getText().toString());
+        String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
         String description = DescriptionText.getText().toString();
         String location = locationSpinner.getSelectedItem().toString();
 
@@ -287,7 +300,7 @@ public class FoodEntry extends DialogFragment {
             {
                 // months index from 0-11
                 month = month + 1;
-                ExpiryDate.setText(DateFunc.MakeIntString(day, month, year));
+                ExpiryDate.setText(DateFunc.makeIntString(day, month, year));
             }
         };
 
@@ -318,6 +331,7 @@ public class FoodEntry extends DialogFragment {
      */
     private boolean ValidData() {
 
+        // gets all the user's inputted data
         String ingredientName = IngredientName.getText().toString();
         String categoryName = categorySpinner.getSelectedItem().toString();
         String ingredientQuantity = IngredientQuantity.getText().toString();
@@ -326,14 +340,16 @@ public class FoodEntry extends DialogFragment {
         String location = locationSpinner.getSelectedItem().toString();
         String description = DescriptionText.getText().toString();
 
-        boolean isValid = true;
+        boolean isValid = true; // is converted to false if any item is false
 
+        // checks if ingredientName is empty
         if (Validate.isEmpty(ingredientName)) {
             IngredientName.setError("Ingredient Name cant be empty");
             isValid = false;
         }
-
+        // checks if categoryName is empty or equal to the default text
         if (Validate.isEmpty(categoryName) || Objects.equals(categoryName, "Select Category")) {
+            // if it's empty it shows a red exclamation mark and turns spinner text red
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -341,10 +357,12 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if ingredientQuantity is empty
         if (Validate.isEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
             isValid = false;
         }
+        // checks if ingredientQuantity is actually a number and if it's less than 0
         try {
             if (Float.parseFloat(ingredientQuantity) <= 0) {
                 IngredientQuantity.setError("Can't have 0 or negative quantities");
@@ -355,7 +373,9 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if the user selected a unit of measurement
         if (Validate.isEmpty(unit) || Objects.equals(unit, "Select Unit")) {
+            // if it's empty it shows a red exclamation mark and turns spinner text red
             TextView errorText = (TextView) quantityUnits.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -363,7 +383,9 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if the location is empty
         if (Validate.isEmpty(location) || Objects.equals(location, "Select Location")) {
+            // if it's empty it shows a red exclamation mark and turns spinner text red
             TextView errorText = (TextView) locationSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -371,12 +393,15 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if the description is empty
         if (Validate.isEmpty(description)) {
             DescriptionText.setError("Please write a description");
             isValid = false;
         }
 
-        if (expiryDate.equals("Expiry Date") || Validate.IsEmpty(expiryDate)){
+        // checks if the user inputted a valid expiry date.
+        if (expiryDate.equals("Expiry Date") || Validate.isEmpty(expiryDate)){
+            // TODO check if the date is valid, don't rely on the date picker to be valid
             ExpiryDate.setError("");
             isValid = false;
         }

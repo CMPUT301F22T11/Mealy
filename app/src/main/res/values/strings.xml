@@ -23,5 +23,6 @@
     <string name="Recipe_Entry_add_image_to_recipe">Add Image to Recipe</string>
     <string name="ingredient_sort">Sort By</string>
     <string name="TEMP">TEMP</string>
+    <string name="Recipe_Ingredient_save">SUBMIT</string>
 
 </resources>

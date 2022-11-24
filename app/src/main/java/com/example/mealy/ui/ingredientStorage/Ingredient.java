@@ -1,8 +1,6 @@
-package com.example.mealy;
+package com.example.mealy.ui.ingredientStorage;
 
 import com.example.mealy.functions.General;
-
-import java.time.LocalDate;
 
 /**
  * Ingredients
@@ -16,8 +14,6 @@ public class Ingredient {
     String category;
     String location;
     String expiryDate;
-    //LocalDate expiration;
-    //int imageID;
 
     public Ingredient(String name,
                       String description,
@@ -35,8 +31,6 @@ public class Ingredient {
         this.category = category;
         this.location = location;
         this.expiryDate = expiryDate;
-        //this.expiration = localDate;
-        //this.imageID = imageID;
 
     }
 
@@ -68,7 +62,7 @@ public class Ingredient {
         return General.blankIfVoid(expiryDate);
     }
 
-    public String getUnitCategory() {return General.blankIfVoid(unitCategory);};
+    public String getUnitCategory() {return General.blankIfVoid(unitCategory);}
 
     public void setName(String name) {
         this.name = name;
@@ -98,5 +92,5 @@ public class Ingredient {
         this.expiryDate = expiryDate;
     }
 
-    public void setUnitCategory(String unitCategory) {this.unitCategory = unitCategory;};
+    public void setUnitCategory(String unitCategory) {this.unitCategory = unitCategory;}
 }

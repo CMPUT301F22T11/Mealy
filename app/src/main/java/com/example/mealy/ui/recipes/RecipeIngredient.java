@@ -1,4 +1,4 @@
-package com.example.mealy;
+package com.example.mealy.ui.recipes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,9 +18,10 @@ public class RecipeIngredient implements Parcelable {
     private String category;
 
 
-        // Getters
+    // Getters
     /**
      * Get the title for this Recipe Ingredient.
+     * @return
      */
     public String getTitle() {
         return this.title;
@@ -28,6 +29,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Get the description for this Recipe Ingredient.
+     * @return
      */
     public String getDescription() {
         return this.description;
@@ -35,6 +37,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Get the amount for this Recipe Ingredient.
+     * @return
      */
     public String getAmount() {
         return this.amount;
@@ -42,6 +45,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Get the unit for this Recipe Ingredient.
+     * @return
      */
     public String getUnit() {
         return this.unit;
@@ -49,6 +53,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Get the category for this Recipe Ingredient.
+     * @return
      */
     public String getCategory() {
         return this.category;
@@ -57,6 +62,7 @@ public class RecipeIngredient implements Parcelable {
     // Setters
     /**
      * Set the title for this Recipe Ingredient.
+     * @return
      */
     public void setTitle(String title) {
         this.title = title;
@@ -64,6 +70,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Set the description for this Recipe Ingredient.
+     * @return
      */
     public void setDescription(String description) {
         this.description = description;
@@ -71,6 +78,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Set the amount for this Recipe Ingredient.
+     * @return
      */
     public void setAmount(String amount) {
         this.amount = amount;
@@ -78,6 +86,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Set the unit for this Recipe Ingredient.
+     * @return
      */
     public void setUnit(String unit) {
         this.unit = unit;
@@ -85,6 +94,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Set the category for this Recipe Ingredient.
+     * @return
      */
     public void setCategory(String category) {
         this.category = category;
@@ -93,6 +103,11 @@ public class RecipeIngredient implements Parcelable {
     // Constructor
     /**
      * Constructor for the class.
+     * @param title
+     * @param description
+     * @param amount
+     * @param unit
+     * @param  category
      */
     public RecipeIngredient(String title, String description, String amount, String unit, String category) {
         this.title = title;
@@ -104,6 +119,7 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Constructor for the class, given the parameter of a Parcel instance.
+     * @param source The Parcel in which the recipe ingredient gets all its attributes.
      */
     public RecipeIngredient(Parcel source) {
         this.title = source.readString();
@@ -116,6 +132,7 @@ public class RecipeIngredient implements Parcelable {
     /**
      * Method used to create a bitmask return value. When we need to put a FileDescriptor object into Parcelable, we specify
      * the CONTENTS_FILE_DESCRIPTOR field as the return value of this method. Not used for the current implementation.
+     * @return Returns a bitmask
      */
     @Override
     public int describeContents() {
@@ -124,14 +141,16 @@ public class RecipeIngredient implements Parcelable {
 
     /**
      * Method that writes to the Parcel with the attributes of this instance.
+     * @param parcel The Parcel in which the recipe ingredient should be written
+     * @param i Flag that provides additional details in how the object should be written
      */
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeString(this.title);
-    parcel.writeString(this.description);
-    parcel.writeString(this.amount);
-    parcel.writeString(this.unit);
-    parcel.writeString(this.category);
+        parcel.writeString(this.title);
+        parcel.writeString(this.description);
+        parcel.writeString(this.amount);
+        parcel.writeString(this.unit);
+        parcel.writeString(this.category);
 
     }
 
@@ -141,6 +160,8 @@ public class RecipeIngredient implements Parcelable {
     public static final Creator<RecipeIngredient> CREATOR = new Creator<RecipeIngredient>() {
         /**
          * This method creates a new instance of the parcelable class, given from Parcelable.writeToParcel()
+         * @param in Parcel to create class
+         * @return Returns the created recipe ingredient class
          */
         @Override
         public RecipeIngredient createFromParcel(Parcel in) {
@@ -149,6 +170,8 @@ public class RecipeIngredient implements Parcelable {
 
         /**
          * Creates an array of the Parcelable class.
+         * @param size specify size of array
+         * @return Returns the created array
          */
         @Override
         public RecipeIngredient[] newArray(int size) {

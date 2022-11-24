@@ -1,4 +1,4 @@
-package com.example.mealy.ui.dashboard;
+package com.example.mealy.ui.ingredientStorage;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -20,14 +20,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mealy.DisplayIngredientInfo;
-import com.example.mealy.Ingredient;
-import com.example.mealy.IngredientList;
 import com.example.mealy.R;
 import com.example.mealy.comparators.Compare;
 import com.example.mealy.databinding.FragmentDashboardBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,7 +30,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
