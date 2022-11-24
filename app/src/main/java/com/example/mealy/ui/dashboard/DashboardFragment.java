@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -52,7 +53,7 @@ public class DashboardFragment extends Fragment {
     // sorting selection
     private Spinner spinner;
     // inverse sorting
-    private Button flip;
+    private ImageButton flip;
     private int asc;
     FirebaseFirestore db;
 
