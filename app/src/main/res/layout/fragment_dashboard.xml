@@ -6,17 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
+    <!-- Spinner related classes from:
+    https://androiddvlpr.com/custom-spinner-android/
+    -->
     <Spinner
         android:id="@+id/ingredientsort"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="92sp"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_width="300sp"
+        android:layout_height="?attr/dropdownListPreferredItemHeight"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="92sp"
+        android:background="@drawable/spinner_bg"
         android:contentDescription="@string/ingredient_sort"
-        android:minHeight="48sp"
-        app:layout_constraintEnd_toEndOf="@id/flip"
-        app:layout_constraintHorizontal_bias="0.144"
-        app:layout_constraintStart_toStartOf="parent"
+        android:dropDownWidth="300dp"
+        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+        android:paddingRight="14sp"
+        android:popupBackground="@android:color/white"
+        android:popupElevation="3sp"
+        android:stateListAnimator="@drawable/spinner_sla"
         app:layout_constraintBottom_toTopOf="@id/storage"
+        app:layout_constraintEnd_toEndOf="@id/flip"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

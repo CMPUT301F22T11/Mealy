@@ -79,8 +79,8 @@ public class DashboardFragment extends Fragment {
 
         // initialize spinner with predefined categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Desc", "Exp", "Location", "Category"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, options);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
@@ -133,6 +133,7 @@ public class DashboardFragment extends Fragment {
                 ingredientList.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
             }
         });
+
 
         // this is for changing the way the ingredientList items are organized.
         flip.setOnClickListener(new View.OnClickListener() {
