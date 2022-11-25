@@ -284,7 +284,7 @@ public class FoodEntry extends DialogFragment {
 
         // sets spinners to their appropriate value. Goes to default value if item is not in spinner
         quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
-        categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
+        //categorySpinner.setSelection(Arrays.asList(Categories).indexOf(ingredient.getCategory()));
         locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
         ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
     }
@@ -308,8 +308,13 @@ public class FoodEntry extends DialogFragment {
     private HashMap<String, String> GetData() {
 
         HashMap<String, String> data = new HashMap<>();
+        String categoryName;
 
-        String categoryName = categorySpinner.getSelectedItem().toString();
+        if (AddCategory.getVisibility() == View.VISIBLE) {
+            categoryName = AddCategory.getText().toString();
+        } else {
+            categoryName = categorySpinner.getSelectedItem().toString();
+        }
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
         String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
@@ -404,6 +409,14 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if add category is empty
+        if (AddCategory.getVisibility() == View.VISIBLE) {
+            if (Validate.isEmpty(AddCategory.getText().toString())){
+                AddCategory.setError("Please Input a New Category");
+                isValid = false;
+            }
+        }
+
         // checks if ingredientQuantity is empty
         if (Validate.isEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
@@ -472,6 +485,7 @@ public class FoodEntry extends DialogFragment {
                         Category = General.mapToArrayList(categoryData);
                         categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
                         categorySpinner.setAdapter(categoryAdapter);
+                        categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
 
                         Log.d(TAG, "DocumentSnapshot data: " + categoryData);
                     } else {
