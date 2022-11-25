@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/ -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:ignore="UselessParent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/RecipeBoxConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
+        <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
+
+        <ImageView
+            android:id="@+id/shoppingimageView"
+            android:layout_width="74dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="275dp"
+            android:layout_marginTop="32dp"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/shoppingNameDisplay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:gravity="top"
+            android:text="Ingredient Name"
+            android:textColor="@color/accent_red"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/categoryDisplay"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="4dp"
+            android:gravity="top|left"
+            android:text="Category"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shoppingNameDisplay"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/quantityDisplay"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="top|left"
+            android:text="Quantity"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryDisplay"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.075" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
