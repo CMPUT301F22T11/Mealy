@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="125sp"
     android:orientation="horizontal"
+    android:elevation="4sp"
     style="@style/CustomListItem"
     tools:ignore="UselessParent">
 
@@ -38,7 +39,7 @@
             tools:ignore="ContentDescription"
             app:shapeAppearanceOverlay="@style/Ovular"
             app:strokeColor="@color/background"
-            app:strokeWidth="0.5sp"/>
+            app:strokeWidth="1sp"/>
         <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
         <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
 
@@ -51,7 +52,7 @@
             android:gravity="top"
             android:text="Recipe name"
             android:textColor="@color/accent_red"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,20 +60,40 @@
             tools:ignore="RtlHardcoded" />
 
         <TextView
-            android:id="@+id/servingDisplay"
+            android:id="@+id/preptimeDisplay"
             android:layout_width="0dp"
             android:layout_height="20sp"
             android:layout_marginStart="8sp"
-            android:layout_marginTop="16sp"
+            android:layout_marginTop="0sp"
             android:layout_marginBottom="4sp"
             android:gravity="top|left"
-            android:text="Servings Amount"
+            android:text="Prep Time"
             android:textColor="@color/accent_red"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipeNameDisplay"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/servingDisplay"
+            android:layout_width="0dp"
+            android:layout_height="20sp"
+            android:layout_marginStart="8sp"
+            android:layout_marginTop="0sp"
+            android:layout_marginBottom="8sp"
+            android:gravity="top|left"
+            android:text="Serving Amount"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:ignore="RtlHardcoded" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
