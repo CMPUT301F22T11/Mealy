@@ -19,4 +19,7 @@
     <style name="CustomListItem" parent="android:Widget.TextView">
         <item name="android:background">@drawable/listitem</item>
     </style>
+    <style name="Ovular">
+        <item name="cornerSize">30%</item>
+    </style>
 </resources>
