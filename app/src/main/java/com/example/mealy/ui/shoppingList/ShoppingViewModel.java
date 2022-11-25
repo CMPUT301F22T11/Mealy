@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ShoppingViewModel extends ViewModel {
+
     private final MutableLiveData<String> mText;
 
     public ShoppingViewModel() {

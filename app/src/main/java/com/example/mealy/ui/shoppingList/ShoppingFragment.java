@@ -43,15 +43,13 @@ import java.util.List;
  * Here, we have a ListView for our ingredients needed for recipes and all its items,
  * as well as a few extra UI elements for sorting.
  */
-// This is where I will temporarily put my RecipeList view
 public class ShoppingFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
     private Spinner sortSpinner; // for selecting sorting category
-    private ListView shoppingIngredientListView; // list of recipes
-    private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
-    private ImageButton flipButton; // for flipping the recipe items
+    private ListView shoppingIngredientListView; // list of shopping ingredients
+    private ImageButton flipButton; // for flipping order of the shopping list
 
     final String TAG = "Logging";
 
@@ -72,9 +70,9 @@ public class ShoppingFragment extends Fragment {
         // have some flip button to change sort order
 
         // assign UI elements
-        sortSpinner = root.findViewById(R.id.recipesort);
-        shoppingIngredientListView = root.findViewById(R.id.recipestorage);
-        flipButton = root.findViewById(R.id.flip_recipe_sort);
+        shoppingIngredientListView = root.findViewById(R.id.shoppingStorage);
+        flipButton = root.findViewById(R.id.flip_shopping_sort);
+        sortSpinner = root.findViewById(R.id.shoppingSort);
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
@@ -82,7 +80,7 @@ public class ShoppingFragment extends Fragment {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
 
-        // list that will store all our recipe objects
+        // list that will store all our shopping ingredient objects
         ArrayList<ShoppingIngredient> shoppingArrayList = new ArrayList<>();
 
         // Create the adapter and set it to the arraylist
@@ -104,36 +102,37 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // add sample ingredient for recipe list (change later once add ingredient to recipe is functional)
+        // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
         ShoppingIngredient sample = new ShoppingIngredient("tomato",
                 "Tomato is a red fruit",
                 "10",
                 "kg",
                 "Vegetable");
-
-        List ingredientList = new ArrayList();
-        ingredientList.add(sample);
+        shoppingArrayList.add(sample);
 
         // PULL FROM FIREBASE
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
-        // get recipe table
+        // get shopping table
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
-        final CollectionReference recipeCollection = dbf.collection("Recipe");
+        //TODO: Fix this for firebase
 
-        recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        final CollectionReference shoppingCollection = dbf.collection("Recipe");
+        /*
+        shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
+
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
 
                 // Clear the old list
                 shoppingArrayList.clear();
 
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                /*for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
                     try {
 
-                        // fetch recipe info
-                        // fetch rest of recipe info
+                        // fetch ingredient info
+                        // fetch rest of ingredient info
                         String category = (String) doc.getData().get("Category");
                         String description = (String) doc.getData().get("Description");
                         String quantity = (String) doc.getData().get("Amount");
@@ -143,12 +142,12 @@ public class ShoppingFragment extends Fragment {
 
                         ShoppingIngredient temp = new ShoppingIngredient(name, description, quantity, unit, category);
 
-                        // fetch recipe image and store in bitmap
+                        // fetch ingredient image and store in bitmap
                         StorageReference mStorageReference;
 
                         // TODO: find the proper reference image
                         //mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + temp.getTitle());
-                        /*
+
                         try {
                             final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
                             mStorageReference.getFile(localFile)
@@ -171,9 +170,9 @@ public class ShoppingFragment extends Fragment {
                         } catch (IOException e) {
                             System.out.println("Firebase failure!");
                             e.printStackTrace();
-                        }*/
+                        }
 
-                        shoppingArrayList.add(temp); // Adding new recipe using Firebase data
+                        shoppingArrayList.add(temp); // Adding new ingredient using Firebase data
 
                     } catch (Exception e) {
                         System.out.println("Error with firebase pull, incorrect formatting");
@@ -181,12 +180,13 @@ public class ShoppingFragment extends Fragment {
                 }
                 shoppingAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
             }
-        });
+        });*/
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        shoppingAdapter.notifyDataSetChanged();
 
-        // create the instance of the ListView to set the recipe adapter
-        ListView storage = root.findViewById(R.id.recipestorage);
+        // create the instance of the ListView to set the shopping list adapter
+        ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
 
         // set the spinner to sort things correctly

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.recipes.RecipeFragment">
+
+    <LinearLayout
+        android:id="@+id/groupShopping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/shoppingStorage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
+        <!-- Spinner related classes from:
+        https://androiddvlpr.com/custom-spinner-android/
+        -->
+        <Spinner
+            android:id="@+id/shoppingSort"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="300sp"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_marginStart="10sp"
+            android:background="@drawable/spinner_bg"
+            android:contentDescription="@string/ingredient_sort"
+            android:dropDownWidth="298sp"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingEnd="14sp"
+            android:popupElevation="3sp"
+            android:stateListAnimator="@drawable/spinner_sla"/>
+
+        <ImageButton
+            android:id="@+id/flip_shopping_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:minWidth="48dp"
+            android:minHeight="40sp"
+            android:src="@drawable/ic_baseline_swap_vert_24"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/shoppingStorage"
+        android:layout_width="359dp"
+        android:layout_height="529dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupShopping" />
+
+    <Button
+        android:id="@+id/addShoppingIngredient"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="Add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shoppingStorage" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
