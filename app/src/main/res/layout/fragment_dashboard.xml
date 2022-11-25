@@ -6,19 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.ingredientStorage.DashboardFragment">
 
-
     <LinearLayout
         android:id="@+id/groupingred"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/storage"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toTopOf="parent">
         <!-- Spinner related classes from:
         https://androiddvlpr.com/custom-spinner-android/
         -->
@@ -34,8 +33,8 @@
             android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             android:paddingEnd="14sp"
             android:popupElevation="3sp"
-            android:stateListAnimator="@drawable/spinner_sla"/>
-            <!--
+            android:stateListAnimator="@drawable/spinner_sla" />
+        <!--
             app:layout_constraintBottom_toTopOf="@id/storage"
             app:layout_constraintEnd_toEndOf="@id/flip"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,12 +46,12 @@
             android:id="@+id/flip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00000000"
+            android:background="@android:color/transparent"
             android:minWidth="48dp"
             android:minHeight="40sp"
             android:src="@drawable/ic_baseline_swap_vert_24"
             tools:ignore="SpeakableTextPresentCheck" />
-            <!--
+        <!--
             app:layout_constraintBottom_toTopOf="@+id/storage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -61,16 +60,22 @@
             -->
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/storage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="536sp"
         android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
-        android:layout_marginTop="0sp"
+        android:layout_marginTop="16sp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:drawSelectorOnTop="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupingred" />
+        app:layout_constraintTop_toBottomOf="@id/groupingred" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

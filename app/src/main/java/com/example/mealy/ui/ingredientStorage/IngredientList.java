@@ -43,11 +43,13 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
         // get the position of the view from the ArrayAdapter
         Ingredient currentIngredient = getItem(position);
 
+        /*
         // then according to the position of the view assign the desired image for the same
         // currently disabled, image adding may be considered for ingredients at a later date.
         ImageView ingredientImage = currentItemView.findViewById(R.id.imageView);
         assert ingredientImage != null;
         //ingredientImage.setImageResource(R.drawable.meat_rat);
+        */
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.textView1);

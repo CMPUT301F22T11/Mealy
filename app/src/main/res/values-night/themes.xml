@@ -16,4 +16,7 @@
         <!--        <item name="android:background">@color/background</item>-->
         <item name="android:headerBackground">@color/accent_red</item>
     </style>
+    <style name="CustomListItem" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/listitem</item>
+    </style>
 </resources>
