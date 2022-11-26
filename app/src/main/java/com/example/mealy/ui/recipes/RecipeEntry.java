@@ -36,6 +36,12 @@ import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -84,6 +90,10 @@ public class RecipeEntry extends DialogFragment {
     int ingredientIndex;
 
     View view;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    CollectionReference collectionReference;
 
     Recipe recipe;
     boolean edit;
@@ -556,6 +566,29 @@ public class RecipeEntry extends DialogFragment {
 
         // sets spinners to their appropriate value. Goes to default value if item is not in spinner
         CategorySpinner.setSelection(Arrays.asList(RecipeCategories).indexOf(recipe.getCategory()));
+        collectionReference = db.collection("RecipeIngredients");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    String recipeName = (String) doc.getData().get("Recipe Name");
+                    if (recipeName.equals(recipe.getTitle())) {
+                        String ingredient = (String) doc.getId();
+                        String category = (String) doc.getData().get("Category");
+                        String amount = (String) doc.getData().get("Amount");
+                        String desc = (String) doc.getData().get("Description");
+                        String unit = (String) doc.getData().get("Unit");
+                        RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category);
+                        recipeIngredientAdapter.add(thisRepIn);
+
+                    }
+
+                }
+            }
+        });
     }
 }
 
