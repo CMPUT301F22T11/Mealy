@@ -18,6 +18,12 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
 import com.example.mealy.functions.DeletePrompt;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class DisplayRecipeInfo extends DialogFragment {
 
@@ -37,6 +43,13 @@ public class DisplayRecipeInfo extends DialogFragment {
     TextView view_preptime;
     TextView view_servings;
     TextView view_comments;
+    TextView view_ingredients;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    CollectionReference collectionReference;
+
+    String ingList = "ingredients:";
 
     View view;
     private DisplayRecipeInfo fragment = this;
@@ -116,6 +129,33 @@ public class DisplayRecipeInfo extends DialogFragment {
         view_comments = view.findViewById(R.id.recipeViewComments);
         view_comments.setText("Comments: " + Comments);
 
+        view_ingredients = view.findViewById(R.id.IngredientsText);
+        InitializeGetAll();
+
         return view;
+    }
+
+    private void InitializeGetAll() {
+        collectionReference = db.collection("RecipeIngredients");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String rec = (String) doc.getData().get("Recipe Name");
+
+                    if (rec.equals(recipe.getTitle())) {
+                        String ingredient = (String) doc.getId();
+                        ingList += "\n";
+                        ingList += ingredient;
+                        view_ingredients.setText(ingList);
+                    }
+
+                }
+
+            }
+        });
     }
 }
