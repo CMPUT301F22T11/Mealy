@@ -23,6 +23,9 @@
     <style name="Ovular">
         <item name="cornerSize">30%</item>
     </style>
+    <style name="RoundSquare">
+        <item name="cornerSize">10%</item>
+    </style>
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/accent_grey</item>
         <item name="android:textColor">@color/accent_red</item>
