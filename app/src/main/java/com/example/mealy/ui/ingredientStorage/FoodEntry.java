@@ -80,6 +80,7 @@ public class FoodEntry extends DialogFragment {
     EditText DescriptionText;
     EditText AddCategory;
     EditText AddLocation;
+    TextView Title;
 
     View view;
 
@@ -297,15 +298,18 @@ public class FoodEntry extends DialogFragment {
         IngredientName = (EditText) view.findViewById(R.id.ingredientName);
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
         DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
+        Title = (TextView) view.findViewById(R.id.title);
     }
 
     /**
      * Sets default values to ingredient values that we need to edit
      */
     private void EditMode() {
+        Title.setText("Edit Ingredient");
         IngredientName.setText(ingredient.getName());
         IngredientQuantity.setText(ingredient.getAmount());
         DescriptionText.setText(ingredient.getDescription());
+
 
         // this sets the button to true if its equal to the ingredient unit category
         wholeButton.setChecked(true); // true in case the field is empty

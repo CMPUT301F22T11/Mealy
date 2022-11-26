@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corner"
         android:minHeight="48sp"
-        android:text="Add/Edit Ingredient"
+        android:text="Add Ingredient"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/accent_grey"
@@ -54,9 +54,9 @@
             android:inputType="textPersonName"
             android:maxLength="30"
             android:background="@android:color/transparent"
+            android:textColor="@color/accent_red"
             android:gravity="center"
             android:textColorHint="@color/gray"
-            android:textColor="@color/accent_red"
             android:autofillHints="Ingredients"
             android:layout_marginEnd="6sp"/>
     </LinearLayout>
@@ -107,6 +107,8 @@
 
         <EditText
             android:id="@+id/newCategory"
+            android:background="@android:color/transparent"
+            android:textColor="@color/accent_red"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -119,7 +121,7 @@
             android:maxLines="1"
             android:visibility="gone"
             android:minHeight="48dp"
-            android:textColorHint="#757575" />
+            android:textColorHint="@color/gray" />
     </LinearLayout>
 
 
@@ -129,13 +131,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/quantityTypeText"
             android:layout_width="wrap_content"
+            android:maxLines="1"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:text="Quantity Type: "
+            android:text="Qty Type: "
+
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:textSize="16sp"
             android:layout_marginStart="10sp"
             android:textStyle="bold" />
@@ -203,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="48dp"
+            android:minHeight="48sp"
             android:hint="Quantity"
             android:autofillHints=""
             android:inputType="numberDecimal"
@@ -217,7 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:minHeight="48dp"
+            android:minHeight="48sp"
             android:spinnerMode="dropdown"
             android:background="@drawable/spinner_bg"
             style="@style/Widget.AppCompat.Spinner"
@@ -237,7 +244,7 @@
 
         <TextView
             android:id="@+id/locationTextView"
-            android:layout_width="0dp"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Location: "
@@ -285,7 +292,7 @@
             android:maxLines="1"
             android:visibility="gone"
             android:minHeight="48dp"
-            android:textColorHint="#757575" />
+            android:textColorHint="@color/gray" />
     </LinearLayout>
 
 
@@ -366,6 +373,8 @@
 
         <Button
             android:id="@+id/addIngredient"
+            android:background="@android:color/transparent"
+            android:textColor="@color/accent_red"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
