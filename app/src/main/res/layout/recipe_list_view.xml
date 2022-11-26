@@ -32,14 +32,13 @@
             android:adjustViewBounds="true"
             android:padding="0dp"
             android:scaleType="centerCrop"
+            android:elevation="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription"
-            app:shapeAppearanceOverlay="@style/Ovular"
-            app:strokeColor="@color/background"
-            app:strokeWidth="1sp"/>
+            app:shapeAppearanceOverlay="@style/Ovular"/>
         <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
         <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
 

@@ -116,7 +116,8 @@ public class FoodEntry extends DialogFragment {
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
         categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
-        categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
+        categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, categories);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         categorySpinner.setAdapter(categoryAdapter);
 
         // Todo let user add categories
@@ -129,7 +130,8 @@ public class FoodEntry extends DialogFragment {
     private void InitializeLocationSpinner() {
         locationSpinner = (Spinner) view.findViewById(R.id.locationDropdown);
         locations = new String[]{"Select Location", "Pantry", "Fridge", "Freezer"};
-        locationAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
+        locationAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, locations);
+        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         locationSpinner.setAdapter(locationAdapter);
 
         // Todo let user add locations
@@ -145,12 +147,13 @@ public class FoodEntry extends DialogFragment {
         wholeButton = view.findViewById(R.id.whole);
         volumeButton = view.findViewById(R.id.volume);
         weightButton = view.findViewById(R.id.weight);
-        whole = new String[]{"Select Unit", "single", "Dozen", "Five Pack"};
+        whole = new String[]{"Select Unit", "Single", "Dozen", "Five Pack"};
         weight = new String[]{"Select Unit", "lb", "kg", "g", "oz"};
         volume = new String[]{"Select Unit", "L", "ml", "fl oz"};
         current = whole;
         unitCategory = "Whole";
-        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
 
@@ -161,19 +164,22 @@ public class FoodEntry extends DialogFragment {
                 switch (checkedId) {
                     case R.id.whole:
                         current = whole;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Whole";
                         break;
                     case R.id.weight:
                         current = weight;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Weight";
                         break;
                     case R.id.volume:
                         current = volume;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Volume";
                         break;

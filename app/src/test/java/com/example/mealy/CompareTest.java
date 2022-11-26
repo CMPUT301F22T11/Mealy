@@ -111,14 +111,14 @@ public class CompareTest {
                 && foodList.get(1) == ingred2
                 && foodList.get(2) == ingred4
                 && foodList.get(3) == ingred3);
-        Compare compare1 = new Compare("Desc", 1);
+        Compare compare1 = new Compare("Description", 1);
         Collections.sort(foodList, compare1.returnComparator());
         // Ordering should now be Burger -> Asparagus -> Apple -> Turmeric
         assertTrue(foodList.get(0) == ingred3
                 && foodList.get(1) == ingred2
                 && foodList.get(2) == ingred1
                 && foodList.get(3) == ingred4);
-        Compare compare2 = new Compare("Desc", -1);
+        Compare compare2 = new Compare("Description", -1);
         Collections.sort(foodList, compare2.returnComparator());
         // Ordering should now be Turmeric -> Apple -> Asparagus -> Burger
         assertTrue(foodList.get(0) == ingred4
@@ -141,14 +141,14 @@ public class CompareTest {
                 && foodList.get(1) == ingred2
                 && foodList.get(2) == ingred4
                 && foodList.get(3) == ingred3);
-        Compare compare1 = new Compare("Exp", 1);
+        Compare compare1 = new Compare("Expiration", 1);
         Collections.sort(foodList, compare1.returnComparator());
         // Ordering should now be Asparagus -> Apple -> Burger -> Turmeric
         assertTrue(foodList.get(0) == ingred2
                 && foodList.get(1) == ingred1
                 && foodList.get(2) == ingred3
                 && foodList.get(3) == ingred4);
-        Compare compare2 = new Compare("Exp", -1);
+        Compare compare2 = new Compare("Expiration", -1);
         Collections.sort(foodList, compare2.returnComparator());
         // Ordering should now be Turmeric -> Burger -> Apple -> Asparagus
         assertTrue(foodList.get(0) == ingred4

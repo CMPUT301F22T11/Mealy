@@ -49,6 +49,7 @@
             android:background="@android:color/transparent"
             android:minWidth="48dp"
             android:minHeight="40sp"
+            android:popupElevation="3sp"
             android:src="@drawable/ic_baseline_swap_vert_24"
             tools:ignore="SpeakableTextPresentCheck" />
         <!--
@@ -68,6 +69,7 @@
         android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
         android:layout_marginTop="16sp"
+        android:scrollbars="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:drawSelectorOnTop="true"
