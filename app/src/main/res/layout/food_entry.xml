@@ -7,6 +7,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/accent_grey"
     android:orientation="vertical">
 
 
@@ -14,58 +15,70 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/accent_red"
-        android:minHeight="48dp"
+        android:background="@drawable/rounded_corner"
+        android:minHeight="48sp"
         android:text="Add/Edit Ingredient"
+        android:gravity="center"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+        android:textColor="@color/accent_grey"
+        android:textStyle="bold"
+        android:textSize="25sp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
 
         <TextView
             android:id="@+id/ingredientNameTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ingredient Name: "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
+            android:layout_weight="1"
+            android:text="Ingredient Name: "
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
+
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/ingredientName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="Name"
-            android:minHeight="48dp"
+            android:minHeight="48sp"
             android:inputType="textPersonName"
             android:maxLength="30"
-            android:layout_gravity="end"
-            android:textColorHint="#757575"
-            android:autofillHints="Ingredients" />
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
+            android:autofillHints="Ingredients"
+            android:layout_marginEnd="6sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/categoryTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Category: "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
+
             android:textStyle="bold" />
 
         <Spinner
@@ -75,7 +88,11 @@
             android:minHeight="48dp"
             android:layout_weight="1"
             android:spinnerMode="dropdown"
-            android:layout_gravity="center"
+            android:gravity="right"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -125,6 +142,8 @@
 
     <RadioGroup
         android:id="@+id/quantityType"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checkedButton="1"
@@ -137,18 +156,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:text="Whole" />
 
         <RadioButton
             android:id="@+id/weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:text="Weight" />
 
         <RadioButton
             android:id="@+id/volume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:text="Volume" />
     </RadioGroup>
 
@@ -157,6 +182,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
@@ -167,6 +194,7 @@
             android:text="Quantity: "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -178,7 +206,11 @@
             android:minHeight="48dp"
             android:hint="Quantity"
             android:autofillHints=""
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"/>
 
         <Spinner
             android:id="@+id/quantityDropdown"
@@ -187,6 +219,10 @@
             android:layout_height="match_parent"
             android:minHeight="48dp"
             android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -195,6 +231,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
@@ -205,6 +243,7 @@
             android:text="Location: "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -216,6 +255,11 @@
             android:layout_weight="1"
             android:spinnerMode="dropdown"
             android:layout_gravity="center"
+            android:gravity="right"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -248,57 +292,70 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/expiryDateTextView2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Expiry Date: "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/datePickerButton"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Expiry Date"
-        android:textColor="@color/black"
-        style="?android:spinnerStyle"
-        />
+        <Button
+            android:id="@+id/datePickerButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Expiry Date"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/accent_red"
+            android:textStyle="bold"
+            style="?android:spinnerStyle"
+            />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Description: "
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="10sp"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Description: "
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10sp"
+            android:textColor="@color/dark_gray"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/descriptionText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        android:minHeight="48dp"
-        android:maxLength="500"
-        android:layout_gravity="end"
-        android:textColorHint="#757575"
-        android:autofillHints="Ingredients" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/descriptionText"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:minHeight="48sp"
+            android:maxEms="10"
+            android:minEms="10"
+            android:maxLength="500"
+            android:layout_gravity="end"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
+            android:background="@android:color/transparent"
+            android:autofillHints="Ingredients" />
+    </LinearLayout>
 
 
     <LinearLayout
@@ -314,7 +371,7 @@
             android:layout_weight="1"
             android:minHeight="48dp"
             android:text="Save"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/ButtonStyle"
             />
     </LinearLayout>
 

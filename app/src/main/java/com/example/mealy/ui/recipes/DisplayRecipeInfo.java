@@ -18,6 +18,12 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
 import com.example.mealy.functions.DeletePrompt;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class DisplayRecipeInfo extends DialogFragment {
 
@@ -37,6 +43,13 @@ public class DisplayRecipeInfo extends DialogFragment {
     TextView view_preptime;
     TextView view_servings;
     TextView view_comments;
+    TextView view_ingredients;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    CollectionReference collectionReference;
+
+    String ingList = "";
 
     View view;
     private DisplayRecipeInfo fragment = this;
@@ -44,7 +57,7 @@ public class DisplayRecipeInfo extends DialogFragment {
     public DisplayRecipeInfo(Recipe recipe) {
         this.recipe = recipe;
         RecipeName = recipe.getTitle();
-        PrepTime = "Prep Time: " + recipe.getPreptimeHours() + " hrs : " + recipe.getPreptimeMins() + " mins";
+        PrepTime = recipe.getPreptimeHours() + " hrs : " + recipe.getPreptimeMins() + " mins";
         Log.d("preptimeh:", Integer.toString(recipe.getPreptimeHours()));
         Log.d("preptimem:", Integer.toString(recipe.getPreptimeMins()));
         Servings = recipe.getServingsString();
@@ -67,10 +80,9 @@ public class DisplayRecipeInfo extends DialogFragment {
         view = LayoutInflater.from(getActivity()).inflate(R.layout.display_recipe_info, null);
 
         // Creates a dialog builder thing that lets you display information and click buttons and stuff
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         return builder
                 .setView(view)
-                .setTitle(RecipeName)
                 .setNegativeButton("Close", null) // closes the dialog
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
@@ -100,22 +112,54 @@ public class DisplayRecipeInfo extends DialogFragment {
             view_recipeImage.setImageResource(R.drawable.placeholder);
         }
 
+        view_title = view.findViewById(R.id.recipe_title);
+        view_title.setText(RecipeName);
+
         // set category
         view_category = view.findViewById(R.id.recipeViewCategory);
-        view_category.setText("Category: " + Category);
+        view_category.setText(Category);
 
         // set preptime
         view_preptime = view.findViewById(R.id.recipeViewPrepTime);
-        view_preptime.setText("Preparation Time: " + PrepTime);
+        view_preptime.setText(PrepTime);
 
         // set servings
         view_servings = view.findViewById(R.id.recipeViewServes);
-        view_servings.setText(Servings + " people.");
+        view_servings.setText(Servings + " persons.");
 
         // set comments
         view_comments = view.findViewById(R.id.recipeViewComments);
-        view_comments.setText("Comments: " + Comments);
+        view_comments.setText(Comments);
+
+        view_ingredients = view.findViewById(R.id.IngredientsList);
+        InitializeGetAll();
 
         return view;
+    }
+
+    private void InitializeGetAll() {
+        collectionReference = db.collection("RecipeIngredients");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String rec = (String) doc.getData().get("Recipe Name");
+
+                    if (rec.equals(recipe.getTitle())) {
+                        String ingredient = (String) doc.getId();
+                        String quantity = (String) doc.getData().get("Amount");
+                        String unit = (String) doc.getData().get("Unit");
+                        ingList += ingredient + ", " + quantity + " " + unit;
+                        ingList += "\n ";
+                        view_ingredients.setText(ingList);
+                    }
+
+                }
+
+            }
+        });
     }
 }

@@ -19,9 +19,9 @@ public class Compare {
     public Compare(String str, int asc) {
         if (str.equals("Name")) {
             this.comparator = new SortByName(asc);
-        } else if (str.equals("Desc")) {
+        } else if (str.equals("Description")) {
             this.comparator = new SortByDesc(asc);
-        } else if (str.equals("Exp")) {
+        } else if (str.equals("Expiration")) {
             this.comparator = new SortByExp(asc);
         } else if (str.equals("Location")) {
             this.comparator = new SortByLocation(asc);

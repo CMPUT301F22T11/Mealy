@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -45,7 +49,7 @@ public class DashboardFragment extends Fragment {
     // sorting selection
     private Spinner spinner;
     // inverse sorting
-    private Button flip;
+    private ImageButton flip;
     private int asc;
     FirebaseFirestore db;
 
@@ -71,9 +75,9 @@ public class DashboardFragment extends Fragment {
         asc = 1;
 
         // initialize spinner with predefined categories
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Desc", "Exp", "Location", "Category"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, options);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "Description", "Expiration", "Location", "Category"));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
@@ -126,6 +130,7 @@ public class DashboardFragment extends Fragment {
                 ingredientList.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
             }
         });
+
 
         // this is for changing the way the ingredientList items are organized.
         flip.setOnClickListener(new View.OnClickListener() {

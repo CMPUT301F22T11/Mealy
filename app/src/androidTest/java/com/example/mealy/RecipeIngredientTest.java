@@ -71,7 +71,7 @@ public class RecipeIngredientTest {
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Comments), "THIS IS A TEST COMMENT");
 
         // Now entering Recipe Ingredient fragment
-        solo.clickOnImageButton(1);
+        solo.clickOnImageButton(3);
 
         solo.pressSpinnerItem(1, 1);
         solo.enterText((EditText) solo.getView(R.id.r_ingredient_name_text), "Potato");
@@ -87,7 +87,7 @@ public class RecipeIngredientTest {
 
 
         // Create another Recipe Ingredient
-        solo.clickOnImageButton(1);
+        solo.clickOnImageButton(3);
 
         solo.pressSpinnerItem(1, 1);
         solo.enterText((EditText) solo.getView(R.id.r_ingredient_name_text), "Soup");
@@ -217,7 +217,7 @@ public class RecipeIngredientTest {
         solo.enterText((EditText) solo.getView(R.id.Recipe_Entry_Comments), "THIS IS A TEST COMMENT");
 
         // Now entering Recipe Ingredient fragment
-        solo.clickOnImageButton(1);
+        solo.clickOnImageButton(3);
 
         solo.pressSpinnerItem(1, 1);
         solo.enterText((EditText) solo.getView(R.id.r_ingredient_name_text), "Donkey");
@@ -233,7 +233,7 @@ public class RecipeIngredientTest {
 
 
         // Create another Recipe Ingredient
-        solo.clickOnImageButton(1);
+        solo.clickOnImageButton(3);
 
         solo.pressSpinnerItem(1, 1);
         solo.enterText((EditText) solo.getView(R.id.r_ingredient_name_text), "Soup");
@@ -287,7 +287,7 @@ public class RecipeIngredientTest {
 
         query = recipeRef.whereEqualTo("Name", "Donkey");
 
-        // False if there is not a recipe ingredient called Donkey, this checks the delete function for the Recipe Ingredient.
+        // False if there is a recipe ingredient called Donkey, this checks the delete function for the Recipe Ingredient.
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
