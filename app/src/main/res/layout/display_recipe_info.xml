@@ -1,17 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/recipe_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:minHeight="64sp"
+            android:text="Recipe Title"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/accent_grey"
+            android:textSize="25sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/recipeViewImage"
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            android:layout_marginStart="24sp"
+            android:layout_marginTop="12sp"
+            android:layout_marginEnd="24sp"
+            android:padding="0sp"
+            android:scaleType="centerCrop"
+            android:elevation="8sp"
+            app:shapeAppearanceOverlay="@style/RoundSquare"/>
+
+        <!--
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
+
 
             <ImageView
                 android:id="@+id/recipeViewImage"
@@ -23,33 +51,68 @@
                 android:adjustViewBounds="true"
                 android:padding="0dp"
                 android:scaleType="fitXY" />
+
         </LinearLayout>
+        -->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
             android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/categoryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Category: "
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:textColor="@color/dark_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/recipeViewCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Category here" />
+                android:layout_gravity="center_vertical"
+                android:text="Category"
+                android:textColor="@color/accent_red"
+                android:textSize="18sp" />
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
             android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/prepText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Preparation Time: "
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:textColor="@color/dark_gray"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/recipeViewPrepTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Prep Time:" />
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_red"
+                android:textSize="18sp"
+                android:text="Prep Time" />
 
 
         </LinearLayout>
@@ -57,42 +120,67 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/IngredientsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Ingredients:"
-                android:textAlignment="center"
-                android:textColor="#6D4C41" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/recipeViewServes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="10sp"
+                android:textColor="@color/accent_red"
+                android:textSize="18sp"
                 android:text="" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/IngredientsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredients: "
+                android:layout_marginStart="10sp"
+                android:textAlignment="center"
+                android:textColor="@color/dark_gray"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/IngredientsList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_red"
+                android:textSize="18sp"
+                android:text="" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
             android:orientation="vertical">
             <TextView
                 android:id="@+id/recipeViewComments"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:minHeight="60sp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/accent_red"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
                 android:layout_marginBottom="16dp"
                 android:text="Fill saucepan with 1 L of water" />
         </LinearLayout>

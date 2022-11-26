@@ -65,7 +65,7 @@
     <ListView
         android:id="@+id/storage"
         android:layout_width="match_parent"
-        android:layout_height="536sp"
+        android:layout_height="490sp"
         android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
         android:layout_marginTop="16sp"
