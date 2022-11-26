@@ -59,10 +59,10 @@ public class DisplayIngredientInfo extends DialogFragment {
         view = LayoutInflater.from(getActivity()).inflate(R.layout.display_ingredient_info, null);
 
         // Creates a dialog builder thing that lets you display information and click buttons and stuff
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         return builder
                 .setView(view)
-                .setTitle(name)
+                //.setTitle(name)
                 .setNegativeButton("Close", null) // closes the dialog
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
@@ -92,6 +92,7 @@ public class DisplayIngredientInfo extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // gets the textview IDs
+        TextView title1 = view.findViewById(R.id.ingredient_title);
         TextView description1 = view.findViewById(R.id.description);
         TextView amount1 = view.findViewById(R.id.quantityNumber);
         TextView unit1 = view.findViewById(R.id.quantityUnits);
@@ -100,6 +101,7 @@ public class DisplayIngredientInfo extends DialogFragment {
         TextView expiryDate1 = view.findViewById(R.id.expiryDate);
 
         // Displays the info for the ingredient in each textview
+        title1.setText(name);
         description1.setText(description);
         amount1.setText(amount);
         unit1.setText(unit);
