@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -57,7 +58,7 @@ public class RecipeFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView recipeListView; // list of recipes
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
-    private Button flipButton; // for flipping the recipe items
+    private ImageButton flipButton; // for flipping the recipe items
 
     final String TAG = "Logging";
 
@@ -84,8 +85,8 @@ public class RecipeFragment extends Fragment {
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Prep Time", "Servings", "Category"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, options);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
 
         // list that will store all our recipe objects

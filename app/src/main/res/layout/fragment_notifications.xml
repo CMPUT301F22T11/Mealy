@@ -6,33 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".ui.recipes.RecipeFragment">
 
-    <Spinner
-        android:id="@+id/recipesort"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/recipe_sort"
-        app:layout_constraintEnd_toStartOf="@+id/flip_recipe_sort"
+    <LinearLayout
+        android:id="@+id/grouprecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recipestorage"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal">
+        <!-- Spinner related classes from:
+        https://androiddvlpr.com/custom-spinner-android/
+        -->
+        <Spinner
+            android:id="@+id/recipesort"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="300sp"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_marginStart="10sp"
+            android:background="@drawable/spinner_bg"
+            android:contentDescription="@string/ingredient_sort"
+            android:dropDownWidth="298sp"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingEnd="14sp"
+            android:popupElevation="3sp"
+            android:stateListAnimator="@drawable/spinner_sla"/>
+
+        <ImageButton
+            android:id="@+id/flip_recipe_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:minWidth="48dp"
+            android:minHeight="40sp"
+            android:src="@drawable/ic_baseline_swap_vert_24"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/recipestorage"
-        android:layout_width="359dp"
-        android:layout_height="529dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="536sp"
+        android:layout_marginLeft="16sp"
+        android:layout_marginRight="16sp"
+        android:layout_marginTop="16sp"
         android:clickable="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:drawSelectorOnTop="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipesort" />
+        app:layout_constraintTop_toBottomOf="@+id/grouprecipe" />
 
-    <Button
-        android:id="@+id/flip_recipe_sort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Flip"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
