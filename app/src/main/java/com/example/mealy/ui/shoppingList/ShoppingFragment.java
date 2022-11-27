@@ -3,6 +3,8 @@ package com.example.mealy.ui.shoppingList;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.comparators.shoppingList.CompareShopping;
 import com.example.mealy.databinding.ShoppingListDashboardBinding;
-import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -95,15 +96,33 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
+        // List of checked items
+        ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+
+        // get all checked items
+        SparseBooleanArray checked = shoppingAdapter.getCheckedItemPositions();
+
+
         // add button on click
         // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("TAG", String.valueOf(shoppingArrayList.size()));
+                for (int i = 0; i < shoppingArrayList.size(); i++) {
+                    if (checked.get(i)) {
+                        checkedItems.add(i);
+                    }
+                }
+
+                for (int i = 0; i < checkedItems.size(); i++) {
+                    Log.d("TAG", checkedItems.get(i).toString());
+                }
                 ShoppingListAdd disp = new ShoppingListAdd();
                 disp.show(getChildFragmentManager(), TAG);
             }
         });
+
 
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
         ShoppingIngredient sample = new ShoppingIngredient("Tomato",
