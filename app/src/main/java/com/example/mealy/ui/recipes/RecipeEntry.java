@@ -375,8 +375,10 @@ public class RecipeEntry extends DialogFragment {
         String amount = listOfIngredients.get(index).getAmount();
         String unit = listOfIngredients.get(index).getUnit();
         String category = listOfIngredients.get(index).getCategory();
+        String unitCategory = listOfIngredients.get(index).getUnitCategory();
         String recipeName = RecipeName.getText().toString();
         String recipIngredientId = name + recipeName;
+
 
         // Figure out how to attach image
         // Figure out how to attach ingredient
@@ -388,6 +390,7 @@ public class RecipeEntry extends DialogFragment {
         thisData.put("Unit", unit);
         thisData.put("Category", category);
         thisData.put("Recipe Name", recipeName);
+        thisData.put("Unit Category", unitCategory);
 
         return thisData;
     }

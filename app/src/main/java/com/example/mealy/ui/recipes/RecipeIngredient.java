@@ -60,6 +60,14 @@ public class RecipeIngredient implements Parcelable {
         return this.category;
     }
 
+    /**
+     * Get the Unit Category for this Recipe Ingredient.
+     * @return
+     */
+    public String getUnitCategory() {
+        return unitCategory;
+    }
+
     // Setters
     /**
      * Set the title for this Recipe Ingredient.
@@ -102,7 +110,7 @@ public class RecipeIngredient implements Parcelable {
     }
 
     /**
-     * Set the categoryUnit for this Recipe Ingredient.
+     * Set the Unit Category for this Recipe Ingredient.
      * @return
      */
     public void setUnitCategory(String unitCategory) {
