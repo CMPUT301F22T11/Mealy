@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -39,6 +40,7 @@ public class ShoppingFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
+    private Button addButton;
 
     final String TAG = "Logging";
 
@@ -62,9 +64,10 @@ public class ShoppingFragment extends Fragment {
         shoppingIngredientListView = root.findViewById(R.id.shoppingStorage);
         flipButton = root.findViewById(R.id.flip_shopping_sort);
         sortSpinner = root.findViewById(R.id.shoppingSort);
+        addButton = root.findViewById(R.id.addShoppingIngredient);
 
         // create sorting spinner with sort categories
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
@@ -91,13 +94,66 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
+        // add button on click
+        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ShoppingListAdd disp = new ShoppingListAdd(recipeAdapter.getItem(i));
+                //disp.show(getChildFragmentManager(), TAG);
+
+            }
+        });
+
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
-        ShoppingIngredient sample = new ShoppingIngredient("tomato",
+        ShoppingIngredient sample = new ShoppingIngredient("Tomato",
                 "Tomato is a red fruit",
                 "10",
                 "kg",
                 "Vegetable");
         shoppingArrayList.add(sample);
+
+        ShoppingIngredient sample2 = new ShoppingIngredient("Grape",
+                "Grape is a green fruit",
+                "5",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample2);
+
+        ShoppingIngredient sample3 = new ShoppingIngredient("Apple",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample3);
+
+        ShoppingIngredient sample4 = new ShoppingIngredient("B",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Drink");
+        shoppingArrayList.add(sample4);
+
+        ShoppingIngredient sample5 = new ShoppingIngredient("C",
+                "This is a snack",
+                "7",
+                "kg",
+                "Snack");
+        shoppingArrayList.add(sample5);
+
+        ShoppingIngredient sample6 = new ShoppingIngredient("D",
+                "This is a drink",
+                "7",
+                "kg",
+                "Drink");
+        shoppingArrayList.add(sample6);
+
+        ShoppingIngredient sample7 = new ShoppingIngredient("E",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample7);
 
         // PULL FROM FIREBASE
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
