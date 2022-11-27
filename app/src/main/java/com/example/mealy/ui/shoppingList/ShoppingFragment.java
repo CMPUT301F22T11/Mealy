@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -39,6 +40,7 @@ public class ShoppingFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
+    private Button addButton;
 
     final String TAG = "Logging";
 
@@ -62,9 +64,10 @@ public class ShoppingFragment extends Fragment {
         shoppingIngredientListView = root.findViewById(R.id.shoppingStorage);
         flipButton = root.findViewById(R.id.flip_shopping_sort);
         sortSpinner = root.findViewById(R.id.shoppingSort);
+        addButton = root.findViewById(R.id.addShoppingIngredient);
 
         // create sorting spinner with sort categories
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
@@ -87,6 +90,17 @@ public class ShoppingFragment extends Fragment {
 
                 Collections.sort(shoppingArrayList, compare.returnComparator());
                 shoppingAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+        // add button on click
+        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ShoppingListAdd disp = new ShoppingListAdd(recipeAdapter.getItem(i));
+                //disp.show(getChildFragmentManager(), TAG);
 
             }
         });
