@@ -100,7 +100,7 @@ public class ShoppingFragment extends Fragment {
         ArrayList<Integer> checkedItems = new ArrayList<Integer>();
 
         // get all checked items
-        SparseBooleanArray checked = shoppingAdapter.getCheckedItemPositions();
+        SparseBooleanArray checked = shoppingIngredientListView.getCheckedItemPositions();
 
 
         // add button on click
