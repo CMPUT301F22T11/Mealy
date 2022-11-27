@@ -67,8 +67,8 @@ public class HomeFragment extends Fragment {
         CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
         TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //final TextView textView = binding.textHome;
+        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
 //
         // Add Listener in calendar
@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment {
                                         + (month + 1) + "-" + dayOfMonth;
 
                                 // set this date in TextView for Display
-                                date_viewThis.setText(Date);
+                                date_viewThis.setText("Planned Meals For: " + Date);
 
                                 // pull only meal plans that have this corresponding date
                                 // PULL FROM FIREBASE
