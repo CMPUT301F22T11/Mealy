@@ -137,8 +137,8 @@ public class RecipeIngredientAdd extends DialogFragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
-                thisIngredient.add("Select an Ingredient:");
-                thisCategory.add("Select a Category:");
+                thisIngredient.add("Select Ingredient");
+                thisCategory.add("Select Category");
                 thisIngredient.add("New Ingredient");
                 thisCategory.add("New Category");
 
@@ -169,7 +169,8 @@ public class RecipeIngredientAdd extends DialogFragment {
         nameSpinner = (Spinner) view.findViewById(R.id.r_ingredient_name_dropdown);
 
 
-        nameAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, thisIngredient);
+        nameAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, thisIngredient);
+        nameAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         nameSpinner.setAdapter(nameAdapter);
 
         nameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -215,7 +216,8 @@ public class RecipeIngredientAdd extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.r_ingredient_category_dropdown);
-        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, thisCategory);
+        categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, thisCategory);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         categorySpinner.setAdapter(categoryAdapter);
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -258,11 +260,12 @@ public class RecipeIngredientAdd extends DialogFragment {
     private void InitializeUnitSpinner() {
         quantityUnits = (Spinner) view.findViewById(R.id.r_ingredient_unit_dropdown);
         unitsRadioGroup = (RadioGroup) view.findViewById(R.id.r_ingredient_quantityType);
-        whole = new String[]{ "single", "Dozen", "Five Pack"};
+        whole = new String[]{ "Single", "Dozen", "Five Pack"};
         weight = new String[]{"Select Unit", "lb", "kg", "g"};
         volume = new String[]{"Select Unit", "L", "ml", "oz"};
         current = whole;
-        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
 
@@ -411,7 +414,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if ((Validate.isEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select a Category:")) && categoryNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select Category")) && categoryNewSelected == false) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -419,7 +422,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if ((Validate.isEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select an Ingredient:")) &&  nameNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select Ingredient")) &&  nameNewSelected == false) {
             TextView errorText = (TextView) nameSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
