@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.comparators.shoppingList.CompareShopping;
 import com.example.mealy.databinding.ShoppingListDashboardBinding;
+import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -99,9 +100,8 @@ public class ShoppingFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ShoppingListAdd disp = new ShoppingListAdd(recipeAdapter.getItem(i));
-                //disp.show(getChildFragmentManager(), TAG);
-
+                ShoppingListAdd disp = new ShoppingListAdd();
+                disp.show(getChildFragmentManager(), TAG);
             }
         });
 
