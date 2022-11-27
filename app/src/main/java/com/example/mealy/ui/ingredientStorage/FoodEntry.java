@@ -1,5 +1,7 @@
 package com.example.mealy.ui.ingredientStorage;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,17 +22,27 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 /**
  * Fragment for users to input info about an ingredient
@@ -39,9 +52,11 @@ public class FoodEntry extends DialogFragment {
     Spinner categorySpinner;
     Spinner quantityUnits;
     Spinner locationSpinner;
-    ArrayAdapter<CharSequence> categoryAdapter;
+    ArrayAdapter<String> categoryAdapter;
+    ArrayAdapter<String> locationAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
-    ArrayAdapter<CharSequence> locationAdapter;
+    ArrayList<String> Location = new ArrayList<>();
+    ArrayList<String> Category = new ArrayList<>();
     String[] categories;
     String[] whole;
     String[] weight;
@@ -53,6 +68,8 @@ public class FoodEntry extends DialogFragment {
     RadioButton weightButton;
     RadioButton volumeButton;
     String unitCategory;
+    Map<String, Object> categoryData;
+    Map<String, Object> locationData;
 
     DatePickerDialog datePickerDialog;
     Button ExpiryDate;
@@ -61,11 +78,16 @@ public class FoodEntry extends DialogFragment {
     EditText IngredientName;
     EditText IngredientQuantity;
     EditText DescriptionText;
+    EditText AddCategory;
+    EditText AddLocation;
+    TextView Title;
 
     View view;
 
     Ingredient ingredient;
     boolean edit;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * if no ingredient is provided, it's assumed you want to create a new ingredient
@@ -115,12 +137,36 @@ public class FoodEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
-        categories = new String[]{"Select Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
-        categoryAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, categories);
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        //categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
+        Category.add("Select Category");
+        Category.add("Add Category");
+        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
         categorySpinner.setAdapter(categoryAdapter);
+        AddCategory = view.findViewById(R.id.newCategory);
+        readCategoryFirebase();
+
+
 
         // Todo let user add categories
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 1) {
+                    AddCategory.setVisibility(View.VISIBLE);
+
+                } else {
+                    AddCategory.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                categorySpinner.setSelection(0);
+            }
+        });
+
     }
 
     /**
@@ -129,12 +175,32 @@ public class FoodEntry extends DialogFragment {
 
     private void InitializeLocationSpinner() {
         locationSpinner = (Spinner) view.findViewById(R.id.locationDropdown);
-        locations = new String[]{"Select Location", "Pantry", "Fridge", "Freezer"};
-        locationAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, locations);
-        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        //locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
+        Location.add("Select Location");
+        Location.add("Add Location");
+        locationAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Location);
+        locationAdapter.setNotifyOnChange(true);
         locationSpinner.setAdapter(locationAdapter);
+        AddLocation = view.findViewById(R.id.newLocation);
+        readLocationFirebase();
 
-        // Todo let user add locations
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 1) {
+                    AddLocation.setVisibility(View.VISIBLE);
+
+                } else {
+                    AddLocation.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                locationSpinner.setSelection(0);
+            }
+        });
+
     }
 
     /**
@@ -147,13 +213,12 @@ public class FoodEntry extends DialogFragment {
         wholeButton = view.findViewById(R.id.whole);
         volumeButton = view.findViewById(R.id.volume);
         weightButton = view.findViewById(R.id.weight);
-        whole = new String[]{"Select Unit", "Single", "Dozen", "Five Pack"};
+        whole = new String[]{"Select Unit", "single", "Dozen", "Five Pack"};
         weight = new String[]{"Select Unit", "lb", "kg", "g", "oz"};
         volume = new String[]{"Select Unit", "L", "ml", "fl oz"};
         current = whole;
         unitCategory = "Whole";
-        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
-        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
 
@@ -164,22 +229,19 @@ public class FoodEntry extends DialogFragment {
                 switch (checkedId) {
                     case R.id.whole:
                         current = whole;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
-                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Whole";
                         break;
                     case R.id.weight:
                         current = weight;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
-                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Weight";
                         break;
                     case R.id.volume:
                         current = volume;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
-                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Volume";
                         break;
@@ -206,6 +268,16 @@ public class FoodEntry extends DialogFragment {
                     String ingredientName = GetIngredientName();
                     HashMap<String, String> data = GetData();
 
+                    if (AddCategory.getVisibility() == View.VISIBLE){
+                        categoryData.put(String.valueOf(categoryData.size()+1), AddCategory.getText().toString());
+                        Firestore.storeToFirestore("Spinner","Category", categoryData);
+                    }
+
+                    if (AddLocation.getVisibility() == View.VISIBLE){
+                        locationData.put(String.valueOf(locationData.size()+1), AddLocation.getText().toString());
+                        Firestore.storeToFirestore("Spinner","Location", locationData);
+                    }
+
                     if (edit) {
                         getParentFragmentManager().beginTransaction().remove(fragment).commit();
                         Firestore.deleteFromFirestore(collection, ingredient.getName());
@@ -226,15 +298,18 @@ public class FoodEntry extends DialogFragment {
         IngredientName = (EditText) view.findViewById(R.id.ingredientName);
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
         DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
+        Title = (TextView) view.findViewById(R.id.title);
     }
 
     /**
      * Sets default values to ingredient values that we need to edit
      */
     private void EditMode() {
+        Title.setText("Edit Ingredient");
         IngredientName.setText(ingredient.getName());
         IngredientQuantity.setText(ingredient.getAmount());
         DescriptionText.setText(ingredient.getDescription());
+
 
         // this sets the button to true if its equal to the ingredient unit category
         wholeButton.setChecked(true); // true in case the field is empty
@@ -243,8 +318,8 @@ public class FoodEntry extends DialogFragment {
 
         // sets spinners to their appropriate value. Goes to default value if item is not in spinner
         quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
-        categorySpinner.setSelection(Arrays.asList(categories).indexOf(ingredient.getCategory()));
-        locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
+        //categorySpinner.setSelection(Arrays.asList(Categories).indexOf(ingredient.getCategory()));
+        //locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
         ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
     }
 
@@ -267,13 +342,25 @@ public class FoodEntry extends DialogFragment {
     private HashMap<String, String> GetData() {
 
         HashMap<String, String> data = new HashMap<>();
+        String categoryName;
+        String location;
 
-        String categoryName = categorySpinner.getSelectedItem().toString();
+        if (AddCategory.getVisibility() == View.VISIBLE) {
+            categoryName = AddCategory.getText().toString();
+        } else {
+            categoryName = categorySpinner.getSelectedItem().toString();
+        }
+
+        if (AddLocation.getVisibility() == View.VISIBLE) {
+            location = AddLocation.getText().toString();
+        } else {
+            location = locationSpinner.getSelectedItem().toString();
+        }
+
         String ingredientQuantity = IngredientQuantity.getText().toString();
         String unit = quantityUnits.getSelectedItem().toString();
         String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
         String description = DescriptionText.getText().toString();
-        String location = locationSpinner.getSelectedItem().toString();
 
         data.put("Category", categoryName);
         data.put("Quantity", ingredientQuantity);
@@ -282,7 +369,6 @@ public class FoodEntry extends DialogFragment {
         data.put("Expiry Date", expiryDate);
         data.put("Description", description);
         data.put("Location", location);
-
 
         return data;
     }
@@ -363,6 +449,21 @@ public class FoodEntry extends DialogFragment {
             isValid = false;
         }
 
+        // checks if add category is empty
+        if (AddCategory.getVisibility() == View.VISIBLE) {
+            if (Validate.isEmpty(AddCategory.getText().toString())){
+                AddCategory.setError("Please Input a New Category");
+                isValid = false;
+            }
+        }
+
+        if (AddLocation.getVisibility() == View.VISIBLE) {
+            if (Validate.isEmpty(AddLocation.getText().toString())){
+                AddLocation.setError("Please Input a New Location");
+                isValid = false;
+            }
+        }
+
         // checks if ingredientQuantity is empty
         if (Validate.isEmpty(ingredientQuantity)) {
             IngredientQuantity.setError("Please Input Quantity");
@@ -416,5 +517,64 @@ public class FoodEntry extends DialogFragment {
 
     }
 
+    public void readCategoryFirebase() {
+        String CollectionName = "Spinner";
+        String documentName = "Category";
+        DocumentReference docRef = db.collection(CollectionName).document(documentName);
+        Source source = Source.CACHE;
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        categoryData = document.getData();
+                        Category = General.mapToArrayList(categoryData);
+                        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
+                        categorySpinner.setAdapter(categoryAdapter);
+                        if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
+
+                        Log.d(TAG, "DocumentSnapshot data: " + categoryData);
+                    } else {
+                        Log.d(TAG, "No such document");
+                        assert Category != null;
+                        Firestore.storeToFirestore("Spinner", documentName, General.listToMap(Category));
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void readLocationFirebase() {
+        String CollectionName = "Spinner";
+        String documentName = "Location";
+        DocumentReference docRef = db.collection(CollectionName).document(documentName);
+        Source source = Source.CACHE;
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        locationData = document.getData();
+                        Location = General.mapToArrayList(locationData);
+                        locationAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Location);
+                        locationSpinner.setAdapter(locationAdapter);
+                        if (edit && ingredient!=null) {locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));}
+
+                        Log.d(TAG, "DocumentSnapshot data: " + locationData);
+                    } else {
+                        Log.d(TAG, "No such document");
+                        assert Location != null;
+                        Firestore.storeToFirestore("Spinner", documentName, General.listToMap(Location));
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 
 }
