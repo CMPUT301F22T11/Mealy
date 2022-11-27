@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_baseline_menu_book_24"
         android:title="@string/title_notifications" />
 
+    <item
+        android:id="@+id/navigation_shoppingList"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="@string/title_shoppingList" />
+
 </menu>

@@ -70,11 +70,16 @@ public class RecipeIngredientAdd extends DialogFragment {
 
     private static final String TAG = "DocSnippets";
 
-    boolean categoryNewSelected = false, nameNewSelected = false;
+    boolean categoryNewSelected = false, nameNewSelected = false, edit = false;
 
     View view;
 
     public RecipeIngredientAdd() {
+        // Constructor: TODO
+    }
+
+    public RecipeIngredientAdd(int i) {
+        edit = true;
         // Constructor: TODO
     }
 
@@ -322,7 +327,15 @@ public class RecipeIngredientAdd extends DialogFragment {
                     String ingredientNameNew = GetRecipeIngredientName();
                     String ingredientName = nameSpinner.getSelectedItem().toString();
 
-                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    if (edit) {
+                        getParentFragmentManager().beginTransaction().remove(fragment).commit();
+                    }
+                    else {
+                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    }
+
+
+
 
                     String name, category;
                     String recipeIngredientCategory = categorySpinner.getSelectedItem().toString();
