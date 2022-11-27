@@ -200,9 +200,8 @@ public class RecipeEntry extends DialogFragment {
              */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Recipe Ingredient")
-                            .setMessage("Select an action")
+                    new AlertDialog.Builder(getContext(), R.style.MyDialogTheme)
+                            .setMessage("What do you want to do with this ingredient?")
                             .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     ingredientIndex = i;
@@ -218,7 +217,6 @@ public class RecipeEntry extends DialogFragment {
 
                                 }
                             })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
             }
         });
