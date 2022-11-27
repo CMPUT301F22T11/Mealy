@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, "11-11-2022", sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", 3, "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
@@ -206,11 +206,29 @@ public class HomeFragment extends Fragment {
 
                                                 // fetch meal info
                                                 // fetch rest of recipe info
-                                                String meal_date = (String) doc.getData().get("Date");
-                                                System.out.println(meal_date);
+                                                String mealStartDate = (String) doc.getData().get("Start Date");
+                                                String mealEndDate = (String) doc.getData().get("End Date");
 
-                                                // ONLY FETCH FOR THIS PARTICULAR DATE
-                                                if (!meal_date.equals(Date)) {
+                                                String[] startDateComponents = mealStartDate.split("-");
+                                                String[] endDateComponents = mealEndDate.split("-");
+                                                String[] currentDateComponents = Date.split("-");
+
+                                                int startYear = Integer.parseInt(startDateComponents[0]);
+                                                int startMonth = Integer.parseInt(startDateComponents[1]);
+                                                int startDay = Integer.parseInt(startDateComponents[2]);
+
+                                                int endYear = Integer.parseInt(endDateComponents[0]);
+                                                int endMonth = Integer.parseInt(endDateComponents[1]);
+                                                int endDay = Integer.parseInt(endDateComponents[2]);
+
+                                                int thisYear = Integer.parseInt(currentDateComponents[0]);
+                                                int thisMonth = Integer.parseInt(currentDateComponents[1]);
+                                                int thisDay = Integer.parseInt(currentDateComponents[2]);
+
+                                                // ONLY FETCH IF DATE IN BETWEEN THIS PARTICULAR RANGE OF DATES
+                                                if (!((thisYear >= startYear && thisYear <= endYear) &&
+                                                        (thisMonth >= startMonth && thisMonth <= endMonth) &&
+                                                        thisDay >= startDay && thisDay <= endDay)) {
                                                     continue;
                                                 }
 
@@ -222,7 +240,7 @@ public class HomeFragment extends Fragment {
                                                 System.out.println("Got servings");
                                                 int servings = Integer.parseInt(servingsString);
 
-                                                Meal meal = new Meal(title, servings, meal_date, sampleRecipes, sampleIngredients);
+                                                Meal meal = new Meal(title, servings, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
 
                                                 mealArrayList.add(meal); // Adding new recipe using Firebase data
 
