@@ -87,16 +87,16 @@ public class Meal implements Serializable {
     }
 
     /**
-     * Get the servings for the meal
-     * @return: servings of meal
+     * Get the date for the meal
+     * @return: date of meal (yyyy-mm-dd)
      */
     public String getDate() {
         return date;
     }
 
     /**
-     * Set the servings for the meal
-     * @param: servings of meal
+     * Set the date for the meal
+     * @param: date of meal (yyyy-mm-dd)
      */
     public void setDate(String date) {
         this.date = date;
@@ -109,7 +109,7 @@ public class Meal implements Serializable {
      * @param: recipes The recipes involved in this meal plan
      * @param: ingredients The ingredients involved in this meal plan
      * @param: servings The servings of this recipe
-     * @param: date The date of this mealplan
+     * @param: date The date of this meal plan in format yyyy-mm-dd
      */
     public Meal(String title,
                   Integer servings,
