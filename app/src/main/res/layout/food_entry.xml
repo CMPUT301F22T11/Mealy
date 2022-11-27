@@ -36,20 +36,21 @@
             android:id="@+id/ingredientNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
-            android:layout_weight="1"
-            android:text="Ingredient Name: "
+            android:text="Name: "
             android:textColor="@color/dark_gray"
             android:textSize="16sp"
 
             android:textStyle="bold" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/ingredientName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:completionThreshold="1"
+            android:hint="Ingredient Name"
             android:minHeight="48sp"
             android:inputType="textPersonName"
             android:maxLength="30"
@@ -57,9 +58,17 @@
             android:textColor="@color/accent_red"
             android:gravity="center"
             android:textColorHint="@color/gray"
+            android:layout_marginEnd="6sp"
+            android:imeOptions="actionDone"
             android:autofillHints="Ingredients"
-            android:layout_marginEnd="6sp"/>
+            >
+        </AutoCompleteTextView>
+
+
     </LinearLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

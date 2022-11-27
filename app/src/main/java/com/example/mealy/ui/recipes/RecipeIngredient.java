@@ -16,6 +16,7 @@ public class RecipeIngredient implements Parcelable {
     private String amount;
     private String unit;
     private String category;
+    private String unitCategory;
 
 
     // Getters
@@ -100,6 +101,14 @@ public class RecipeIngredient implements Parcelable {
         this.category = category;
     }
 
+    /**
+     * Set the categoryUnit for this Recipe Ingredient.
+     * @return
+     */
+    public void setUnitCategory(String unitCategory) {
+        this.unitCategory = unitCategory;
+    }
+
     // Constructor
     /**
      * Constructor for the class.
@@ -108,13 +117,15 @@ public class RecipeIngredient implements Parcelable {
      * @param amount
      * @param unit
      * @param  category
+     * @param unitCategory
      */
-    public RecipeIngredient(String title, String description, String amount, String unit, String category) {
+    public RecipeIngredient(String title, String description, String amount, String unit, String category, String unitCategory) {
         this.title = title;
         this.description = description;
         this.amount = amount;
         this.unit = unit;
         this.category = category;
+        this.unitCategory = unitCategory;
     }
 
     /**
@@ -127,6 +138,7 @@ public class RecipeIngredient implements Parcelable {
         this.amount = source.readString();
         this.unit = source.readString();
         this.category = source.readString();
+        this.unitCategory = source.readString();
     }
 
     /**
@@ -151,7 +163,7 @@ public class RecipeIngredient implements Parcelable {
         parcel.writeString(this.amount);
         parcel.writeString(this.unit);
         parcel.writeString(this.category);
-
+        parcel.writeString(this.unitCategory);
     }
 
     /**

@@ -581,7 +581,8 @@ public class RecipeEntry extends DialogFragment {
                         String amount = (String) doc.getData().get("Amount");
                         String desc = (String) doc.getData().get("Description");
                         String unit = (String) doc.getData().get("Unit");
-                        RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category);
+                        String unitCategory = (String) doc.getData().get("Unit Category");
+                        RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category, unitCategory);
                         recipeIngredientAdapter.add(thisRepIn);
 
                     }

@@ -6,23 +6,28 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
@@ -39,9 +44,14 @@ import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.DateFunc;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
 /**
@@ -54,15 +64,18 @@ public class FoodEntry extends DialogFragment {
     Spinner locationSpinner;
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> locationAdapter;
+    ArrayAdapter<String> ingredientAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
     ArrayList<String> Location = new ArrayList<>();
     ArrayList<String> Category = new ArrayList<>();
-    String[] categories;
+    ArrayList<String> Ingredients = new ArrayList<>();
+    ArrayList<String> RecipeIngredients = new ArrayList<>();
+   HashMap<String, Map<String, Object>> RecipeIngredientsMaps = new HashMap<>();
+
     String[] whole;
     String[] weight;
     String[] volume;
     String[] current;
-    String[] locations;
     RadioGroup unitsRadioGroup;
     RadioButton wholeButton;
     RadioButton weightButton;
@@ -75,7 +88,7 @@ public class FoodEntry extends DialogFragment {
     Button ExpiryDate;
 
     Button Save;
-    EditText IngredientName;
+    AutoCompleteTextView IngredientName;
     EditText IngredientQuantity;
     EditText DescriptionText;
     EditText AddCategory;
@@ -117,6 +130,8 @@ public class FoodEntry extends DialogFragment {
         // Inflates View
         view = inflater.inflate(R.layout.food_entry, container, false);
 
+        InitializeIngredientName();
+        GetIngredientNames(); // Gets all the ingredient names to avoid duplicates
         // Initializes Interface
         InitializeCategorySpinner();
         InitializeQuantityUnitsSpinner();
@@ -132,6 +147,41 @@ public class FoodEntry extends DialogFragment {
         return view;
     }
 
+    private void InitializeIngredientName() {
+        IngredientName = view.findViewById(R.id.ingredientName);
+        ingredientAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, RecipeIngredients);
+        ingredientAdapter.setNotifyOnChange(true);
+        IngredientName.setAdapter(ingredientAdapter);
+
+        IngredientName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                InputMethodManager in = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                Map<String, Object> currentIngredient = RecipeIngredientsMaps.get(RecipeIngredients.get(i));
+
+                DescriptionText.setText(General.blankIfVoid((String) currentIngredient.get("Description")));
+                wholeButton.setChecked(true); // true in case the field is empty
+
+                String unit = (String) currentIngredient.get("Unit Category");
+                unit = General.blankIfVoid(unit);
+                wholeButton.setChecked(true);
+                weightButton.setChecked(unit.equals("Weight"));
+                volumeButton.setChecked(unit.equals("Volume"));
+
+                unit = (String) currentIngredient.get("Unit");
+                unit = General.blankIfVoid(unit);
+
+                quantityUnits.setSelection(Arrays.asList(current).indexOf(unit));
+
+                if (Category.contains((String) currentIngredient.get("Category"))) {
+                    categorySpinner.setSelection(Category.indexOf(General.blankIfVoid((String) currentIngredient.get("Category"))));
+                }
+            }
+        });
+    }
+
+
     /**
      * Sets up the spinner for the Category selection. Sets the values and adapter
      */
@@ -144,8 +194,6 @@ public class FoodEntry extends DialogFragment {
         categorySpinner.setAdapter(categoryAdapter);
         AddCategory = view.findViewById(R.id.newCategory);
         readCategoryFirebase();
-
-
 
         // Todo let user add categories
 
@@ -269,13 +317,17 @@ public class FoodEntry extends DialogFragment {
                     HashMap<String, String> data = GetData();
 
                     if (AddCategory.getVisibility() == View.VISIBLE){
-                        categoryData.put(String.valueOf(categoryData.size()+1), AddCategory.getText().toString());
-                        Firestore.storeToFirestore("Spinner","Category", categoryData);
+                        if (!categoryData.containsValue(AddCategory.getText().toString())) {
+                            categoryData.put(String.valueOf(categoryData.size()+1), AddCategory.getText().toString());
+                            Firestore.storeToFirestore("Spinner","Category", categoryData);
+                        }
                     }
 
                     if (AddLocation.getVisibility() == View.VISIBLE){
-                        locationData.put(String.valueOf(locationData.size()+1), AddLocation.getText().toString());
-                        Firestore.storeToFirestore("Spinner","Location", locationData);
+                        if(!locationData.containsValue(AddLocation.getText().toString())) {
+                            locationData.put(String.valueOf(locationData.size() + 1), AddLocation.getText().toString());
+                            Firestore.storeToFirestore("Spinner", "Location", locationData);
+                        }
                     }
 
                     if (edit) {
@@ -295,7 +347,6 @@ public class FoodEntry extends DialogFragment {
      * Initializes the textViews
      */
     private void InitializeTextViews() {
-        IngredientName = (EditText) view.findViewById(R.id.ingredientName);
         IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
         DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
         Title = (TextView) view.findViewById(R.id.title);
@@ -322,10 +373,6 @@ public class FoodEntry extends DialogFragment {
         //locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
         ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
     }
-
-
-
-
 
     /**
      * Takes all inputted data (except for ingredient name) and stores it into a HashMap
@@ -577,4 +624,49 @@ public class FoodEntry extends DialogFragment {
         });
     }
 
+    private void GetIngredientNames() {
+        CollectionReference ingredientReference = db.collection("Ingredients");
+        CollectionReference recipeIngredientReference = db.collection("RecipeIngredients");
+
+        ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+             * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
+             */
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String ingredient = (String) doc.getId();
+                    Ingredients.add(ingredient);
+                }
+            }
+        });
+
+        recipeIngredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+             * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
+             */
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    if (!RecipeIngredientsMaps.containsKey((String) doc.getData().get("Name"))) {
+                        RecipeIngredientsMaps.put((String) doc.getData().get("Name"), doc.getData());
+                        RecipeIngredients.add((String) doc.getData().get("Name"));
+                    }
+                }
+            }
+        });
+
+    }
 }

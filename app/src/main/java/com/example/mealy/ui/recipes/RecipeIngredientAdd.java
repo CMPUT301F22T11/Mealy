@@ -31,7 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
- * This class contains the DIalogFragment that allows the user to create/edit a RecipeIngredient entry.
+ * This class contains the DialogFragment that allows the user to create/edit a RecipeIngredient entry.
  * After hitting the "Save" button, the fragment passes the created (or edited) Recipe Ingredient
  * object back to the RecipeEntry fragment, and ends.
  */
@@ -49,6 +49,7 @@ public class RecipeIngredientAdd extends DialogFragment {
     String[] volume;
     String[] current;
     String[] names;
+    String unitCategory;
     RadioGroup unitsRadioGroup;
 
     Button Save;
@@ -257,6 +258,7 @@ public class RecipeIngredientAdd extends DialogFragment {
         weight = new String[]{"Select Unit", "lb", "kg", "g"};
         volume = new String[]{"Select Unit", "L", "ml", "oz"};
         current = whole;
+        unitCategory = "Whole";
         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
@@ -274,16 +276,19 @@ public class RecipeIngredientAdd extends DialogFragment {
                         current = whole;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Whole";
                         break;
                     case R.id.r_ingredient_quantity_weight:
                         current = weight;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Weight";
                         break;
                     case R.id.r_ingredient_quantity_volume:
                         current = volume;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
                         quantityUnits.setAdapter(unitsAdapter);
+                        unitCategory = "Volume";
                         break;
                     default:
                         Log.wtf("This shouldn't happen", String.valueOf(checkedId));
@@ -340,7 +345,7 @@ public class RecipeIngredientAdd extends DialogFragment {
                         category = recipeIngredientCategory;
                     }
 
-                    RecipeIngredient thisIngredient = new RecipeIngredient(name, recipeIngredientDescription, recipeIngredientAmount, recipeIngredientUnit, category);
+                    RecipeIngredient thisIngredient = new RecipeIngredient(name, recipeIngredientDescription, recipeIngredientAmount, recipeIngredientUnit, category, unitCategory);
 
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("RecipeIngredient", thisIngredient);
