@@ -22,4 +22,10 @@
         android:name="com.example.mealy.ui.recipes.RecipeFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_shoppingList"
+        android:name="com.example.mealy.ui.shoppingList.ShoppingFragment"
+        android:label="@string/title_shoppingList"
+        tools:layout="@layout/shopping_list_dashboard" />
 </navigation>
