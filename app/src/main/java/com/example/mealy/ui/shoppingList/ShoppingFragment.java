@@ -99,9 +99,7 @@ public class ShoppingFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ShoppingListAdd disp = new ShoppingListAdd(recipeAdapter.getItem(i));
-                //disp.show(getChildFragmentManager(), TAG);
-
+                new ShoppingListAdd().show(getActivity().getSupportFragmentManager(), "Add To Storage");
             }
         });
 
