@@ -127,6 +127,34 @@ public class ShoppingFragment extends Fragment {
                 "Fruit");
         shoppingArrayList.add(sample3);
 
+        ShoppingIngredient sample4 = new ShoppingIngredient("B",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Drink");
+        shoppingArrayList.add(sample4);
+
+        ShoppingIngredient sample5 = new ShoppingIngredient("C",
+                "This is a snack",
+                "7",
+                "kg",
+                "Snack");
+        shoppingArrayList.add(sample5);
+
+        ShoppingIngredient sample6 = new ShoppingIngredient("D",
+                "This is a drink",
+                "7",
+                "kg",
+                "Drink");
+        shoppingArrayList.add(sample6);
+
+        ShoppingIngredient sample7 = new ShoppingIngredient("E",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample7);
+
         // PULL FROM FIREBASE
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
         // get shopping table

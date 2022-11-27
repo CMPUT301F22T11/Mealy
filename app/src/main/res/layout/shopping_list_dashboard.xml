@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
-            android:minWidth="48dp"
+            android:minWidth="48sp"
             android:minHeight="40sp"
             android:src="@drawable/ic_baseline_swap_vert_24"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -50,11 +50,11 @@
     <ListView
         android:id="@+id/shoppingStorage"
         android:layout_width="360sp"
-        android:layout_height="420sp"
-        android:layout_marginTop="16dp"
+        android:layout_height="460sp"
+        android:layout_marginTop="16sp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupShopping" />
 
@@ -63,13 +63,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minHeight="48dp"
+        android:minHeight="48sp"
         android:text="+ ITEMS"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingStorage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shoppingStorage" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

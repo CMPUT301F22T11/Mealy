@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -55,12 +56,12 @@ public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView2 = currentItemView.findViewById(R.id.categoryDisplay);
-        textView1.setText(currentIngredient.getCategory());
+        textView2.setText(currentIngredient.getCategory());
 
         // TODO: Look at the receipe and display the quantity
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView3 = currentItemView.findViewById(R.id.quantityDisplay);
-        textView2.setText(currentIngredient.getQuantity());
+        textView3.setText(currentIngredient.getQuantity() + " " + currentIngredient.getUnit());
 
         // then return the recyclable view
         return currentItemView;
