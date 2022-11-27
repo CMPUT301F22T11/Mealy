@@ -122,6 +122,11 @@ public class RecipeEntry extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+
+    private void onCreateFragment() {
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             /**
              * Asks for an instance of recipe ingredient that was created, and returns it be adding it to the list of
@@ -169,11 +174,11 @@ public class RecipeEntry extends DialogFragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        onCreateFragment();
+
         if (edit) {
             EditMode();
         }
-
-
 
         return view;
     }
@@ -206,7 +211,13 @@ public class RecipeEntry extends DialogFragment {
                             .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     ingredientIndex = i;
-                                    new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                                    ingredientClicked = false;
+                                    if (edit) {
+                                        new RecipeIngredientAdd(1).show(getParentFragmentManager(), "RecipeIngredient");
+                                    }
+                                    else {
+                                        new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                                    }
                                     ingredientClicked = true;
 
                                 }
@@ -249,6 +260,26 @@ public class RecipeEntry extends DialogFragment {
                 if (edit) {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
                     Firestore.deleteFromFirestore("Recipe", RecipeName);
+                    for (int i = 0; i < listOfIngredients.size(); i++) {
+                        String ingredientName = listOfIngredients.get(i).getTitle();
+                        collectionReference = db.collection("RecipeIngredients");
+                        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                    FirebaseFirestoreException error) {
+
+                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                    String recipeName = (String) doc.getData().get("Recipe Name");
+                                    String ingredient = (String) doc.getId();
+                                    if (recipeName.equals(RecipeName) && ingredient.equals(ingredientName)) {
+                                        Firestore.deleteFromFirestore("RecipeIngredients", ingredientName);
+                                    }
+                                }
+                            }
+                        });
+
+                    }
                 } else {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
@@ -288,7 +319,13 @@ public class RecipeEntry extends DialogFragment {
             public void onClick(View view) {
 
                 ingredientClicked = false;
-                new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "test");
+                if (edit) {
+                    new RecipeIngredientAdd(1).show(getParentFragmentManager(), "RecipeIngredient");
+                }
+                else {
+                    new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                }
+
 
             }
         });
@@ -569,26 +606,27 @@ public class RecipeEntry extends DialogFragment {
         collectionReference = db.collection("RecipeIngredients");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
 
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                FirebaseFirestoreException error) {
 
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    String recipeName = (String) doc.getData().get("Recipe Name");
-                    if (recipeName.equals(recipe.getTitle())) {
-                        String ingredient = (String) doc.getId();
-                        String category = (String) doc.getData().get("Category");
-                        String amount = (String) doc.getData().get("Amount");
-                        String desc = (String) doc.getData().get("Description");
-                        String unit = (String) doc.getData().get("Unit");
-                        RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category);
-                        recipeIngredientAdapter.add(thisRepIn);
-
-                    }
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                String recipeName = (String) doc.getData().get("Recipe Name");
+                if (recipeName.equals(recipe.getTitle())) {
+                    String ingredient = (String) doc.getId();
+                    String category = (String) doc.getData().get("Category");
+                    String amount = (String) doc.getData().get("Amount");
+                    String desc = (String) doc.getData().get("Description");
+                    String unit = (String) doc.getData().get("Unit");
+                    RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category);
+                    recipeIngredientAdapter.add(thisRepIn);
 
                 }
+
             }
+        }
         });
+
     }
 }
 
