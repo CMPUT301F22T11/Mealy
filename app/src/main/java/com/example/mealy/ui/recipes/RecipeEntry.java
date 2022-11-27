@@ -37,6 +37,7 @@ import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -94,6 +95,8 @@ public class RecipeEntry extends DialogFragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     CollectionReference collectionReference;
+
+    String oldRecipName = "";
 
     Recipe recipe;
     boolean edit;
@@ -260,27 +263,28 @@ public class RecipeEntry extends DialogFragment {
 
                 if (edit) {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
-                    Firestore.deleteFromFirestore("Recipe", RecipeName);
-                    for (int i = 0; i < listOfIngredients.size(); i++) {
-                        String ingredientName = listOfIngredients.get(i).getTitle();
-                        collectionReference = db.collection("RecipeIngredients");
-                        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                    FirebaseFirestoreException error) {
-
-                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                                    String recipeName = (String) doc.getData().get("Recipe Name");
-                                    String ingredient = (String) doc.getId();
-                                    if (recipeName.equals(RecipeName) && ingredient.equals(ingredientName)) {
-                                        Firestore.deleteFromFirestore("RecipeIngredients", ingredientName);
-                                    }
-                                }
-                            }
-                        });
-
-                    }
+//                    db.collection("Recipe").document(RecipeName).delete();
+                    Firestore.deleteFromFirestore("Recipe", oldRecipName);
+//                    for (int i = 0; i < listOfIngredients.size(); i++) {
+//                        String ingredientName = listOfIngredients.get(i).getTitle();
+//                        collectionReference = db.collection("RecipeIngredients");
+//                        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//
+//                            @Override
+//                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+//                                    FirebaseFirestoreException error) {
+//
+//                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+//                                    String recipeName = (String) doc.getData().get("Recipe Name");
+//                                    String ingredient = (String) doc.getId();
+//                                    if (recipeName.equals(RecipeName) && ingredient.equals(ingredientName)) {
+//                                        Firestore.deleteFromFirestore("RecipeIngredients", ingredientName);
+//                                    }
+//                                }
+//                            }
+//                        });
+//
+//                    }
                 } else {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
@@ -404,6 +408,7 @@ public class RecipeEntry extends DialogFragment {
      * @return
      */
     private String GetRecipeName() {
+
         return RecipeName.getText().toString();
     }
 
@@ -597,6 +602,7 @@ public class RecipeEntry extends DialogFragment {
      */
     private void EditMode() {
         RecipeName.setText(recipe.getTitle());
+        oldRecipName = recipe.getTitle();
         PrepTime.setText(Integer.toString(recipe.getPreptimeHours()));
         PrepTimeMin.setText(Integer.toString(recipe.getPreptimeMins()));
         Servings.setText(Integer.toString(recipe.getServings()));
