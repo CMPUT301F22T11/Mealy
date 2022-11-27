@@ -12,7 +12,7 @@
     android:padding="16sp"
     android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants">
-    
+
     <TextView
         android:id="@+id/r_i_name"
         android:layout_width="wrap_content"

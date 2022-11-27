@@ -283,6 +283,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16sp"
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/Recipe_Entry_addIngredientToRecipe"
