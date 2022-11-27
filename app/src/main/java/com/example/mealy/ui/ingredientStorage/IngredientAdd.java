@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.DeletableAdapter;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
@@ -190,7 +191,7 @@ public class IngredientAdd extends DialogFragment {
         Category.add("Select Category");
         Category.add("Add Category");
         categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Category);
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_deletable);
         categorySpinner.setAdapter(categoryAdapter);
         AddCategory = view.findViewById(R.id.newCategory);
         readCategoryFirebase();

@@ -135,41 +135,73 @@
 
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/r_ingredient_quantityType"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/circle"
-        android:checkedButton="1"
+        android:layout_gravity="center"
         android:layout_margin="10sp"
-        android:gravity="center_horizontal"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/r_ingredient_quantity_whole"
+        <TextView
+            android:id="@+id/r_quantityTypeText"
             android:layout_width="wrap_content"
+            android:maxLines="1"
             android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="Qty Type: "
             android:textColor="@color/dark_gray"
             android:buttonTint="@color/accent_red"
-            android:checked="true"
-            android:text="Whole" />
+            android:textSize="16sp"
+            android:layout_marginStart="10sp"
+            android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/r_ingredient_quantity_weight"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/r_ingredient_quantityType"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_gray"
-            android:buttonTint="@color/accent_red"
-            android:text="Weight" />
+            android:checkedButton="1"
+            android:layout_weight="1"
+            android:layout_marginBottom="-10sp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/r_ingredient_quantity_volume"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/dark_gray"
-            android:buttonTint="@color/accent_red"
-            android:text="Volume" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/r_ingredient_quantity_whole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textColor="@color/dark_gray"
+                android:buttonTint="@color/accent_red"
+                android:maxLines="1"
+                android:text="Whole" />
+
+            <RadioButton
+                android:id="@+id/r_ingredient_quantity_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
+                android:maxLines="1"
+                android:buttonTint="@color/accent_red"
+                android:text="Weight" />
+
+            <RadioButton
+                android:id="@+id/r_ingredient_quantity_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
+                android:maxLines="1"
+                android:buttonTint="@color/accent_red"
+                android:text="Volume" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -184,10 +216,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
-            android:layout_weight="0.25"
-            android:text="Amount: "
-            android:textSize="16sp"
+            android:layout_weight="1"
+            android:text="Quantity: "
             android:textColor="@color/dark_gray"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
@@ -195,46 +227,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Amount"
-            android:ems="3"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/accent_red"
+            android:autofillHints=""
             android:background="@android:color/transparent"
-            android:minHeight="48sp" />
-
-        <TextView
-            android:id="@+id/r_ingredient_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10sp"
-            android:layout_weight="0.25"
-            android:text="Select Unit:  "
-            android:textSize="16sp"
-            android:textColor="@color/dark_gray"
-            android:textStyle="bold" />
-
-
+            android:gravity="center"
+            android:hint="Quantity"
+            android:inputType="numberDecimal"
+            android:minHeight="48sp"
+            android:textColor="@color/accent_red"
+            android:textColorHint="@color/gray" />
 
         <Spinner
             android:id="@+id/r_ingredient_unit_dropdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48sp"
-            android:minWidth="48sp"
-            android:background="@drawable/spinner_bg"
             style="@style/Widget.AppCompat.Spinner"
-            android:stateListAnimator="@drawable/spinner_sla"
-            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
-            android:spinnerMode="dropdown"
-            android:contentDescription="Test"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/spinner_bg"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:minHeight="48sp"
+            android:spinnerMode="dropdown"
+            android:stateListAnimator="@drawable/spinner_sla"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
     </LinearLayout>
 
     <LinearLayout

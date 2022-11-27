@@ -194,8 +194,6 @@ public class RecipeIngredientAdd extends DialogFragment {
                     nameNewSelected = false;
                     RecipeIngredientName.setVisibility(View.INVISIBLE);
                 }
-
-
             }
 
             /**
@@ -308,9 +306,6 @@ public class RecipeIngredientAdd extends DialogFragment {
     }
 
 
-
-
-
     /**
      * Initializes the save button.
      */
@@ -366,6 +361,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             }
         });
     }
+
 
 
     /**
