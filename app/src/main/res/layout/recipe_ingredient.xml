@@ -36,8 +36,6 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        android:s
-
         <Spinner
             android:id="@+id/r_ingredient_name_dropdown"
             android:layout_width="135sp"
