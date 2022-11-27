@@ -190,7 +190,8 @@ public class FoodEntry extends DialogFragment {
         //categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         Category.add("Select Category");
         Category.add("Add Category");
-        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
+        categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Category);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         categorySpinner.setAdapter(categoryAdapter);
         AddCategory = view.findViewById(R.id.newCategory);
         readCategoryFirebase();
@@ -226,7 +227,8 @@ public class FoodEntry extends DialogFragment {
         //locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
         Location.add("Select Location");
         Location.add("Add Location");
-        locationAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Location);
+        locationAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Location);
+        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         locationAdapter.setNotifyOnChange(true);
         locationSpinner.setAdapter(locationAdapter);
         AddLocation = view.findViewById(R.id.newLocation);
@@ -266,7 +268,8 @@ public class FoodEntry extends DialogFragment {
         volume = new String[]{"Select Unit", "L", "ml", "fl oz"};
         current = whole;
         unitCategory = "Whole";
-        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         quantityUnits.setAdapter(unitsAdapter);
         unitsAdapter.setNotifyOnChange(true);
 
@@ -277,19 +280,22 @@ public class FoodEntry extends DialogFragment {
                 switch (checkedId) {
                     case R.id.whole:
                         current = whole;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Whole";
                         break;
                     case R.id.weight:
                         current = weight;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Weight";
                         break;
                     case R.id.volume:
                         current = volume;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Volume";
                         break;
@@ -577,7 +583,8 @@ public class FoodEntry extends DialogFragment {
                     if (document.exists()) {
                         categoryData = document.getData();
                         Category = General.mapToArrayList(categoryData);
-                        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category);
+                        categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Category);
+                        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         categorySpinner.setAdapter(categoryAdapter);
                         if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
 
@@ -607,7 +614,8 @@ public class FoodEntry extends DialogFragment {
                     if (document.exists()) {
                         locationData = document.getData();
                         Location = General.mapToArrayList(locationData);
-                        locationAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, Location);
+                        locationAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Location);
+                        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         locationSpinner.setAdapter(locationAdapter);
                         if (edit && ingredient!=null) {locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));}
 

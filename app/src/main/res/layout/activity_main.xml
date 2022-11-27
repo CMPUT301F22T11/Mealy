@@ -19,20 +19,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <fragment
-        android:id="@+id/nav_host_fragment_activity_main"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0sp"
-        android:layout_height="0sp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/Home_Add_Ingredient_Entry"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:navGraph="@navigation/mobile_navigation" />
-
     <Button
         android:id="@+id/Home_Add_Ingredient_Entry"
         android:layout_width="wrap_content"

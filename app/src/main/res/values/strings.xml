@@ -3,6 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Ingredients</string>
     <string name="title_notifications">Recipes</string> <!--change this for now-->
+    <string name="title_shoppingList">Shopping List</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recipe_sort">Sort By</string>
@@ -11,15 +12,15 @@
     <string name="Recipe_Entry_preparation_timeMin">:mm</string>
     <string name="Recipe_Entry_name">Name</string>
     <string name="Recipe_Entry_recipe_name">Recipe Name:</string>
-    <string name="Recipe_Entry_enter_comments">Enter Comments</string>
+    <string name="Recipe_Entry_enter_comments">Boil 5L water...</string>
     <string name="Recipe_Entry_comments">Comments:</string>
     <string name="Recipe_Entry_category">Category</string>
     <string name="Recipe_Entry_categoryTextView">Category:</string>
-    <string name="Recipe_Entry_servings">Servings</string>
+    <string name="Recipe_Entry_servings">Servings:</string>
     <string name="Recipe_Entry_add_edit_recipe">Add/Edit Recipe</string>
     <string name="Recipe_Entry_save">SAVE</string>
     <string name="Recipe_Entry_add_ingredient_to_recipe">Add Ingredient to Recipe</string>
-    <string name="Recipe_Entry_enter_servings">Enter Servings</string>
+    <string name="Recipe_Entry_enter_servings">1,2,3...</string>
     <string name="Recipe_Entry_add_image_to_recipe">Add Image to Recipe</string>
     <string name="ingredient_sort">Sort By</string>
     <string name="TEMP">TEMP</string>

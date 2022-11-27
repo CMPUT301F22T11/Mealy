@@ -149,7 +149,7 @@ public class DisplayRecipeInfo extends DialogFragment {
                     String rec = (String) doc.getData().get("Recipe Name");
 
                     if (rec.equals(recipe.getTitle())) {
-                        String ingredient = (String) doc.getId();
+                        String ingredient = (String) doc.getData().get("Name");
                         String quantity = (String) doc.getData().get("Amount");
                         String unit = (String) doc.getData().get("Unit");
                         ingList += ingredient + ", " + quantity + " " + unit;
