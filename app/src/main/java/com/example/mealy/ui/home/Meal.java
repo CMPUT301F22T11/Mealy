@@ -109,6 +109,7 @@ public class Meal implements Serializable {
      * @param: recipes The recipes involved in this meal plan
      * @param: ingredients The ingredients involved in this meal plan
      * @param: servings The servings of this recipe
+     * @param: date The date of this mealplan
      */
     public Meal(String title,
                   Integer servings,
