@@ -401,7 +401,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if ((Validate.isEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select a Category:")) && categoryNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientCategory) || Objects.equals(recipeIngredientCategory, "Select Category")) && categoryNewSelected == false) {
             TextView errorText = (TextView) categorySpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
@@ -409,7 +409,7 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid =  false;
         }
 
-        if ((Validate.isEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select an Ingredient:")) &&  nameNewSelected == false) {
+        if ((Validate.isEmpty(recipeIngredientName) || Objects.equals(recipeIngredientName, "Select Ingredient")) &&  nameNewSelected == false) {
             TextView errorText = (TextView) nameSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);
