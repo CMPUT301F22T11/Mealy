@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
+import com.example.mealy.ui.ingredientStorage.IngredientAdd;
 import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeList;
@@ -55,6 +57,8 @@ public class HomeFragment extends Fragment {
 
     final String TAG = "Logging";
 
+    Button Add_Meal_Button;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -69,6 +73,8 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+
 
 //
         // Add Listener in calendar
@@ -111,6 +117,15 @@ public class HomeFragment extends Fragment {
 
         // create the instance of the ListView to set the meal adapter
         mealPlanListView.setAdapter(mealAdapter);
+
+        Add_Meal_Button = root.findViewById(R.id.meal_button);
+        //This is for testing, to set the button to your view, modify it in test view
+        Add_Meal_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MealPlanAdd().show(getParentFragmentManager(),"meal_plan");
+            }
+        });
 
         // set some sample meal plans
         Ingredient apple = new Ingredient("Apple",

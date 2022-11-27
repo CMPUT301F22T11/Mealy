@@ -1,6 +1,8 @@
 package com.example.mealy.ui.recipes;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 
@@ -14,13 +16,14 @@ import java.util.List;
  *
  * Recipes are serializable and can be passed between fragments.
  */
-public class Recipe implements Serializable {
+public class Recipe implements Serializable, Parcelable {
     String title;
     String comments;
     Integer servings;
     int preptimeHours;
     int preptimeMins;
     String category;
+
 
     // int imageID;
 
@@ -188,13 +191,78 @@ public class Recipe implements Serializable {
                   int preptimeMins,
                   String category,
                   // int imageID,
-                  List ingredients){
+                  List ingredients
+                    ){
         this.title = title;
         this.comments = comments;
         this.servings = servings;
         this.preptimeHours = preptimeHours;
         this.preptimeMins = preptimeMins;
         this.category = category;
-        this.recipeIngredients = ingredients;
+//        this.recipeIngredients = ingredients;
     }
+
+    /**
+     * Constructor for the class, given the parameter of a Parcel instance.
+     * @param source The Parcel in which the recipe ingredient gets all its attributes.
+     */
+    public Recipe(Parcel source) {
+        this.title = source.readString();
+        this.comments = source.readString();
+        this.servings = Integer.parseInt(source.readString());
+        this.preptimeHours = Integer.parseInt(source.readString());
+        this.category = source.readString();
+        this.preptimeMins = Integer.parseInt(source.readString());
+
+    }
+
+    /**
+     * Method used to create a bitmask return value. When we need to put a FileDescriptor object into Parcelable, we specify
+     * the CONTENTS_FILE_DESCRIPTOR field as the return value of this method. Not used for the current implementation.
+     * @return Returns a bitmask
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Method that writes to the Parcel with the attributes of this instance.
+     * @param parcel The Parcel in which the recipe ingredient should be written
+     * @param i Flag that provides additional details in how the object should be written
+     */
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.title);
+        parcel.writeString(this.comments);
+        parcel.writeInt(this.servings);
+        parcel.writeInt(this.preptimeHours);
+        parcel.writeString(this.category);
+        parcel.writeInt(this.preptimeMins);
+    }
+
+    /**
+     * Class that generates the instances of the RecipeIngredient class from a parcel.
+     */
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        /**
+         * This method creates a new instance of the parcelable class, given from Parcelable.writeToParcel()
+         * @param in Parcel to create class
+         * @return Returns the created recipe ingredient class
+         */
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        /**
+         * Creates an array of the Parcelable class.
+         * @param size specify size of array
+         * @return Returns the created array
+         */
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

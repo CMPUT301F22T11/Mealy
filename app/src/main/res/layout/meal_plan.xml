@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/accent_grey"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:minHeight="48sp"
+            android:text="Add/Edit Meal Plan"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/accent_grey"
+            android:textStyle="bold"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/Meal_Plan_Namelabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Meal_Name_Plan"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/Meal_Plan_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:autofillHints="Recipe"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
+                android:hint="@string/Recipe_Entry_name"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:minHeight="48dp"
+                android:gravity="right|center_vertical"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/accent_red"
+                android:layout_marginEnd="6sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="16sp"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/Meal_Plan_Add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_baseline_playlist_add_24"
+                tools:ignore="ImageContrastCheck"
+                android:contentDescription="@string/meal_Plan_add"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/meal_ir_list"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:nestedScrollingEnabled="true"
+            android:popupElevation="3sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="16sp"
+            android:layout_height="wrap_content">
+        </ListView>
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10sp"-->
+<!--            android:background="@drawable/circle"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/Meal_Plan_ServingsLabel"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginStart="10sp"-->
+<!--                android:textColor="@color/dark_gray"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/Recipe_Entry_servings"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/Meal_Plan_Servings"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:autofillHints=""-->
+<!--                android:hint="@string/Recipe_Entry_enter_servings"-->
+<!--                android:inputType="number"-->
+<!--                android:minHeight="48sp"-->
+<!--                android:gravity="end|center_vertical"-->
+<!--                android:layout_marginEnd="6sp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:textColorHint="@color/gray"-->
+<!--                android:textColor="@color/accent_red"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
+
+<!--        </LinearLayout>-->
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/IVPreviewImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_vertical"
+                android:maxWidth="48sp"
+                android:maxHeight="48sp"
+                android:scaleType="fitXY"
+                android:background="@drawable/border_image"
+                android:contentDescription="Image Preview" />
+
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:minHeight="48sp"
+                style="@style/ButtonStyle"
+                android:id="@+id/Meal_Plan_Submitbutton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/Meal_Plan_submit" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
