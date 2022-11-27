@@ -239,8 +239,9 @@ public class RecipeEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         CategorySpinner = view.findViewById(R.id.Recipe_Entry_CategoryDropdown);
-        RecipeCategories = new String[]{"Select A Category", "Breakfast", "Lunch", "Dinner", "Other"};
-        categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, RecipeCategories);
+        RecipeCategories = new String[]{"Select Category", "Breakfast", "Lunch", "Dinner", "Other"};
+        categoryAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_layout, RecipeCategories);
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         CategorySpinner.setAdapter(categoryAdapter);
     }
 
@@ -441,8 +442,9 @@ public class RecipeEntry extends DialogFragment {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) IVPreviewImage.getLayoutParams();
-                    params.width = General.dpToPx(200, getContext());
-                    params.height = General.dpToPx(200, getContext());
+                    params.width = General.dpToPx(48, getContext());
+                    params.height = General.dpToPx(48, getContext());
+                    params.leftMargin = General.dpToPx(16, getContext());
                     IVPreviewImage.setLayoutParams(params);
                     // update the preview image in the layout
                     IVPreviewImage.setImageURI(selectedImageUri);

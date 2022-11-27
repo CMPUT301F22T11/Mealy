@@ -36,8 +36,6 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        android:s
-
         <Spinner
             android:id="@+id/r_ingredient_name_dropdown"
             android:layout_width="135sp"
@@ -55,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:autofillHints="Recipe"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
             android:ems="10"
             android:hint="Enter new"
             android:inputType="textPersonName"
@@ -100,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:autofillHints="Recipe"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
             android:ems="10"
             android:hint="Enter new"
             android:inputType="textPersonName"
