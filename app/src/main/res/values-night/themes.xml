@@ -36,4 +36,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="CheckboxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/green</item> <!-- for uncheck state -->
+        <item name="android:textColorSecondary">@color/accent_red</item> <!-- for check state -->
+    </style>
 </resources>

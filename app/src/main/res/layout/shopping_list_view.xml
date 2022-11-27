@@ -89,6 +89,8 @@
             android:id="@+id/checkbox"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:theme="@style/CheckboxStyle"
+            android:buttonTint="@color/green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

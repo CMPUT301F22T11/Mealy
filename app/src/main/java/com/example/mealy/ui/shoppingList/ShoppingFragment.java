@@ -92,12 +92,26 @@ public class ShoppingFragment extends Fragment {
         });
 
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
-        ShoppingIngredient sample = new ShoppingIngredient("tomato",
+        ShoppingIngredient sample = new ShoppingIngredient("Tomato",
                 "Tomato is a red fruit",
                 "10",
                 "kg",
                 "Vegetable");
         shoppingArrayList.add(sample);
+
+        ShoppingIngredient sample2 = new ShoppingIngredient("Grape",
+                "Grape is a green fruit",
+                "5",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample2);
+
+        ShoppingIngredient sample3 = new ShoppingIngredient("Apple",
+                "Apple is a red fruit",
+                "7",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample3);
 
         // PULL FROM FIREBASE
         // https://www.youtube.com/watch?v=xzCsJF9WtPU
