@@ -9,16 +9,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mealy.R;
 import com.example.mealy.databinding.ShoppingListAddBinding;
 import com.example.mealy.ui.recipes.RecipeViewModel;
 
-public class ShoppingListAdd extends Fragment {
+public class ShoppingListAdd extends DialogFragment {
 
-    private ShoppingListAddBinding binding;
+    //private ShoppingListAddBinding binding;
     private final ShoppingListAdd fragment = this;
+
+    View view;
+
+
     public ShoppingListAdd() {
         // Constructor: TODO
     }
@@ -35,18 +40,13 @@ public class ShoppingListAdd extends Fragment {
                              ViewGroup container, Bundle savedInstanceState)
     {
 
-        RecipeViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(RecipeViewModel.class);
+        view = inflater.inflate(R.layout.shopping_list_add, container, false);
 
-        binding = ShoppingListAddBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        return root;
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }
