@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,7 +220,7 @@ public class RecipeEntry extends DialogFragment {
                                     ingredientIndex = i;
                                     ingredientClicked = false;
                                     if (edit) {
-                                        new RecipeIngredientAdd(1).show(getParentFragmentManager(), "RecipeIngredient");
+                                        new RecipeIngredientAdd(listOfIngredients.get(i)).show(getParentFragmentManager(), "RecipeIngredient");
                                     }
                                     else {
                                         new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
@@ -312,10 +313,12 @@ public class RecipeEntry extends DialogFragment {
 
                 ingredientClicked = false;
                 if (edit) {
-                    new RecipeIngredientAdd(1).show(getParentFragmentManager(), "RecipeIngredient");
+                    new RecipeIngredientAdd().show(getParentFragmentManager(), "RecipeIngredient");
+                    Log.wtf("idk", "Here");
                 }
                 else {
                     new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                    Log.wtf("idk", "Here2");
                 }
 
 

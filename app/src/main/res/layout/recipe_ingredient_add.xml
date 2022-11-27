@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corner"
         android:minHeight="48sp"
-        android:text="Add/Edit Recipe Ingredient"
+        android:text="Add Recipe Ingredient"
         android:gravity="center"
         android:textColor="@color/accent_grey"
         android:textStyle="bold"

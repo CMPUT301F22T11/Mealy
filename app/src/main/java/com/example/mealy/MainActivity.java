@@ -9,8 +9,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealy.ui.home.HomeFragment;
-import com.example.mealy.ui.ingredientStorage.DashboardFragment;
-import com.example.mealy.ui.ingredientStorage.FoodEntry;
+import com.example.mealy.ui.ingredientStorage.IngredientFragment;
+import com.example.mealy.ui.ingredientStorage.IngredientAdd;
 import com.example.mealy.ui.recipes.RecipeEntry;
 import com.example.mealy.ui.recipes.RecipeFragment;
 import com.example.mealy.ui.shoppingList.ShoppingFragment;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Button Home_Add_Recipe_Entry;
 
     RecipeFragment recipeFragment = new RecipeFragment();
-    DashboardFragment dashboardFragment = new DashboardFragment();
+    IngredientFragment ingredientFragment = new IngredientFragment();
     HomeFragment homeFragment = new HomeFragment();
     ShoppingFragment shoppingFragment = new ShoppingFragment();
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
                         return true;
                     case R.id.navigation_dashboard: // ingredients
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,dashboardFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, ingredientFragment).commit();
                         return true;
                     case R.id.navigation_notifications: // recipe
                         getSupportFragmentManager().beginTransaction().replace(R.id.container,recipeFragment).commit();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Home_Add_Ingredient_Entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FoodEntry().show(getSupportFragmentManager(),"food_entry");
+                new IngredientAdd().show(getSupportFragmentManager(),"food_entry");
             }
         });
 

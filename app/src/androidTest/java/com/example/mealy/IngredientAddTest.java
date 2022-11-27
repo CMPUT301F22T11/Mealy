@@ -33,7 +33,7 @@ import com.example.mealy.functions.Firestore;
  */
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.DEFAULT)
-public class FoodEntryTest {
+public class IngredientAddTest {
     /**
      * Test class for MainActivity. All the UI tests are written here. Robotium test framework is
      used

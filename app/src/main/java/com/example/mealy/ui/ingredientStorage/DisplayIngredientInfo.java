@@ -75,7 +75,7 @@ public class DisplayIngredientInfo extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // opens up FoodEntry to modify the ingredient info
-                        new FoodEntry(ingredient).show(getParentFragmentManager(),"food_entry");
+                        new IngredientAdd(ingredient).show(getParentFragmentManager(),"food_entry");
                     }
                 }).create();
     }

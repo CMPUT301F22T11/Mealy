@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import com.example.mealy.R;
 import com.example.mealy.functions.Validate;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,12 +44,10 @@ public class RecipeIngredientAdd extends DialogFragment {
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> nameAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
-    String[] categories;
     String[] whole;
     String[] weight;
     String[] volume;
     String[] current;
-    String[] names;
     String unitCategory;
     RadioGroup unitsRadioGroup;
 
@@ -76,10 +75,11 @@ public class RecipeIngredientAdd extends DialogFragment {
     View view;
 
     public RecipeIngredientAdd() {
+        edit = false;
         // Constructor: TODO
     }
 
-    public RecipeIngredientAdd(int i) {
+    public RecipeIngredientAdd(RecipeIngredient i) {
         edit = true;
         // Constructor: TODO
     }
@@ -107,7 +107,7 @@ public class RecipeIngredientAdd extends DialogFragment {
 
 
         // Inflates View
-        view = inflater.inflate(R.layout.recipe_ingredient, container, false);
+        view = inflater.inflate(R.layout.recipe_ingredient_add, container, false);
         // Initializes Interface
         InitializeNameSpinner();
         InitializeCategorySpinner();
@@ -332,16 +332,7 @@ public class RecipeIngredientAdd extends DialogFragment {
 
                     String ingredientNameNew = GetRecipeIngredientName();
                     String ingredientName = nameSpinner.getSelectedItem().toString();
-
-                    if (edit) {
-                        getParentFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
-                    else {
-                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
-
-
-
+                    getParentFragmentManager().beginTransaction().remove(fragment).commit();
 
                     String name, category;
                     String recipeIngredientCategory = categorySpinner.getSelectedItem().toString();

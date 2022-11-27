@@ -20,7 +20,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -57,8 +56,8 @@ import com.google.firebase.firestore.Source;
 /**
  * Fragment for users to input info about an ingredient
  */
-public class FoodEntry extends DialogFragment {
-    private final FoodEntry fragment = this;
+public class IngredientAdd extends DialogFragment {
+    private final IngredientAdd fragment = this;
     Spinner categorySpinner;
     Spinner quantityUnits;
     Spinner locationSpinner;
@@ -105,7 +104,7 @@ public class FoodEntry extends DialogFragment {
     /**
      * if no ingredient is provided, it's assumed you want to create a new ingredient
      */
-    public FoodEntry() {
+    public IngredientAdd() {
         edit = false;
     }
 
@@ -113,7 +112,7 @@ public class FoodEntry extends DialogFragment {
      * if an ingredient is provided, it's assumed you want to edit an ingredient
      * @param ingredient ingredient you want to edit
      */
-    public FoodEntry(Ingredient ingredient) {
+    public IngredientAdd(Ingredient ingredient) {
         this.ingredient = ingredient;
         edit = true;
     }
@@ -128,7 +127,7 @@ public class FoodEntry extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflates View
-        view = inflater.inflate(R.layout.food_entry, container, false);
+        view = inflater.inflate(R.layout.ingredient_add, container, false);
 
         InitializeIngredientName();
         GetIngredientNames(); // Gets all the ingredient names to avoid duplicates

@@ -1,6 +1,5 @@
 package com.example.mealy.functions;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,11 +11,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 
-import com.example.mealy.MainActivity;
 import com.example.mealy.R;
-import com.example.mealy.ui.ingredientStorage.FoodEntry;
 
 public class GetValue extends DialogFragment {
     String title;
