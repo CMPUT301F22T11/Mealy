@@ -8,35 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mealy.comparators.shoppingList.CompareShopping;
-import com.example.mealy.databinding.FragmentNotificationsBinding;
 import com.example.mealy.R;
+import com.example.mealy.comparators.shoppingList.CompareShopping;
+import com.example.mealy.databinding.ShoppingListDashboardBinding;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This fragment represents the shopping list screen.
@@ -45,7 +34,7 @@ import java.util.List;
  */
 public class ShoppingFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private ShoppingListDashboardBinding binding;
 
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
@@ -63,7 +52,7 @@ public class ShoppingFragment extends Fragment {
         ShoppingViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(ShoppingViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = ShoppingListDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         asc = 1;

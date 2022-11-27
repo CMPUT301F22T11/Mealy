@@ -1,108 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/accent_grey"
     android:orientation="vertical"
     android:gravity="center">
 
 
     <TextView
         android:id="@+id/r_ingredient_title"
-        android:minHeight="48sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Add/Edit Ingredient for Recipe"
+        android:background="@drawable/rounded_corner"
+        android:minHeight="48sp"
+        android:text="Add/Edit Recipe Ingredient"
+        android:gravity="center"
+        android:textColor="@color/accent_grey"
+        android:textStyle="bold"
         android:textSize="25sp"
-        android:textColor="@color/black"
-        android:background="@color/accent_red"
-        />
+        android:textAlignment="center" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
 
         <TextView
             android:id="@+id/r_ingredient_name"
-            android:layout_width="0sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ingredient Name:  "
+            android:text="Name:  "
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
             android:textSize="16sp"
+            android:textColor="@color/dark_gray"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/r_ingredient_name_dropdown"
-            android:layout_width="135sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:contentDescription="Test"
             android:minHeight="48sp"
+            android:minWidth="96sp"
             android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/r_ingredient_name_text"
-            android:layout_width="118sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:autofillHints="Recipe"
-            android:ems="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
+            android:layout_weight="1"
+            android:ems="4"
             android:hint="Enter new"
             android:inputType="textPersonName"
+            android:background="@android:color/transparent"
             android:maxLength="30"
             android:minHeight="48sp"
-            android:textColorHint="#757575"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
             android:visibility="invisible" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/r_ingredient_category"
-            android:layout_width="0sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
-            android:layout_weight="1"
-            android:text="Category: "
             android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:text="Category: "
             android:textStyle="bold" />
 
 
         <Spinner
             android:id="@+id/r_ingredient_category_dropdown"
-            android:layout_width="169sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:contentDescription="Test"
             android:minHeight="48sp"
+            android:minWidth="96sp"
             android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/r_ingredient_category_text"
-            android:layout_width="118sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:autofillHints="Recipe"
-            android:ems="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
+            android:layout_weight="0.5"
             android:hint="Enter new"
             android:inputType="textPersonName"
             android:maxLength="30"
+            android:ems="4"
             android:minHeight="48sp"
-            android:textColorHint="#757575"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
+            android:background="@android:color/transparent"
             android:visibility="invisible" />
 
     </LinearLayout>
@@ -111,8 +139,9 @@
         android:id="@+id/r_ingredient_quantityType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/circle"
         android:checkedButton="1"
-        android:layout_marginBottom="-10sp"
+        android:layout_margin="10sp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -120,6 +149,8 @@
             android:id="@+id/r_ingredient_quantity_whole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:checked="true"
             android:text="Whole" />
 
@@ -127,18 +158,24 @@
             android:id="@+id/r_ingredient_quantity_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:text="Weight" />
 
         <RadioButton
             android:id="@+id/r_ingredient_quantity_volume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:buttonTint="@color/accent_red"
             android:text="Volume" />
     </RadioGroup>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
@@ -147,23 +184,25 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
-            android:layout_weight="1"
+            android:layout_weight="0.25"
             android:text="Amount: "
             android:textSize="16sp"
+            android:textColor="@color/dark_gray"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/r_ingredient_amount_text"
-            android:layout_width="177sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
             android:hint="Amount"
+            android:ems="3"
+            android:gravity="center"
             android:inputType="numberDecimal"
-            android:minHeight="48sp"
-
-
-            />
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
+            android:background="@android:color/transparent"
+            android:minHeight="48sp" />
 
         <TextView
             android:id="@+id/r_ingredient_unit"
@@ -171,9 +210,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10sp"
-            android:layout_weight="1"
+            android:layout_weight="0.25"
             android:text="Select Unit:  "
             android:textSize="16sp"
+            android:textColor="@color/dark_gray"
             android:textStyle="bold" />
 
 
@@ -183,6 +223,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48sp"
+            android:minWidth="48sp"
+            android:background="@drawable/spinner_bg"
+            style="@style/Widget.AppCompat.Spinner"
+            android:stateListAnimator="@drawable/spinner_sla"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             android:spinnerMode="dropdown"
             android:contentDescription="Test"
             android:layout_weight="1"
@@ -193,8 +238,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <TextView
@@ -205,6 +252,7 @@
             android:layout_marginStart="10sp"
             android:layout_weight="1"
             android:text="Description: "
+            android:textColor="@color/dark_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -212,7 +260,12 @@
             android:id="@+id/r_ingredient_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_weight="0.33"
+            android:ems="8"
+            android:layout_gravity="end|center_vertical"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/accent_red"
+            android:background="@android:color/transparent"
             android:minHeight="48sp" />
 
     </LinearLayout>
@@ -225,9 +278,11 @@
 
         <Button
             android:id="@+id/add_r_ingredient"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:minHeight="48dp"
+            style="@style/ButtonStyle"
             android:text="@string/Recipe_Ingredient_save"/>
     </LinearLayout>
 
