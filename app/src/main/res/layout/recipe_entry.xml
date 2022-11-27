@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,56 +11,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@color/accent_grey"
         android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/Recipe_Entry_title"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/accent_red"
-            android:minHeight="48dp"
-            android:text="@string/Recipe_Entry_add_edit_recipe"
+            android:background="@drawable/rounded_corner"
+            android:minHeight="48sp"
+            android:text="Add/Edit Recipe"
+            android:gravity="center"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textColor="@color/accent_grey"
+            android:textStyle="bold"
+            android:textSize="25sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
 
             <TextView
                 android:id="@+id/Recipe_Entry_recipeNameLabel"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
                 android:layout_weight="1"
                 android:text="@string/Recipe_Entry_recipe_name"
+                android:textColor="@color/dark_gray"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/Recipe_Entry_RecipeName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:autofillHints="Recipe"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -"
-                android:ems="10"
                 android:hint="@string/Recipe_Entry_name"
                 android:inputType="textPersonName"
                 android:maxLength="30"
                 android:minHeight="48dp"
-                android:textColorHint="#757575" />
+                android:gravity="right|center_vertical"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/accent_red"
+                android:layout_marginEnd="6sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
             <TextView
@@ -69,37 +82,55 @@
                 android:layout_marginStart="10sp"
                 android:layout_weight="1"
                 android:text="@string/Recipe_Entry_prep_time"
+                android:textColor="@color/dark_gray"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/Recipe_Entry_prepTimeHour"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="2"
-                android:hint="@string/Recipe_Entry_preparation_timeHour"
-                android:inputType="number"
-                android:minHeight="48dp"
-                android:textColorHint="#757575"
-                android:autofillHints="" />
+                android:orientation="horizontal"
+                android:background="@drawable/circle">
 
-            <EditText
-                android:id="@+id/Recipe_Entry_prepTimeMin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:autofillHints=""
-                android:ems="2"
-                android:hint="@string/Recipe_Entry_preparation_timeMin"
-                android:inputType="number"
-                android:minHeight="48dp"
-                android:textColorHint="#757575" />
+                <EditText
+                    android:id="@+id/Recipe_Entry_prepTimeHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/Recipe_Entry_preparation_timeHour"
+                    android:ems="2"
+                    android:inputType="number"
+                    android:minHeight="48dp"
+                    android:background="@android:color/transparent"
+                    android:textColorHint="@color/gray"
+                    android:gravity="center"
+                    android:textColor="@color/accent_red"
+                    android:autofillHints="" />
+
+                <EditText
+                    android:id="@+id/Recipe_Entry_prepTimeMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="2"
+                    android:autofillHints=""
+                    android:hint="@string/Recipe_Entry_preparation_timeMin"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:background="@android:color/transparent"
+                    android:minHeight="48dp"
+                    android:textColor="@color/accent_red"
+                    android:textColorHint="@color/gray" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
             <TextView
@@ -108,6 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
+                android:textColor="@color/dark_gray"
                 android:layout_weight="1"
                 android:text="@string/Recipe_Entry_servings"
                 android:textSize="16sp"
@@ -118,26 +150,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
-                android:ems="10"
                 android:hint="@string/Recipe_Entry_enter_servings"
                 android:inputType="number"
-                android:textColorHint="#757575"
+                android:minHeight="48sp"
+                android:gravity="end|center_vertical"
+                android:layout_marginEnd="6sp"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/accent_red"
                 tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/Recipe_Entry_CategoryTextView"
-                android:layout_width="0dp"
+                android:layout_width="0sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
                 android:layout_weight="1"
+                android:textColor="@color/dark_gray"
                 android:text="@string/Recipe_Entry_categoryTextView"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -149,6 +188,10 @@
                 android:contentDescription="@string/Recipe_Entry_category"
                 android:minHeight="48dp"
                 android:spinnerMode="dropdown"
+                android:background="@drawable/spinner_bg"
+                style="@style/Widget.AppCompat.Spinner"
+                android:stateListAnimator="@drawable/spinner_sla"
+                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -157,8 +200,10 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
             <TextView
@@ -169,6 +214,7 @@
                 android:layout_marginStart="10sp"
                 android:layout_weight="1"
                 android:text="@string/Recipe_Entry_comments"
+                android:textColor="@color/dark_gray"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -179,8 +225,12 @@
                 android:ems="10"
                 android:hint="@string/Recipe_Entry_enter_comments"
                 android:minHeight="48dp"
-                android:textColorHint="#757575"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="4sp"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/accent_red"
                 android:autofillHints=""
+                android:gravity="end|center_vertical"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
@@ -192,46 +242,58 @@
 
             <ImageButton
                 android:id="@+id/Recipe_Entry_AddImage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_baseline_photo_camera_24"
+                android:background="@android:color/transparent"
                 android:contentDescription="@string/Recipe_Entry_add_image_to_recipe"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/IVPreviewImage"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center_vertical"
+                android:maxWidth="48sp"
+                android:maxHeight="48sp"
+                android:scaleType="fitXY"
+                android:background="@drawable/border_image"
                 android:contentDescription="Image Preview" />
+
+
+
+
+
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/ingredient_list"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:nestedScrollingEnabled="true"
+            android:popupElevation="3sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="16sp"
+            android:layout_height="wrap_content">
+        </ListView>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <ImageButton
                 android:id="@+id/Recipe_Entry_addIngredientToRecipe"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_menu_add"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_baseline_playlist_add_24"
                 tools:ignore="ImageContrastCheck"
                 android:contentDescription="@string/Recipe_Entry_add_ingredient_to_recipe"/>
-
-
         </LinearLayout>
-        
-           <ListView
-                android:id="@+id/ingredient_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></ListView>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -239,6 +301,8 @@
             android:orientation="horizontal">
 
             <Button
+                android:minHeight="48sp"
+                style="@style/ButtonStyle"
                 android:id="@+id/Recipe_Entry_saveButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -248,4 +312,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
