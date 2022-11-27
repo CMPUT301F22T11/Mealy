@@ -86,6 +86,8 @@ public class RecipeEntry extends DialogFragment {
 
     ListView ingredientList;
 
+    ArrayList<RecipeIngredient> oldIngredients = new ArrayList<>();
+
     boolean ingredientClicked = false;
 
     int ingredientIndex;
@@ -142,7 +144,9 @@ public class RecipeEntry extends DialogFragment {
 
                 RecipeIngredient thisIngredient = (RecipeIngredient)  bundle.getParcelable("RecipeIngredient");
                 if (ingredientClicked == false) {
-                    recipeIngredientAdapter.add(thisIngredient);
+                    listOfIngredients.add(thisIngredient);
+                    recipeIngredientAdapter.notifyDataSetChanged();
+//                    recipeIngredientAdapter.add(thisIngredient);
                 }
                 else {
                     listOfIngredients.set(ingredientIndex, thisIngredient);
@@ -265,26 +269,11 @@ public class RecipeEntry extends DialogFragment {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
 //                    db.collection("Recipe").document(RecipeName).delete();
                     Firestore.deleteFromFirestore("Recipe", oldRecipName);
-//                    for (int i = 0; i < listOfIngredients.size(); i++) {
-//                        String ingredientName = listOfIngredients.get(i).getTitle();
-//                        collectionReference = db.collection("RecipeIngredients");
-//                        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//
-//                            @Override
-//                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-//                                    FirebaseFirestoreException error) {
-//
-//                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-//                                    String recipeName = (String) doc.getData().get("Recipe Name");
-//                                    String ingredient = (String) doc.getId();
-//                                    if (recipeName.equals(RecipeName) && ingredient.equals(ingredientName)) {
-//                                        Firestore.deleteFromFirestore("RecipeIngredients", ingredientName);
-//                                    }
-//                                }
-//                            }
-//                        });
-//
-//                    }
+                    for (int i = 0; i < oldIngredients.size(); i++) {
+                        String ingredientName = oldIngredients.get(i).getTitle();
+                        String thisIngredientID = ingredientName + oldRecipName;
+                        Firestore.deleteFromFirestore("RecipeIngredients", thisIngredientID);
+                    }
                 } else {
                     requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
@@ -292,8 +281,8 @@ public class RecipeEntry extends DialogFragment {
                 Firestore.storeToFirestore("Recipe", RecipeName, data);
                 for (int i = 0; i < listOfIngredients.size(); i++) {
                     HashMap<String, String> thisData = GetDataIngredient(i);
-                    String ingredientName = listOfIngredients.get(i).getTitle();
-                    Firestore.storeToFirestore("RecipeIngredients", ingredientName, thisData);
+                    String ingredientID = listOfIngredients.get(i).getTitle() + RecipeName;
+                    Firestore.storeToFirestore("RecipeIngredients", ingredientID, thisData);
                 }
                 uploadImage();
             }
@@ -389,10 +378,12 @@ public class RecipeEntry extends DialogFragment {
         String unit = listOfIngredients.get(index).getUnit();
         String category = listOfIngredients.get(index).getCategory();
         String recipeName = RecipeName.getText().toString();
+        String recipIngredientId = name + recipeName;
 
         // Figure out how to attach image
         // Figure out how to attach ingredient
 
+        thisData.put("ID", recipIngredientId);
         thisData.put("Name", name);
         thisData.put("Description", description);
         thisData.put("Amount", amount);
@@ -621,13 +612,15 @@ public class RecipeEntry extends DialogFragment {
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 String recipeName = (String) doc.getData().get("Recipe Name");
                 if (recipeName.equals(recipe.getTitle())) {
-                    String ingredient = (String) doc.getId();
+                    String ingredient = (String) doc.getData().get("Name");
                     String category = (String) doc.getData().get("Category");
                     String amount = (String) doc.getData().get("Amount");
                     String desc = (String) doc.getData().get("Description");
                     String unit = (String) doc.getData().get("Unit");
                     RecipeIngredient thisRepIn = new RecipeIngredient(ingredient, desc, amount, unit, category);
-                    recipeIngredientAdapter.add(thisRepIn);
+                    listOfIngredients.add(thisRepIn);
+                    recipeIngredientAdapter.notifyDataSetChanged();
+                    oldIngredients.add(thisRepIn);
 
                 }
 
