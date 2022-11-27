@@ -1,5 +1,7 @@
 package com.example.mealy.ui.home;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,7 +28,20 @@ import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeList;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +141,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, "11-11-2022", sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", 3, "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
@@ -163,11 +179,81 @@ public class HomeFragment extends Fragment {
                                 // Add 1 in month because month
                                 // index is start with 0
                                 String Date
-                                        = dayOfMonth + "-"
-                                        + (month + 1) + "-" + year;
+                                        = year + "-"
+                                        + (month + 1) + "-" + dayOfMonth;
 
                                 // set this date in TextView for Display
                                 date_viewThis.setText(Date);
+
+                                // pull only meal plans that have this corresponding date
+                                // PULL FROM FIREBASE
+
+                                // get recipe table
+                                FirebaseFirestore dbf = FirebaseFirestore.getInstance();
+                                final CollectionReference mealCollection = dbf.collection("Meals");
+
+                                mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                            FirebaseFirestoreException error) {
+
+                                        // Clear the old list
+                                        mealArrayList.clear();
+
+                                        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                                        {
+                                            try {
+
+                                                // fetch meal info
+                                                // fetch rest of recipe info
+                                                String mealStartDate = (String) doc.getData().get("Start Date");
+                                                String mealEndDate = (String) doc.getData().get("End Date");
+
+                                                String[] startDateComponents = mealStartDate.split("-");
+                                                String[] endDateComponents = mealEndDate.split("-");
+                                                String[] currentDateComponents = Date.split("-");
+
+                                                int startYear = Integer.parseInt(startDateComponents[0]);
+                                                int startMonth = Integer.parseInt(startDateComponents[1]);
+                                                int startDay = Integer.parseInt(startDateComponents[2]);
+
+                                                int endYear = Integer.parseInt(endDateComponents[0]);
+                                                int endMonth = Integer.parseInt(endDateComponents[1]);
+                                                int endDay = Integer.parseInt(endDateComponents[2]);
+
+                                                int thisYear = Integer.parseInt(currentDateComponents[0]);
+                                                int thisMonth = Integer.parseInt(currentDateComponents[1]);
+                                                int thisDay = Integer.parseInt(currentDateComponents[2]);
+
+                                                // ONLY FETCH IF DATE IN BETWEEN THIS PARTICULAR RANGE OF DATES
+                                                if (!((thisYear >= startYear && thisYear <= endYear) &&
+                                                        (thisMonth >= startMonth && thisMonth <= endMonth) &&
+                                                        thisDay >= startDay && thisDay <= endDay)) {
+                                                    continue;
+                                                }
+
+                                                System.out.println("Meal plan detected for this day!");
+
+                                                String title = (String) doc.getData().get("Title");
+                                                System.out.println("Got title");
+                                                String servingsString = (String) doc.getData().get("Servings");
+                                                System.out.println("Got servings");
+                                                int servings = Integer.parseInt(servingsString);
+
+                                                Meal meal = new Meal(title, servings, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
+
+                                                mealArrayList.add(meal); // Adding new recipe using Firebase data
+
+                                            } catch (Exception e) {
+                                                System.out.println("Error with firebase pull, incorrect formatting");
+                                            }
+                                        }
+                                        mealAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+                                    }
+                                });
+
+
+
                             }
                         });
 
