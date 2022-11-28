@@ -3,7 +3,7 @@ package com.example.mealy.ui.shoppingList;
 import com.example.mealy.functions.General;
 
 /**
- * Ingredients
+ * Ingredients for the shopping tab
  */
 public class ShoppingIngredient {
     String name;
@@ -12,6 +12,14 @@ public class ShoppingIngredient {
     String unit;
     String category;
 
+    /**
+     * Constructor
+     * @param name of the specific ingredient
+     * @param description of the specific ingredient
+     * @param quantity of the specific ingredient
+     * @param unit of the specific ingredient
+     * @param category of the specific ingredient
+     */
     public ShoppingIngredient(String name,
                       String description,
                       String quantity,
@@ -25,6 +33,10 @@ public class ShoppingIngredient {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return General.blankIfVoid(name);
     }
