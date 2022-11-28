@@ -8,6 +8,12 @@ import com.example.mealy.ui.recipes.Recipe;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * A class representing a meal.
+ * This contains all necessary attributes used to describe a meal.
+ *
+ * Recipes are serializable and can be passed between fragments.
+ */
 public class Meal implements Serializable {
     String title;
     String startDate; // the day that this meal plan starts with
