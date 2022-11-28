@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import android.widget.AdapterView;
@@ -65,7 +66,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    Button Add_Meal_Button;
+    ImageButton Add_Meal_Button;
 
     ArrayList<Meal> listofMeals = new ArrayList<Meal>();
     ArrayList<Meal> mealAdapter;
