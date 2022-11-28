@@ -14,12 +14,15 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
+import com.example.mealy.databinding.ShoppingListAddBinding;
+import com.example.mealy.functions.Firestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShoppingListAdd extends DialogFragment {
 
-    //private ShoppingListAddBinding binding;
+    private ShoppingListAddBinding binding;
     private final ShoppingListAdd fragment = this;
     private ListView ShoppingListview;
     private Button addButton;
@@ -46,6 +49,8 @@ public class ShoppingListAdd extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
+        binding = ShoppingListAddBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         view = inflater.inflate(R.layout.shopping_list_add, container, false);
 
@@ -74,7 +79,13 @@ public class ShoppingListAdd extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
+                final String collection = "Ingredients";
+                for(int i=0; i<items.size(); i++) {
+                    String ingredientName = items.get(i).getName();
+                    HashMap<String, String > data = GetData(items.get(i));
+                    Firestore.storeToFirestore(collection, ingredientName, data);
+                }
+                getParentFragmentManager().beginTransaction().remove(fragment).commit();
             }
         });
 
@@ -94,31 +105,32 @@ public class ShoppingListAdd extends DialogFragment {
      *
      * @return HashMap of the data inputted (except for ingredient name)
      */
-//    private HashMap<String, String> GetData() {
-//
-//        HashMap<String, String> data = new HashMap<>();
-//        String categoryName;
-//        String location;
-//
-//        String ingredientQuantity = IngredientQuantity.getText().toString();
-//        String unit = quantityUnits.getSelectedItem().toString();
-//        String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
-//        String description = DescriptionText.getText().toString();
-//
-//        data.put("Category", categoryName);
-//        data.put("Quantity", ingredientQuantity);
-//        data.put("Quantity Unit", unit);
-//        data.put("Unit Category", unitCategory);
-//        data.put("Expiry Date", expiryDate);
-//        data.put("Description", description);
-//        data.put("Location", location);
-//
-//        return data;
-//    }
+    private HashMap<String, String> GetData(ShoppingIngredient Item) {
+
+        HashMap<String, String> data = new HashMap<>();
+        String categoryName = Item.getCategory();
+        String location = null;
+        String ingredientQuantity = Item.getQuantity();
+        String unit = Item.getUnit();
+        String expiryDate = null;
+        String unitCategory = null;
+        String description = Item.getDescription();
+
+        data.put("Category", categoryName);
+        data.put("Quantity", ingredientQuantity);
+        data.put("Quantity Unit", unit);
+        data.put("Unit Category", unitCategory);
+        data.put("Expiry Date", expiryDate);
+        data.put("Description", description);
+        data.put("Location", location);
+
+        return data;
+    }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding=null;
     }
 }
