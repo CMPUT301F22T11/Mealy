@@ -43,7 +43,7 @@ public class ShoppingFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
-    private Button addButton;
+    private ImageButton addButton;
 
     final String TAG = "Logging";
 
