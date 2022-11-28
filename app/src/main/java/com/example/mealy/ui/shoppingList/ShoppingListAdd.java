@@ -1,136 +1,73 @@
 package com.example.mealy.ui.shoppingList;
+// taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/
 
-import android.os.Build;
-import android.os.Bundle;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
-import com.example.mealy.databinding.ShoppingListAddBinding;
-import com.example.mealy.functions.Firestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class ShoppingListAdd extends DialogFragment {
+/**
+ * This class extends from ArrayAdapter, and is used to insert the ingredient into the ingredientList
+ */
+public class ShoppingListAdd extends ArrayAdapter<ShoppingIngredient> {
 
-    private ShoppingListAddBinding binding;
-    private final ShoppingListAdd fragment = this;
-    private ListView ShoppingListview;
-    private Button addButton;
-    ArrayList<ShoppingIngredient> items;
-    ArrayList<ShoppingIngredient> shoppingAddList;
-    ArrayList<ShoppingIngredient> ingredientsToBeAdded = new ArrayList<ShoppingIngredient>();
+    // invoke the suitable constructor of the ArrayAdapter class
+    public ShoppingListAdd(@NonNull Context context, ArrayList<ShoppingIngredient> arrayList) {
 
-    View view;
-
-    // variables that are passed through
-
-    public ShoppingListAdd(ArrayList<ShoppingIngredient> items) {
-        this.items = items;
+        // pass the context and arrayList for the super
+        // constructor of the ArrayAdapter class
+        super(context, 0, arrayList);
     }
+
+    @NonNull
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    /**
-     * This is the override for the oncreate
-     * @param savedInstanceState
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
-    {
-        binding = ShoppingListAddBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        view = inflater.inflate(R.layout.shopping_list_add, container, false);
+        // convertView which is recyclable view
+        View currentItemView = convertView;
 
-        // Initialize button
-        addButton = view.findViewById(R.id.ShoppingCartAddSelectedAddButton);
-        // Initialize list
-        ShoppingListview = view.findViewById(R.id.shoppingCartAddSelectedList);
-
-        for(int i=0; i<items.size(); i++){
-            for(int j=0; j<items.size(); j++){
-                if(i!=j && (items.get(i) == items.get(j))){
-                    items.remove(j);
-                }
-            }
+        // of the recyclable view is null then inflate the custom layout for the same
+        if (currentItemView == null) {
+            currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.shopping_list_add_view, parent, false);
         }
-        // Create the adapter and set it to the arraylist
-        ShoppingList shoppingAdapter = new ShoppingList(getActivity(), items);
 
-        shoppingAdapter.notifyDataSetChanged();
+        // get the position of the view from the ArrayAdapter
+        ShoppingIngredient currentIngredient = getItem(position);
 
-        // create the instance of the ListView to set the shopping list adapter
-        ListView storage = view.findViewById(R.id.shoppingCartAddSelectedList);
-        storage.setAdapter(shoppingAdapter);
+        // then according to the position of the view assign the desired image for the same
+        // currently disabled, image adding may be considered for ingredients at a later date.
+        ImageView ingredientImage = currentItemView.findViewById(R.id.shoppingListAddImageView);
+        assert ingredientImage != null;
+        //ingredientImage.setImageResource(R.drawable.meat_rat);
 
+        // then according to the position of the view assign the desired TextView 1 for the same
+        TextView textView1 = currentItemView.findViewById(R.id.shoppingListAddIngredientName);
+        textView1.setText(currentIngredient.getName());
 
-        addButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                final String collection = "Ingredients";
-                for(int i=0; i<items.size(); i++) {
-                    String ingredientName = items.get(i).getName();
-                    HashMap<String, String > data = GetData(items.get(i));
-                    Firestore.storeToFirestore(collection, ingredientName, data);
-                }
-                getParentFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        });
+        // then according to the position of the view assign the desired TextView 1 for the same
+        TextView textView2 = currentItemView.findViewById(R.id.ShoppingListAddCategory);
+        textView2.setText(currentIngredient.getCategory());
 
-        return view;
-    }
+        // TODO: Look at the receipe and display the quantity
+        // then according to the position of the view assign the desired TextView 2 for the same
+        TextView textView3 = currentItemView.findViewById(R.id.ShoppingListAddQuantity);
+        textView3.setText(currentIngredient.getQuantity() + " " + currentIngredient.getUnit());
 
+        // Description
+        TextView textView4 = currentItemView.findViewById(R.id.shoppingListAddDescription);
+        textView4.setText(currentIngredient.getDescription());
 
-    /**
-     * Takes all inputted data (except for ingredient name) and stores it into a HashMap
-     * Hashmap:
-     * Key            Value
-     * Category       categoryName
-     * Quantity       ingredientQuantity
-     * Quantity Unit  unit
-     * Expiry Date    expiryDate
-     * Description    description
-     *
-     * @return HashMap of the data inputted (except for ingredient name)
-     */
-    private HashMap<String, String> GetData(ShoppingIngredient Item) {
-
-        HashMap<String, String> data = new HashMap<>();
-        String categoryName = Item.getCategory();
-        String location = null;
-        String ingredientQuantity = Item.getQuantity();
-        String unit = Item.getUnit();
-        String expiryDate = null;
-        String unitCategory = null;
-        String description = Item.getDescription();
-
-        data.put("Category", categoryName);
-        data.put("Quantity", ingredientQuantity);
-        data.put("Quantity Unit", unit);
-        data.put("Unit Category", unitCategory);
-        data.put("Expiry Date", expiryDate);
-        data.put("Description", description);
-        data.put("Location", location);
-
-        return data;
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding=null;
+        // then return the recyclable view
+        return currentItemView;
     }
 }
