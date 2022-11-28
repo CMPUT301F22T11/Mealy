@@ -333,6 +333,7 @@ public class ShoppingFragment extends Fragment {
             // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
             for (Recipe y : recipeMealList){
                 String recipeName = y.getTitle();
+                Log.d("TAG", recipeName);
                 // Checking all the ingredients of the recipe and adding them to ingredientMealList
                 for (RecipeIngredient z : recipeIngredientsList){
                     String tempTitle[] = z.getTitle().split(",");
@@ -347,6 +348,7 @@ public class ShoppingFragment extends Fragment {
             for (Ingredient y : ingredientMealList){
                 ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
                 String tempName = tempIngredient.getName();
+                Log.d("TAG", tempName);
                 boolean shoppingIngredientExists = false;
                 // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
                 for(ShoppingIngredient z : shoppingArrayList){
@@ -369,6 +371,8 @@ public class ShoppingFragment extends Fragment {
             String name = x.getName();
             String amount = x.getQuantity();
             int amountNeeded = Integer.valueOf(amount);
+            Log.d("TAG", name);
+            Log.d("TAG", amount);
 
             // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
             // If it does, then check if it need to buy more, otherwise, remove from shopping list.
@@ -404,7 +408,6 @@ public class ShoppingFragment extends Fragment {
 
             }
         });
-
 
 
         // set the spinner to sort things correctly
