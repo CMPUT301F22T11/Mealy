@@ -81,6 +81,7 @@ public class IngredientAdd extends DialogFragment {
     RadioButton weightButton;
     RadioButton volumeButton;
     String unitCategory;
+    String oldName;
     Map<String, Object> categoryData;
     Map<String, Object> locationData;
 
@@ -322,7 +323,7 @@ public class IngredientAdd extends DialogFragment {
 
                     if (AddCategory.getVisibility() == View.VISIBLE){
                         if (!categoryData.containsValue(AddCategory.getText().toString())) {
-                            categoryData.put(String.valueOf(categoryData.size()+1), AddCategory.getText().toString());
+                            categoryData.put(String.valueOf(categoryData.size()), AddCategory.getText().toString());
                             Firestore.storeToFirestore("Spinner","Category", categoryData);
                         }
                     }
@@ -357,6 +358,7 @@ public class IngredientAdd extends DialogFragment {
      */
     private void EditMode() {
         Title.setText("Edit Ingredient");
+        oldName = ingredient.getName();
         IngredientName.setText(ingredient.getName());
         IngredientQuantity.setText(ingredient.getAmount());
         DescriptionText.setText(ingredient.getDescription());
@@ -369,9 +371,8 @@ public class IngredientAdd extends DialogFragment {
 
         // sets spinners to their appropriate value. Goes to default value if item is not in spinner
         quantityUnits.setSelection(Arrays.asList(current).indexOf(ingredient.getUnit()));
-        //categorySpinner.setSelection(Arrays.asList(Categories).indexOf(ingredient.getCategory()));
-        //locationSpinner.setSelection(Arrays.asList(locations).indexOf(ingredient.getLocation()));
         ExpiryDate.setText(DateFunc.makeDateString(ingredient.getExpiryDate()));
+
     }
 
     /**
@@ -487,9 +488,16 @@ public class IngredientAdd extends DialogFragment {
             isValid = false;
         }
 
-        if (Ingredients.contains(ingredientName)) {
+        if (Ingredients.contains(ingredientName) && !edit) {
             IngredientName.setError("This ingredient already exists");
             isValid = false;
+        }
+
+        if (Ingredients.contains(ingredientName) && edit) {
+            if (!ingredientName.equals(oldName)) {
+                IngredientName.setError("This ingredient already exists");
+                isValid = false;
+            }
         }
 
         // checks if categoryName is empty or equal to the default text
@@ -631,7 +639,9 @@ public class IngredientAdd extends DialogFragment {
                         Location = General.mapToArrayList(locationData);
                         locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
                         locationSpinner.setAdapter(locationAdapter);
-                        if (edit && ingredient!=null) {locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));}
+                        if (edit && ingredient!=null) {
+                            locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));
+                        }
 
                         Log.d(TAG, "DocumentSnapshot data: " + locationData);
                     } else {

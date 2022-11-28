@@ -65,6 +65,7 @@ public class RecipeIngredientAdd extends DialogFragment {
     String[] volume;
     String[] current;
     String unitCategory;
+    String oldIngredient;
     RadioGroup unitsRadioGroup;
     RadioButton wholeButton;
     RadioButton weightButton;
@@ -81,6 +82,8 @@ public class RecipeIngredientAdd extends DialogFragment {
     Map<String, Object> categoryData;
     ArrayList<String> IngredientNames = new ArrayList<String>();
     RecipeIngredient ingredient;
+    ArrayList<RecipeIngredient> listOfIngredients;
+    ArrayList<String> savedIngredients = new ArrayList<String>();;
 
 
 
@@ -97,14 +100,17 @@ public class RecipeIngredientAdd extends DialogFragment {
 
     View view;
 
-    public RecipeIngredientAdd() {
+    public RecipeIngredientAdd(ArrayList<RecipeIngredient> listOfIngredients) {
         edit = false;
+        this.listOfIngredients = listOfIngredients;
         // Constructor: TODO
     }
 
-    public RecipeIngredientAdd(RecipeIngredient ingredient) {
+    public RecipeIngredientAdd(RecipeIngredient ingredient, ArrayList<RecipeIngredient> listOfIngredients) {
         edit = true;
         this.ingredient = ingredient;
+        this.oldIngredient = ingredient.getTitle();
+        this.listOfIngredients = listOfIngredients;
         // Constructor: TODO
     }
 
@@ -132,6 +138,16 @@ public class RecipeIngredientAdd extends DialogFragment {
 
         // Inflates View
         view = inflater.inflate(R.layout.recipe_ingredient_add, container, false);
+
+        for (RecipeIngredient i: listOfIngredients) {
+            savedIngredients.add(i.getTitle());
+        }
+        if (edit) {
+            savedIngredients.remove(oldIngredient);
+        }
+
+
+
         // Initializes Interface
         InitializeNameSpinner();
         InitializeCategorySpinner();
@@ -430,6 +446,10 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid = false;
         }
 
+        if (savedIngredients.contains(ingredientName.getText().toString())) {
+            ingredientName.setError("This ingredient already exists");
+            isValid = false;
+        }
 
         if (Validate.isEmpty(recipeIngredientAmount)) {
             RecipeIngredientAmount.setError("Please input amount");
@@ -510,7 +530,7 @@ public class RecipeIngredientAdd extends DialogFragment {
 
         CollectionReference ingredientReference = db.collection("Ingredients");
         ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            
+
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
@@ -539,6 +559,7 @@ public class RecipeIngredientAdd extends DialogFragment {
                         IngredientNames.add(name);
                     }
                 }
+                IngredientNames.removeAll(savedIngredients);
             }
         });
 
