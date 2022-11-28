@@ -1,4 +1,4 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.ingredientStorage;
 
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 
@@ -27,6 +27,6 @@ public class SortByCategory implements Comparator<Ingredient> {
      * @return int
      */
     public int compare(Ingredient a, Ingredient b) {
-        return a.getCategory().compareTo(b.getCategory()) * asc;
+        return a.getCategory().toLowerCase().compareTo(b.getCategory().toLowerCase()) * asc;
     }
 }

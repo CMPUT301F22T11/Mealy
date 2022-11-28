@@ -1,4 +1,4 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.ingredientStorage;
 
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 

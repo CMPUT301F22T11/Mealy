@@ -1,4 +1,4 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.ingredientStorage;
 
 import android.os.Build;
 import android.util.Log;

@@ -22,6 +22,6 @@ public class SortByCategory implements Comparator<ShoppingIngredient> {
      * @return int
      */
     public int compare(ShoppingIngredient a, ShoppingIngredient b) {
-        return a.getCategory().compareTo(b.getCategory()) * asc;
+        return a.getCategory().toLowerCase().compareTo(b.getCategory().toLowerCase()) * asc;
     }
 }

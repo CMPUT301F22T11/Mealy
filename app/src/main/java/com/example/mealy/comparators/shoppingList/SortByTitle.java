@@ -22,6 +22,6 @@ public class SortByTitle implements Comparator<ShoppingIngredient> {
      * @return int
      */
     public int compare(ShoppingIngredient a, ShoppingIngredient b) {
-        return a.getName().compareTo(b.getName()) * asc;
+        return a.getName().toLowerCase().compareTo(b.getName().toLowerCase()) * asc;
     }
 }

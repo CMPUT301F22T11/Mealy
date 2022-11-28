@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -20,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
-import com.example.mealy.comparators.Compare;
+import com.example.mealy.comparators.ingredientStorage.Compare;
 import com.example.mealy.databinding.FragmentDashboardBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;

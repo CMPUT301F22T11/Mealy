@@ -17,6 +17,6 @@ public class SortByRecipeTitle implements Comparator<Recipe> {
     }
 
     public int compare(Recipe a, Recipe b) {
-        return a.getTitle().compareTo(b.getTitle()) * asc;
+        return a.getTitle().toLowerCase().compareTo(b.getTitle().toLowerCase()) * asc;
     }
 }

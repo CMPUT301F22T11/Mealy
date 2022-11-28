@@ -1,30 +1,31 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.ingredientStorage;
 
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 
 import java.util.Comparator;
 
 /**
- * Small class for sorting ingredients by name.
+ * Small class for sorting ingredients by description.
  */
-public class SortByName implements Comparator<Ingredient> {
+public class SortByDesc implements Comparator<Ingredient> {
     private final int asc;
+
     /**
      * Call super of Comparator, yet set the asc attribute to whatever the user has selected.
      * @param asc
      */
-    public SortByName(int asc) {
+    public SortByDesc(int asc) {
         super();
         this.asc = asc;
     }
     /**
-     * Compare two ingredients based on name. Flip the organization based on
+     * Compare two ingredients based on description. Flip the organization based on
      * user selection
      * @param a - Ingredient
      * @param b - Ingredient
      * @return int
      */
     public int compare(Ingredient a, Ingredient b) {
-        return a.getName().compareTo(b.getName()) * asc;
+        return a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()) * asc;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mealy.comparators;
+package com.example.mealy.comparators.ingredientStorage;
 
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 
@@ -25,6 +25,6 @@ public class SortByLocation implements Comparator<Ingredient> {
      * @return int
      */
     public int compare(Ingredient a, Ingredient b) {
-        return a.getLocation().compareTo(b.getLocation()) * asc;
+        return a.getLocation().toLowerCase().compareTo(b.getLocation().toLowerCase()) * asc;
     }
 }
