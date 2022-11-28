@@ -24,7 +24,6 @@ import com.example.mealy.comparators.shoppingList.CompareShopping;
 import com.example.mealy.databinding.ShoppingListDashboardBinding;
 import com.example.mealy.ui.home.Meal;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
-import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeIngredient;
 import com.google.firebase.database.annotations.Nullable;
@@ -34,10 +33,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +58,13 @@ public class ShoppingFragment extends Fragment {
 
     int asc = 1; // for sort order
 
+    /**
+     * This is the onCreateView that creates the view for the fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -433,7 +435,9 @@ public class ShoppingFragment extends Fragment {
         return root;
     }
 
-
+    /**
+     * When the view is destroyed the following are run
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
