@@ -14,10 +14,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
-import com.example.mealy.functions.DateFunc;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ShoppingListAdd extends DialogFragment {
 
@@ -96,27 +94,27 @@ public class ShoppingListAdd extends DialogFragment {
      *
      * @return HashMap of the data inputted (except for ingredient name)
      */
-    private HashMap<String, String> GetData() {
-
-        HashMap<String, String> data = new HashMap<>();
-        String categoryName;
-        String location;
-
-        String ingredientQuantity = IngredientQuantity.getText().toString();
-        String unit = quantityUnits.getSelectedItem().toString();
-        String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
-        String description = DescriptionText.getText().toString();
-
-        data.put("Category", categoryName);
-        data.put("Quantity", ingredientQuantity);
-        data.put("Quantity Unit", unit);
-        data.put("Unit Category", unitCategory);
-        data.put("Expiry Date", expiryDate);
-        data.put("Description", description);
-        data.put("Location", location);
-
-        return data;
-    }
+//    private HashMap<String, String> GetData() {
+//
+//        HashMap<String, String> data = new HashMap<>();
+//        String categoryName;
+//        String location;
+//
+//        String ingredientQuantity = IngredientQuantity.getText().toString();
+//        String unit = quantityUnits.getSelectedItem().toString();
+//        String expiryDate = DateFunc.makeStringDate(ExpiryDate.getText().toString());
+//        String description = DescriptionText.getText().toString();
+//
+//        data.put("Category", categoryName);
+//        data.put("Quantity", ingredientQuantity);
+//        data.put("Quantity Unit", unit);
+//        data.put("Unit Category", unitCategory);
+//        data.put("Expiry Date", expiryDate);
+//        data.put("Description", description);
+//        data.put("Location", location);
+//
+//        return data;
+//    }
 
 
     @Override
