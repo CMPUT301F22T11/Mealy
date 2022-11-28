@@ -2,6 +2,7 @@ package com.example.mealy.ui.recipes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.Serializable;
 /**
@@ -141,6 +142,7 @@ public class RecipeIngredient implements Parcelable {
      * @param source The Parcel in which the recipe ingredient gets all its attributes.
      */
     public RecipeIngredient(Parcel source) {
+        Log.wtf("test", "Recipe stuff");
         this.title = source.readString();
         this.description = source.readString();
         this.amount = source.readString();

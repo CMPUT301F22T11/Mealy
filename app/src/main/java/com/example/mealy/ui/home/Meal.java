@@ -14,8 +14,8 @@ public class Meal implements Serializable {
     String startDate; // the day that this meal plan starts with
     String endDate; // the day that this meal plan ends with (should be consecutive)
 
-    private List<Ingredient> mealIngredients;
-    private List<Recipe> mealRecipes;
+    private final List<Ingredient> mealIngredients;
+    private final List<Recipe> mealRecipes;
 
     /**
      * Get the title of the meal

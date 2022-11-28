@@ -14,7 +14,7 @@ import java.util.Comparator;
  * This class functions to compare recipes to each other for sorting purposes.
  */
 public class CompareShopping {
-    private Comparator<ShoppingIngredient> comparator;
+    private final Comparator<ShoppingIngredient> comparator;
 
     /**
      * Constructor: compare recipes by a specific field for sorting purposes.

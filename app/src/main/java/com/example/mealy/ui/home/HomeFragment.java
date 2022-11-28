@@ -64,8 +64,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
-        TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
+        CalendarView calendarThis = root.findViewById(R.id.calendar);
+        TextView date_viewThis = root.findViewById(R.id.date_view);
 
         //final TextView textView = binding.textHome;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);

@@ -27,22 +27,22 @@ import java.util.List;
 
 public class DisplayMealInfo extends DialogFragment {
 
-    private Meal meal;
+    private final Meal meal;
 
-    private String mealName;
-    private String servingsString;
-    private String startDate;
-    private String endDate;
-    private Integer servings;
+    private final String mealName;
+    private final String servingsString;
+    private final String startDate;
+    private final String endDate;
+    private final Integer servings;
 
-    private List<Recipe> mealRecipes;
-    private List<Ingredient> mealIngredients;
+    private final List<Recipe> mealRecipes;
+    private final List<Ingredient> mealIngredients;
 
     TextView view_date;
     TextView view_servings;
 
     View view;
-    private DisplayMealInfo fragment = this;
+    private final DisplayMealInfo fragment = this;
 
     public DisplayMealInfo(Meal meal) {
         this.meal = meal;
