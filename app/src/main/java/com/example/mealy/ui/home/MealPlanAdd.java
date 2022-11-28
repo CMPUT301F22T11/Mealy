@@ -267,8 +267,6 @@ public class MealPlanAdd extends DialogFragment {
 
                     Firestore.storeToFirestore("MealPlan", mealPlanName, data);
 
-
-
                 }
 
 

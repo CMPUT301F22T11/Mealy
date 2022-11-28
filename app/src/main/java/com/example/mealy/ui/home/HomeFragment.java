@@ -294,28 +294,28 @@ public class HomeFragment extends Fragment {
                                             for ( HashMap<String, String> x : listIng) {
                                                 String amount = "", category = "", desc = "", exp = "", location = "", unit = "", unitCategory = "", ingName = "";
                                                 for (HashMap.Entry<String, String> ntry : x.entrySet()) {
-                                                    if (ntry.getKey() == "amount") {
+                                                    if (ntry.getKey().equals("amount")) {
                                                         amount = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "category") {
+                                                    else if (ntry.getKey().equals("category")) {
                                                         category = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "description") {
+                                                    else if (ntry.getKey().equals("description")) {
                                                         desc = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "expiryDate") {
+                                                    else if (ntry.getKey().equals("expiryDate")) {
                                                         exp = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "location") {
+                                                    else if (ntry.getKey().equals("location")) {
                                                         location = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "unit") {
+                                                    else if (ntry.getKey().equals("unit")) {
                                                         unit = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "unitCategory") {
+                                                    else if (ntry.getKey().equals("unitCategory")) {
                                                         unitCategory = ntry.getValue();
                                                     }
-                                                    else if (ntry.getKey() == "name") {
+                                                    else if (ntry.getKey().equals("name")) {
                                                         ingName = ntry.getValue();
                                                     }
                                                 }
@@ -326,24 +326,24 @@ public class HomeFragment extends Fragment {
                                             for (  HashMap<String, String> x : listRec) {
                                                 String comments = "", category = "", prepHour = "0", prepMin = "0", servings = "0", recName = "";
                                                 for (HashMap.Entry<String, String> ntry : x.entrySet()) {
-                                                    if (ntry.getKey() == "comments") {
+                                                    if (ntry.getKey().equals("comments")) {
                                                         comments = ntry.getValue();
                                                         System.out.println("comments for this recipe: " + comments);
                                                     }
-                                                    else if (ntry.getKey() == "category") {
+                                                    else if (ntry.getKey().equals("category")) {
                                                         category = ntry.getValue();
                                                         System.out.println("category for this recipe: " + category);
                                                     }
-                                                    else if (ntry.getKey() == "preptimeHours") {
-                                                        prepHour = ntry.getValue();
+                                                    else if (ntry.getKey().equals("preptimeHours")) {
+                                                        prepHour = String.valueOf(ntry.getValue());
                                                     }
-                                                    else if (ntry.getKey() == "preptimeMins") {
-                                                        prepMin = ntry.getValue();
+                                                    else if (ntry.getKey().equals("preptimeMins")) {
+                                                        prepMin = String.valueOf(ntry.getValue());
                                                     }
-                                                    else if (ntry.getKey() == "servings") {
-                                                        servings = ntry.getValue();
+                                                    else if (ntry.getKey().equals("servings")) {
+                                                        servings = String.valueOf(ntry.getValue());
                                                     }
-                                                    else if (ntry.getKey() == "title") {
+                                                    else if (ntry.getKey().equals("title")) {
                                                         recName = ntry.getValue();
                                                         System.out.println("title for this recipe: " + recName);
                                                     }
