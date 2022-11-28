@@ -3,12 +3,13 @@ package com.example.mealy.ui.shoppingList;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,9 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.comparators.shoppingList.CompareShopping;
 import com.example.mealy.databinding.ShoppingListDashboardBinding;
-import com.example.mealy.ui.recipes.DisplayRecipeInfo;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,16 +93,6 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // add button on click
-        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShoppingListAdd disp = new ShoppingListAdd();
-                disp.show(getChildFragmentManager(), TAG);
-            }
-        });
-
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
         ShoppingIngredient sample = new ShoppingIngredient("Tomato",
                 "Tomato is a red fruit",
@@ -155,84 +143,45 @@ public class ShoppingFragment extends Fragment {
                 "Fruit");
         shoppingArrayList.add(sample7);
 
-        // PULL FROM FIREBASE
-        // https://www.youtube.com/watch?v=xzCsJF9WtPU
-        // get shopping table
-        FirebaseFirestore dbf = FirebaseFirestore.getInstance();
-        //TODO: Fix this for firebase
-
-        final CollectionReference shoppingCollection = dbf.collection("Recipe");
-        /*
-        shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) {
-
-                // Clear the old list
-                shoppingArrayList.clear();
-
-                /*for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                {
-                    try {
-
-                        // fetch ingredient info
-                        // fetch rest of ingredient info
-                        String category = (String) doc.getData().get("Category");
-                        String description = (String) doc.getData().get("Description");
-                        String quantity = (String) doc.getData().get("Amount");
-                        String name = (String) doc.getData().get("Name");
-                        String unit = (String) doc.getData().get("Unit");
-
-
-                        ShoppingIngredient temp = new ShoppingIngredient(name, description, quantity, unit, category);
-
-                        // fetch ingredient image and store in bitmap
-                        StorageReference mStorageReference;
-
-                        // TODO: find the proper reference image
-                        //mStorageReference = FirebaseStorage.getInstance().getReference().child("Recipe_Image/" + temp.getTitle());
-
-                        try {
-                            final File localFile = File.createTempFile("imageCache", "jpg"); // temp file to store image
-                            mStorageReference.getFile(localFile)
-                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                            // successfully put stuff in file;
-                                            System.out.println("Image received");
-                                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                            recipe.setBitmap(bitmap);
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // did not put stuff in file
-                                            System.out.println("No image detected!");
-                                        }
-                                    });
-
-                        } catch (IOException e) {
-                            System.out.println("Firebase failure!");
-                            e.printStackTrace();
-                        }
-
-                        shoppingArrayList.add(temp); // Adding new ingredient using Firebase data
-
-                    } catch (Exception e) {
-                        System.out.println("Error with firebase pull, incorrect formatting");
-                    }
-                }
-                shoppingAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-            }
-        });*/
-
-        // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        shoppingAdapter.notifyDataSetChanged();
-
         // create the instance of the ListView to set the shopping list adapter
         ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
+
+        ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
+
+        storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("CLICKING", "CLIOKING");
+                CheckBox checkBox = view.findViewById(R.id.checkbox);
+                checkBox.toggle();
+                if(checkBox.isChecked()){
+                    checkedItems.add(shoppingArrayList.get(i));
+                } else {
+                    checkedItems.remove(shoppingArrayList.get(i));
+                }
+
+            }
+        });
+
+        // add button on click
+        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // List of checked items
+                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
+                for(int j=0; j<checkedItems.size(); j++){
+                    Log.d("LIST", checkedItems.get(j).toString());
+                }
+                if (! checkedItems.isEmpty()) {
+                    ShoppingListAdd displayAdd = new ShoppingListAdd(checkedItems);
+                    displayAdd.show(getChildFragmentManager(), TAG);
+                }
+
+            }
+        });
+
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -253,6 +202,7 @@ public class ShoppingFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

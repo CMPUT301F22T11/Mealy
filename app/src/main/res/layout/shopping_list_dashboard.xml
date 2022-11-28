@@ -47,21 +47,21 @@
 
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/shoppingStorage"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:minHeight="128sp"
-        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_height="488sp"
+        android:layout_marginLeft="16sp"
+        android:layout_marginRight="16sp"
+        android:layout_marginTop="16sp"
+
         android:clickable="true"
         android:scrollbars="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:drawSelectorOnTop="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="16sp"
-        android:layout_marginRight="16sp"
-        android:layout_marginTop="16sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
