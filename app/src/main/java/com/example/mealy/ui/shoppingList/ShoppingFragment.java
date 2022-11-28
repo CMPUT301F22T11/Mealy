@@ -95,7 +95,7 @@ public class ShoppingFragment extends Fragment {
         ArrayList<ShoppingIngredient> shoppingArrayList = new ArrayList<>();
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
-        ArrayList<Meal> mealArrayList = new ArrayList<Meal>();
+        ArrayList<Meal> mealArrayList = new ArrayList<>();
 
 
         // Create the adapter and set it to the arraylist
@@ -150,33 +150,27 @@ public class ShoppingFragment extends Fragment {
         final CollectionReference shoppingCollectionIngredient = dbf.collection("Ingredients");
         shoppingCollectionIngredient.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
                     FirebaseFirestoreException error) {
-
                 // Clear the old list
                 ingredientList.clear();
-
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
-                    try {
+                    Log.d(TAG, (doc.getId()));
+                    // get available categories
+                    String name = doc.getId();
+                    String category = (String) doc.getData().get("Category");
+                    String desc = (String) doc.getData().get("Description");
+                    String exp = (String) doc.getData().get("Expiry Date");
+                    String location = (String) doc.getData().get("Location");
+                    String amount = (String) doc.getData().get("Quantity");
+                    String unitC = (String) doc.getData().get("Unit Category");
+                    String unit = (String) doc.getData().get("Quantity Unit");
 
-                        Log.d(TAG, (doc.getId()));
-                        // get available categories
-                        String name = (String) doc.getId();
-                        String category = (String) doc.getData().get("Category");
-                        String desc = (String) doc.getData().get("Description");
-                        String exp = (String) doc.getData().get("Expiry Date");
-                        String location = (String) doc.getData().get("Location");
-                        String amount = (String) doc.getData().get("Quantity");
-                        String unitC = (String) doc.getData().get("Unit Category");
-                        String unit = (String) doc.getData().get("Quantity Unit");
-
-                        Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
-                        ingredientList.add(ingred); // Adding Ingredients from FireStore
-                    } catch (Exception e) {
-                        System.out.println("Error with firebase pull, incorrect formatting");
-                    }
+                    Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
+                    ingredientList.add(ingred); // Adding Ingredients from FireStore
                 }
+                Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
             }
         });
 
@@ -209,7 +203,7 @@ public class ShoppingFragment extends Fragment {
                         RecipeIngredient ingredientRec = new RecipeIngredient(title, description, amount, unit, category, unitCategory);
                         recipeIngredientsList.add(ingredientRec); // Adding Ingredients from FireStore
                     } catch (Exception e) {
-                        System.out.println("Error with firebase pull, incorrect formatting");
+                        Log.d(TAG, ("Error with firebase pull"));
                     }
                 }
             }
@@ -328,6 +322,8 @@ public class ShoppingFragment extends Fragment {
         });
 
         Log.d("shopping", Integer.toString(mealArrayList.size()));
+        Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
+        Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
 
         // Going through each meal and adding the ingredients required to make each meal into the shopping list
         for (Meal x : mealArrayList){
@@ -376,8 +372,8 @@ public class ShoppingFragment extends Fragment {
             String name = x.getName();
             String amount = x.getQuantity();
             int amountNeeded = Integer.valueOf(amount);
-            Log.d("shopping", name);
-            Log.d("shopping", amount);
+            Log.d("shoppingName", name);
+            Log.d("shoppingAmount", amount);
 
             // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
             // If it does, then check if it need to buy more, otherwise, remove from shopping list.
