@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.DeletableSpinnerArrayAdapter;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.functions.Firestore;
@@ -61,7 +62,7 @@ public class IngredientAdd extends DialogFragment {
     Spinner categorySpinner;
     Spinner quantityUnits;
     Spinner locationSpinner;
-    ArrayAdapter<String> categoryAdapter;
+    DeletableSpinnerArrayAdapter categoryAdapter;
     ArrayAdapter<String> locationAdapter;
     ArrayAdapter<String> ingredientAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
@@ -189,8 +190,8 @@ public class IngredientAdd extends DialogFragment {
         //categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         Category.add("Select Category");
         Category.add("Add Category");
-        categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Category);
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
+        //categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         categorySpinner.setAdapter(categoryAdapter);
         AddCategory = view.findViewById(R.id.newCategory);
         readCategoryFirebase();
@@ -582,7 +583,7 @@ public class IngredientAdd extends DialogFragment {
                     if (document.exists()) {
                         categoryData = document.getData();
                         Category = General.mapToArrayList(categoryData);
-                        categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Category);
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
                         categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         categorySpinner.setAdapter(categoryAdapter);
                         if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
@@ -614,7 +615,6 @@ public class IngredientAdd extends DialogFragment {
                         locationData = document.getData();
                         Location = General.mapToArrayList(locationData);
                         locationAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Location);
-                        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         locationSpinner.setAdapter(locationAdapter);
                         if (edit && ingredient!=null) {locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));}
 
@@ -629,11 +629,19 @@ public class IngredientAdd extends DialogFragment {
                 }
             }
         });
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+            }
+        });
+
+
     }
 
     private void GetIngredientNames() {
         CollectionReference ingredientReference = db.collection("Ingredients");
-        CollectionReference recipeIngredientReference = db.collection("RecipeIngredients");
 
         ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
@@ -654,6 +662,7 @@ public class IngredientAdd extends DialogFragment {
             }
         });
 
+        CollectionReference recipeIngredientReference = db.collection("RecipeIngredients");
         recipeIngredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
              * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
