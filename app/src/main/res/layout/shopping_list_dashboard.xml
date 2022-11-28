@@ -21,6 +21,7 @@
         <!-- Spinner related classes from:
         https://androiddvlpr.com/custom-spinner-android/
         -->
+
         <Spinner
             android:id="@+id/shoppingSort"
             style="@style/Widget.AppCompat.Spinner"
@@ -63,20 +64,37 @@
         android:drawSelectorOnTop="true"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/groupShopping"/>
+        app:layout_constraintTop_toBottomOf="@id/groupShopping">
+
+
+    </ListView>
 
     <ImageButton
         android:id="@+id/addShoppingIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/recipe_add_bg"
-        android:padding="6sp"
         android:layout_marginRight="16sp"
         android:layout_marginBottom="16sp"
+        android:background="@drawable/recipe_add_bg"
+        android:minHeight="48sp"
+        android:padding="6sp"
+        android:src="@drawable/ic_baseline_add_shopping_cart_24"
         app:layout_constraintBottom_toBottomOf="@id/shoppingStorage"
         app:layout_constraintEnd_toEndOf="@id/shoppingStorage"
-        android:minHeight="48sp"
-        android:src="@drawable/ic_baseline_add_shopping_cart_24"/>
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/recipe_add_bg"
+        android:padding="2sp"
+        android:src="@drawable/ic_baseline_refresh_24"
+        app:layout_constraintBottom_toTopOf="@+id/shoppingStorage"
+        app:layout_constraintStart_toStartOf="@+id/shoppingStorage"
+        app:layout_constraintTop_toTopOf="@+id/shoppingStorage"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
