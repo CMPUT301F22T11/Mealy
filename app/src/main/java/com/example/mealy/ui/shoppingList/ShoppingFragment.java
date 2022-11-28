@@ -89,7 +89,7 @@ public class ShoppingFragment extends Fragment {
         addButton = root.findViewById(R.id.addShoppingIngredient);
 
         // create sorting spinner with sort categories
-        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category"));
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.spinner_layout, options);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
@@ -131,27 +131,6 @@ public class ShoppingFragment extends Fragment {
         ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
 
-        // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
-        ShoppingIngredient sample = new ShoppingIngredient("Tomato",
-                "Tomato is a red fruit",
-                "10",
-                "kg",
-                "Vegetable");
-        shoppingArrayList.add(sample);
-
-        ShoppingIngredient sample2 = new ShoppingIngredient("Grape",
-                "Grape is a green fruit",
-                "5",
-                "kg",
-                "Fruit");
-        shoppingArrayList.add(sample2);
-
-        ShoppingIngredient sample3 = new ShoppingIngredient("Apple",
-                "Red fruit is an apple",
-                "7",
-                "kg",
-                "Fruit");
-        shoppingArrayList.add(sample3);
 
 
         // Getting all the ingredients from the FireBase
@@ -327,12 +306,10 @@ public class ShoppingFragment extends Fragment {
                 for (Meal x : mealArrayList){
                     List<Recipe> recipeMealList = x.getMealRecipes();
                     List<Ingredient> ingredientMealList = x.getMealIngredients();
-                    Log.d("shopping", "AAAAAAAAAAA");
 
                     // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
                     for (Recipe y : recipeMealList){
                         String recipeName = y.getTitle();
-                        Log.d("shopping", recipeName);
                         // Checking all the ingredients of the recipe and adding them to ingredientMealList
                         for (RecipeIngredient z : recipeIngredientsList){
                             String tempTitle[] = z.getTitle().split(",");
@@ -347,17 +324,22 @@ public class ShoppingFragment extends Fragment {
                     for (Ingredient y : ingredientMealList){
                         ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
                         String tempName = tempIngredient.getName();
-                        Log.d("TAG", tempName);
-                        boolean shoppingIngredientExists = false;
+
                         // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
+                        boolean shoppingIngredientExists = false;
+
                         for(ShoppingIngredient z : shoppingArrayList){
-                            if (z.getName() == tempName){
+                            Log.d("TAGtempName", tempName);
+                            Log.d("TAGzName", z.getName());
+                            if (z.getName().equals(tempName)){
                                 z.setQuantity(Integer.toString(Integer.valueOf(z.getQuantity()) + Integer.valueOf(tempIngredient.getQuantity())));
                                 shoppingIngredientExists = true;
+                                Log.d("TAG", "True");
                             }
                         }
                         // Otherwise, if the ingredient does not already exists in the shopping list, then add it
                         if(shoppingIngredientExists == false){
+                            Log.d("TAG", "False");
                             shoppingArrayList.add(tempIngredient);
                         }
 
