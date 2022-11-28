@@ -324,7 +324,7 @@ public class ShoppingFragment extends Fragment {
 
             }
         });
-        
+
         Log.d("shopping", Integer.toString(mealArrayList.size()));
 
         // Going through each meal and adding the ingredients required to make each meal into the shopping list
