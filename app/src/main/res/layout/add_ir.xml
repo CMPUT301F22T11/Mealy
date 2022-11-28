@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:background="@color/accent_grey"
         android:orientation="vertical">
 
@@ -21,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
             android:minHeight="48sp"
+            android:minWidth="256sp"
             android:text="Add/Edit Ingredient/Recipe"
             android:gravity="center"
             android:textAlignment="center"
@@ -66,20 +64,48 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
             android:orientation="horizontal">
 
 
+            <TextView
+                android:id="@+id/Meal_Plan_Servingslabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="@string/Recipe_Entry_servings"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/Meal_Plan_Servings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:autofillHints="Recipe"
+                android:hint="@string/Recipe_Entry_enter_servings"
+                android:inputType="number"
+                android:maxLength="30"
+                android:minHeight="48dp"
+                android:gravity="right|center_vertical"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/accent_red"
+                android:layout_marginEnd="6sp" />
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
             <Button
                 android:minHeight="48sp"
@@ -88,9 +114,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/Meal_Plan_submit" />
+                android:text="@string/Meal_Plan_submit"
+                />
 
         </LinearLayout>
-
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

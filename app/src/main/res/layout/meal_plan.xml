@@ -67,6 +67,74 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/Meal_Plan_startLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="Start Date:"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/Meal_Plan_start"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="Start Date"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/accent_red"
+                android:textStyle="bold"
+                style="?android:spinnerStyle"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/circle"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/Meal_Plan_endLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
+                android:layout_weight="1"
+                android:text="End Date:"
+                android:textColor="@color/dark_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/Meal_Plan_end"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="End Date"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/accent_red"
+                android:textStyle="bold"
+                style="?android:spinnerStyle"
+                />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"

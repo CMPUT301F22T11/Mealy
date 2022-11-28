@@ -51,7 +51,7 @@ public class IRAdd extends DialogFragment {
 
 
     Button Save;
-    EditText RecipeIngredientName;
+    EditText RecipeIngredientName, RecipeServings;
 
     ArrayList<String> IngredientRecipeList = new ArrayList<String>();
 
@@ -70,7 +70,7 @@ public class IRAdd extends DialogFragment {
 
     private static final String TAG = "DocSnippets";
 
-    boolean categoryNewSelected = false, nameNewSelected = false, edit = false;
+    boolean categoryNewSelected = false, nameNewSelected = false, edit = false, isRecipe;
 
     View view;
 
@@ -112,12 +112,17 @@ public class IRAdd extends DialogFragment {
         InitializeIRSpinner();
         InitializeGetAll();
         InitializeSaveButton();
+        InitializeEditText();
 
 
 
         return view;
     }
 
+
+    private void InitializeEditText() {
+        RecipeServings = (EditText) view.findViewById(R.id.Meal_Plan_Servings);
+    }
     /**
      * Initialize an addSnapshotListener that retrieves all current entries of Ingredients, alongside the category in which
      * each ingredient is in, from the Firebase.
@@ -220,7 +225,7 @@ public class IRAdd extends DialogFragment {
 
                     for (Map.Entry<String, String> entry : IRMap.entrySet()) {
                         if (entry.getKey() == IRName && entry.getValue() == "I") {
-
+//                            isRecipe = false;
 
                             for (Ingredient x : listIngredient) {
                                 if (x.getName().equals(IRName)) {
@@ -233,11 +238,12 @@ public class IRAdd extends DialogFragment {
 
                         }
                         else if (entry.getKey() == IRName && entry.getValue() == "R") {
-
+//                            isRecipe = true;
                             for (Recipe x : listRecipe) {
                                 if (x.getTitle().equals(IRName)) {
                                     Bundle bundle = new Bundle();
                                     Recipe putRec = x;
+                                    x.setServings(Integer.parseInt(GetRecipeServing()));
                                     bundle.putParcelable("IR", putRec);
                                     getParentFragmentManager().setFragmentResult("requestKey", bundle);
                                 }
@@ -259,8 +265,8 @@ public class IRAdd extends DialogFragment {
      *
      * @return Returns the name of the recipe ingredient that was created.
      */
-    private String GetRecipeIngredientName() {
-        return RecipeIngredientName.getText().toString();
+    private String GetRecipeServing() {
+        return RecipeServings.getText().toString();
     }
 
     /**
@@ -272,6 +278,9 @@ public class IRAdd extends DialogFragment {
     private boolean ValidData(){
 
         String IRName = IRSpinner.getSelectedItem().toString();
+        String getServings = GetRecipeServing();
+
+
 
         boolean isValid = true;
 
@@ -279,6 +288,28 @@ public class IRAdd extends DialogFragment {
             RecipeIngredientName.setError("Please select recipe/ingredient");
             isValid =  false;
         }
+
+        String thisName = IRSpinner.getSelectedItem().toString();
+
+        for (Map.Entry<String, String> entry : IRMap.entrySet()) {
+            if (entry.getKey() == thisName && entry.getValue() == "R") {
+                if (Validate.isEmpty(getServings)) {
+                    RecipeServings.setError("Please enter a serving size.");
+                    isValid =  false;
+                }
+
+                isRecipe = true;
+            } else if (entry.getKey() == thisName && entry.getValue() == "I") {
+                if (!Validate.isEmpty(getServings)) {
+                    RecipeServings.setError("Do not enter a serving size for ingredients!");
+                    isValid =  false;
+                }
+                isRecipe = false;
+            }
+
+        }
+
+
 
         return isValid;
 

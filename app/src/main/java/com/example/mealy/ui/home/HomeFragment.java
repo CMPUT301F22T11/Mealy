@@ -57,6 +57,11 @@ public class HomeFragment extends Fragment {
 
     final String TAG = "Logging";
 
+    CollectionReference collectionReference;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
     Button Add_Meal_Button;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,7 +79,35 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-
+        collectionReference = db.collection("Ingredients");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+             * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
+             */
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String ingredient = (String) doc.getId();
+                    String category = (String) doc.getData().get("Category");
+                    String desc = (String) doc.getData().get("Description");
+                    String amount = (String) doc.getData().get("Quantity");
+                    String unitCategory = (String) doc.getData().get("Unit Category");
+                    String unit = (String) doc.getData().get("Quantity Unit");
+                    String location = (String) doc.getData().get("Location");
+                    String exp = (String) doc.getData().get("Expiry Date");
+                    IngredientRecipeList.add(ingredient);
+                    IRMap.put(ingredient, "I");
+                    Ingredient newIn = new Ingredient(ingredient, desc, amount, unit, unitCategory, category, location, exp);
+                    listIngredient.add(newIn);
+                }
+                IRAdapter.notifyDataSetChanged();
+            }
+        });
 
 //
         // Add Listener in calendar

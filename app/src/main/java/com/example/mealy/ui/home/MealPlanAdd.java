@@ -1,5 +1,6 @@
 package com.example.mealy.ui.home;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -22,10 +24,12 @@ import androidx.fragment.app.FragmentResultListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.DateFunc;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.Validate;
 import com.example.mealy.ui.home.IRAdd;
@@ -44,9 +48,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class MealPlanAdd extends DialogFragment {
     private final MealPlanAdd fragment = this;
-    Button Save;
+    Button Save, startDate, endDate;
     ImageButton AddIR;
     EditText MealPlanTitle;
+
 
     ArrayList<Object> IRList = new ArrayList <Object>();
     Map<Recipe, Integer> recipeMap = new HashMap<Recipe, Integer>();
@@ -61,6 +66,10 @@ public class MealPlanAdd extends DialogFragment {
 
 
     CollectionReference collectionReference;
+
+    DatePickerDialog datePickerDialog, datePickerDialogEnd;
+
+    Calendar compareStart, compareEnd;
 
     int IRIndex;
 
@@ -109,6 +118,8 @@ public class MealPlanAdd extends DialogFragment {
         InitializeTextViews();
         InitializeIRList();
         onCreateFragment();
+        InitializeDatePickerStart();
+        InitializeDatePickerEnd();
 
         return view;
     }
@@ -270,36 +281,41 @@ public class MealPlanAdd extends DialogFragment {
 //            thisIngredientArray[x] = ingredientArray.get(x);
 //        }
 
-        data.put("Recipes", ingredientArray);
+        data.put("Ingredients", ingredientArray);
+
+        data.put("Start Date", startDate.getText().toString());
+        data.put("End Date", endDate.getText().toString());
 
 
 
         return data;
     }
 
-    private HashMap<String, Map> GetDataRecipes() {
-
-        HashMap<String, Map> data = new HashMap<>();
-
-        data.put("Recipes", recipeMap);
-
-        return data;
-    }
-
-    private HashMap<String, ArrayList<Ingredient>> GetDataIngredients() {
-
-        HashMap<String, ArrayList<Ingredient>> data = new HashMap<>();
-
-//        Ingredient thisIngredientArray[] = new Ingredient[ingredientArray.size()];
+//    private HashMap<String, Map> GetDataRecipes() {
 //
-//        for (int x = 0; x < ingredientArray.size(); x++) {
-//            thisIngredientArray[x] = ingredientArray.get(x);
-//        }
-
-        data.put("Recipes", ingredientArray);
-
-        return data;
-    }
+//        HashMap<String, Map> data = new HashMap<>();
+//
+//        data.put("Recipes", recipeMap);
+//
+//        return data;
+//    }
+//
+//    private HashMap<String, ArrayList<Ingredient>> GetDataIngredients() {
+//
+//        HashMap<String, ArrayList<Ingredient>> data = new HashMap<>();
+//
+////        Ingredient thisIngredientArray[] = new Ingredient[ingredientArray.size()];
+////
+////        for (int x = 0; x < ingredientArray.size(); x++) {
+////            thisIngredientArray[x] = ingredientArray.get(x);
+////        }
+//
+//        data.put("Recipes", ingredientArray);
+//
+//
+//
+//        return data;
+//    }
 
 
     /**
@@ -330,6 +346,76 @@ public class MealPlanAdd extends DialogFragment {
 
     }
 
+    private void InitializeDatePickerStart() {
+        startDate = view.findViewById(R.id.Meal_Plan_start);
+
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            {
+                // months index from 0-11
+                month = month + 1;
+                startDate.setText(DateFunc.makeIntString(day, month, year));
+            }
+        };
+
+        // create the date from whatever was input by the user
+        Calendar cal = Calendar.getInstance();
+        compareStart = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(getContext(), style, dateSetListener, year, month, day);
+        // the minimum expiration date is today
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 86400000);
+
+        startDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                datePickerDialog.show();
+
+            }
+        });
+    }
+
+    private void InitializeDatePickerEnd() {
+        endDate = view.findViewById(R.id.Meal_Plan_end);
+
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            {
+                // months index from 0-11
+                month = month + 1;
+                endDate.setText(DateFunc.makeIntString(day, month, year));
+            }
+        };
+
+        // create the date from whatever was input by the user
+        Calendar cal = Calendar.getInstance();
+        compareEnd = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialogEnd = new DatePickerDialog(getContext(), style, dateSetListener, year, month, day);
+        // the minimum expiration date is today
+        datePickerDialogEnd.getDatePicker().setMinDate(System.currentTimeMillis() + 86400000);
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                datePickerDialogEnd.show();
+
+            }
+        });
+    }
+
     /**
      * Gets the name for the Recipe Ingredient the user gave for this current instacne of a Recipe Ingredient.
      *
@@ -348,6 +434,8 @@ public class MealPlanAdd extends DialogFragment {
     private boolean ValidData(){
 
         String mealPlan = MealPlanTitle.getText().toString();
+        String startD = startDate.getText().toString();
+        String endD = endDate.getText().toString();
 
 
         boolean isValid = true;
@@ -355,6 +443,19 @@ public class MealPlanAdd extends DialogFragment {
         if (Validate.isEmpty(mealPlan)) {
             MealPlanTitle.setError("Please give a name to the Meal Plan");
             isValid =  false;
+        }
+
+        if (startD.equals("Start Date") || Validate.isEmpty(startD)) {
+            startDate.setError("Please select a starting date!");
+            isValid =  false;
+        } else if (endD.equals("End Date")|| Validate.isEmpty(endD)) {
+            endDate.setError("Please select an ending date!");
+            isValid =  false;
+        }
+        else if (compareEnd.compareTo(compareStart) < 0) {
+            startDate.setError("Start date has to come before end date!");
+            endDate.setError("Start date has to come before end date!");
+            isValid = false;
         }
 
         if (IRList.size() == 0) {
