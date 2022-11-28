@@ -42,9 +42,12 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -64,6 +67,9 @@ public class HomeFragment extends Fragment {
 
     Button Add_Meal_Button;
 
+    ArrayList<Meal> listofMeals = new ArrayList<Meal>();
+    ArrayList<Meal> mealAdapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,38 +82,114 @@ public class HomeFragment extends Fragment {
         CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
         TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
 
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-//        collectionReference = db.collection("Ingredients");
-//        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            /**
-//             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
-//             * that was created for each respective lists.
-//             *
-//             * @param queryDocumentSnapshots returns each document within the collection
-//             * @param error
-//             */
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-//                    FirebaseFirestoreException error) {
-//                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-//                    String ingredient = (String) doc.getId();
-//                    String category = (String) doc.getData().get("Category");
-//                    String desc = (String) doc.getData().get("Description");
-//                    String amount = (String) doc.getData().get("Quantity");
-//                    String unitCategory = (String) doc.getData().get("Unit Category");
-//                    String unit = (String) doc.getData().get("Quantity Unit");
-//                    String location = (String) doc.getData().get("Location");
-//                    String exp = (String) doc.getData().get("Expiry Date");
-//                    IngredientRecipeList.add(ingredient);
-//                    IRMap.put(ingredient, "I");
-//                    Ingredient newIn = new Ingredient(ingredient, desc, amount, unit, unitCategory, category, location, exp);
-//                    listIngredient.add(newIn);
-//                }
+        mealPlanListView = root.findViewById(R.id.mealplanlistview);
+        // list that will store all our recipe objects
+        ArrayList<Meal> mealArrayList = new ArrayList<Meal>();
+
+        // Create the adapter and set it to the arraylist
+        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
+
+        // create the instance of the ListView to set the meal adapter
+        mealPlanListView.setAdapter(mealAdapter);
+
+        collectionReference = db.collection("MealPlan");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+             * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
+             */
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+
+
+                    FirebaseFirestoreException error) {
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String mealPlan = (String) doc.getId();
+                    ArrayList<HashMap<String, String>> listIng = (ArrayList<HashMap<String, String>>) doc.getData().get("Ingredients");
+                    ArrayList<HashMap<String, String>> listRec = (ArrayList<HashMap<String, String>>) doc.getData().get("Recipes");
+                    String startDate = (String) doc.getData().get("Start Date");
+                    String endDate = (String) doc.getData().get("End Date");
+                    ArrayList<Ingredient> listofIng = new ArrayList<Ingredient>();
+                    ArrayList<Recipe> listofRec = new ArrayList<Recipe>();
+
+                    for ( HashMap<String, String> x : listIng) {
+                        String amount = "", category = "", desc = "", exp = "", location = "", unit = "", unitCategory = "", ingName = "";
+                        for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                            if (ntry.getKey() == "amount") {
+                                amount = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "category") {
+                                category = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "description") {
+                                desc = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "expiryDate") {
+                                exp = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "location") {
+                                location = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "unit") {
+                                unit = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "unitCategory") {
+                                unitCategory = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "name") {
+                                ingName = ntry.getValue();
+                            }
+
+                            Ingredient addIng = new Ingredient(ingName, desc, amount, unit, unitCategory, category, location, exp);
+                            listofIng.add(addIng);
+                        }
+                        // do something with key and/or tab
+                    }
+//
+                    for (  HashMap<String, String> x : listRec) {
+                        String comments = "", category = "", prepHour = "0", prepMin = "0", servings = "0", recName = "";
+                        for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                            if (ntry.getKey() == "comments") {
+                                comments = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "category") {
+                                category = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "preptimeHours") {
+                                prepHour = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "preptimeMins") {
+                                prepMin = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "servings") {
+                                servings = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "title") {
+                                recName = ntry.getValue();
+                            }
+
+                            ArrayList<Ingredient> noIng = new ArrayList<>();
+                            Recipe addRec = new Recipe(recName, comments, Integer.parseInt(servings), Integer.parseInt(prepHour), Integer.parseInt(prepMin), category, noIng);
+                            listofRec.add(addRec);
+                        }
+                        // do something with key and/or tab
+                    }
+
+                    Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
+                    mealArrayList.add(addMeal);
+                    mealAdapter.notifyDataSetChanged();
+
+
+                }
 //                IRAdapter.notifyDataSetChanged();
-//            }
-//        });
+            }
+        });
 
 //
         // Add Listener in calendar
@@ -140,16 +222,7 @@ public class HomeFragment extends Fragment {
                             }
                         });
         //
-        mealPlanListView = root.findViewById(R.id.mealplanlistview);
 
-        // list that will store all our recipe objects
-        ArrayList<Meal> mealArrayList = new ArrayList<>();
-
-        // Create the adapter and set it to the arraylist
-        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
-
-        // create the instance of the ListView to set the meal adapter
-        mealPlanListView.setAdapter(mealAdapter);
 
         Add_Meal_Button = root.findViewById(R.id.meal_button);
         //This is for testing, to set the button to your view, modify it in test view
@@ -189,7 +262,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
@@ -286,9 +359,8 @@ public class HomeFragment extends Fragment {
                                                 System.out.println("Got title");
                                                 String servingsString = (String) doc.getData().get("Servings");
                                                 System.out.println("Got servings");
-                                                int servings = Integer.parseInt(servingsString);
 
-                                                Meal meal = new Meal(title, servings, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
+                                                Meal meal = new Meal(title, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
 
                                                 mealArrayList.add(meal); // Adding new recipe using Firebase data
 

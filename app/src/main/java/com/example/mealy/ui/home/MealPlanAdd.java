@@ -54,7 +54,7 @@ public class MealPlanAdd extends DialogFragment {
 
 
     ArrayList<Object> IRList = new ArrayList <Object>();
-    Map<Recipe, Integer> recipeMap = new HashMap<Recipe, Integer>();
+    ArrayList<Recipe> recipeMap = new ArrayList<>();
     ArrayList<Ingredient> ingredientArray = new ArrayList<>();
 
     ListView RecipeIngredientList;
@@ -149,7 +149,7 @@ public class MealPlanAdd extends DialogFragment {
                         Recipe thisRecipe = (Recipe) thisObj;
                         IRList.add(thisRecipe);
                         IRListAdapter.notifyDataSetChanged();
-                    recipeMap.put(thisRecipe, thisRecipe.getServings());
+                    recipeMap.add(thisRecipe);
 //                    recipeIngredientAdapter.add(thisIngredient);
 
 
@@ -168,7 +168,7 @@ public class MealPlanAdd extends DialogFragment {
                         Recipe thisRecipe = (Recipe) thisObj;
                         IRList.set(IRIndex, thisRecipe);
                         IRListAdapter.notifyDataSetChanged();
-                        recipeMap.put(thisRecipe, thisRecipe.getServings());
+                        recipeMap.set(IRIndex, thisRecipe);
                     }
                 }
             }
@@ -356,7 +356,7 @@ public class MealPlanAdd extends DialogFragment {
             {
                 // months index from 0-11
                 month = month + 1;
-                startDate.setText(DateFunc.makeIntString(day, month, year));
+                startDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
             }
         };
 
@@ -391,10 +391,9 @@ public class MealPlanAdd extends DialogFragment {
             {
                 // months index from 0-11
                 month = month + 1;
-                endDate.setText(DateFunc.makeIntString(day, month, year));
+                endDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
             }
         };
-
         // create the date from whatever was input by the user
         Calendar cal = Calendar.getInstance();
         compareEnd = Calendar.getInstance();

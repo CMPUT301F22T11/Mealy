@@ -49,8 +49,6 @@ public class DisplayMealInfo extends DialogFragment {
         this.mealName = meal.getTitle();
         this.startDate = meal.getStartDate();
         this.endDate = meal.getEndDate();
-        this.servingsString = meal.getServingsString();
-        this.servings = meal.getServings();
         this.mealRecipes = meal.getMealRecipes();
         this.mealIngredients = meal.getMealIngredients();
 
@@ -84,8 +82,8 @@ public class DisplayMealInfo extends DialogFragment {
         view_date.setText(startDate + " to " + endDate);
 
         // set servings
-        view_servings = view.findViewById(R.id.mealServings);
-        view_servings.setText(servings.toString());
+//        view_servings = view.findViewById(R.id.mealServings);
+//        view_servings.setText(servings.toString());
 
         return view;
     }
