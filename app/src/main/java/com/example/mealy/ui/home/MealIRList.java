@@ -60,9 +60,17 @@ public class MealIRList extends ArrayAdapter<Object> {
         Object thisOb = getItem(position);
 
         if (thisOb instanceof Ingredient) {
+
             TextView ingredientName = view.findViewById(R.id.ir_name);
-//            TextView servingName = view.findViewById(R.id.ir_servings);
-            ingredientName.setText(((Ingredient) thisOb).getName());
+            TextView servingName = view.findViewById(R.id.ir_servings);
+            Ingredient thisIngredient = (Ingredient) thisOb;
+            String oldName = thisIngredient.getName();
+            String servingSize = oldName.substring(oldName.length() - 1);
+
+            thisIngredient.setName(oldName.substring(0,oldName.length()-1));
+
+            ingredientName.setText(thisIngredient.getName());
+            servingName.setText(servingSize);
 
 
         }
