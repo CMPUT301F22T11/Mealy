@@ -48,7 +48,7 @@ public class SortByExp implements Comparator<Ingredient> {
         } else {
             l2 = LocalDate.parse("0000-01-01");
         }
-        Log.wtf(l1.toString(), String.valueOf(l1.compareTo(l2)));
+        //Log.wtf(l1.toString(), String.valueOf(l1.compareTo(l2)));
 
         return l1.compareTo(l2) * asc;
     }
