@@ -120,6 +120,28 @@ public class ShoppingFragment extends Fragment {
         ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
 
+        // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
+        ShoppingIngredient sample = new ShoppingIngredient("Tomato",
+                "Tomato is a red fruit",
+                "10",
+                "kg",
+                "Vegetable");
+        shoppingArrayList.add(sample);
+
+        ShoppingIngredient sample2 = new ShoppingIngredient("Grape",
+                "Grape is a green fruit",
+                "5",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample2);
+
+        ShoppingIngredient sample3 = new ShoppingIngredient("Apple",
+                "Red fruit is an apple",
+                "7",
+                "kg",
+                "Fruit");
+        shoppingArrayList.add(sample3);
+
 
         // Getting all the ingredients from the FireBase
         FirebaseFirestore dbf = FirebaseFirestore.getInstance();
@@ -191,6 +213,7 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
+        // Getting the meals from the firebase
         final CollectionReference mealCollection = dbf.collection("MealPlan");
         mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
@@ -207,8 +230,6 @@ public class ShoppingFragment extends Fragment {
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String startDate = (String) doc.getData().get("Start Date");
                     String endDate = (String) doc.getData().get("End Date");
-
-
 
 
                     System.out.println("Meal plan detected for this day!");
@@ -304,8 +325,7 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-
-        // TODO: get the ingredients from meal and import them into shoppingArrayList
+        // Going through each meal and adding the ingredients required to make each meal into the shopping list
         for (Meal x : mealArrayList){
             List<Recipe> recipeMealList = x.getMealRecipes();
             List<Ingredient> ingredientMealList = x.getMealIngredients();
@@ -313,7 +333,7 @@ public class ShoppingFragment extends Fragment {
             // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
             for (Recipe y : recipeMealList){
                 String recipeName = y.getTitle();
-                // Checking all the ingredients of the receipe and adding them to ingredientMealList
+                // Checking all the ingredients of the recipe and adding them to ingredientMealList
                 for (RecipeIngredient z : recipeIngredientsList){
                     String tempTitle[] = z.getTitle().split(",");
                     if(tempTitle[1] == recipeName){
@@ -325,7 +345,7 @@ public class ShoppingFragment extends Fragment {
 
             // Adding ingredients into the shopping ingredient list
             for (Ingredient y : ingredientMealList){
-                ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory(), y.getUnitCategory());
+                ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
                 String tempName = tempIngredient.getName();
                 boolean shoppingIngredientExists = false;
                 // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
@@ -343,8 +363,8 @@ public class ShoppingFragment extends Fragment {
             }
         }
 
-        // Removing items from shopping list if we already have enough the ingredients in storage
-        // In other words, the user needs to buy them
+        // Removing items from shopping list if we already have enough ingredients in storage
+        // In other words, the user needs to buy them if they are not in storage
         for (ShoppingIngredient x : shoppingArrayList){
             String name = x.getName();
             String amount = x.getQuantity();
@@ -363,10 +383,9 @@ public class ShoppingFragment extends Fragment {
                     }
                 }
             }
+            shoppingAdapter.notifyDataSetChanged();
         }
 
-        // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        shoppingAdapter.notifyDataSetChanged();
 
         // add button on click
         // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview

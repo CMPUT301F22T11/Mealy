@@ -54,14 +54,18 @@ public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
         TextView textView1 = currentItemView.findViewById(R.id.shoppingNameDisplay);
         textView1.setText(currentIngredient.getName());
 
-        // then according to the position of the view assign the desired TextView 1 for the same
+        // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.categoryDisplay);
         textView2.setText(currentIngredient.getCategory());
 
         // TODO: Look at the receipe and display the quantity
-        // then according to the position of the view assign the desired TextView 2 for the same
+        // then according to the position of the view assign the desired TextView 3 for the same
         TextView textView3 = currentItemView.findViewById(R.id.quantityDisplay);
-        textView3.setText("Quantity: " + currentIngredient.getQuantity() + " | Unit:" + currentIngredient.getUnit() + " " + currentIngredient.getUnitCategory());
+        textView3.setText("Quantity: " + currentIngredient.getQuantity() + " | Unit: " + currentIngredient.getUnit());
+
+        // then according to the position of the view assign the desired TextView 4 for the same
+        TextView textView4 = currentItemView.findViewById(R.id.shoppingListViewDescription);
+        textView4.setText(currentIngredient.getDescription());
 
         // then return the recyclable view
         return currentItemView;

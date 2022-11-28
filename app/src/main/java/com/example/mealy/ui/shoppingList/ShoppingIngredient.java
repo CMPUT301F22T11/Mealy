@@ -11,19 +11,17 @@ public class ShoppingIngredient {
     String quantity;
     String unit;
     String category;
-    String unitCategory;
 
     public ShoppingIngredient(String name,
                       String description,
                       String quantity,
                       String unit,
-                      String category, String unitCategory){
+                      String category){
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.unit = unit;
         this.category = category;
-        this.unitCategory = unitCategory;
 
     }
 
@@ -47,9 +45,6 @@ public class ShoppingIngredient {
         return General.blankIfVoid(category);
     }
 
-    public String getUnitCategory() {
-        return General.blankIfVoid(unitCategory);
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -71,7 +66,4 @@ public class ShoppingIngredient {
         this.category = category;
     }
 
-    public void setUnitCategory(String unitCategory) {
-        this.unitCategory = unitCategory;
-    }
 }
