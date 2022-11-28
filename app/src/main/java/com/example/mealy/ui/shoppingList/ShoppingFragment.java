@@ -25,6 +25,7 @@ import com.example.mealy.databinding.ShoppingListDashboardBinding;
 import com.example.mealy.ui.home.Meal;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.DisplayRecipeInfo;
+import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeIngredient;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
@@ -41,6 +42,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This fragment represents the shopping list screen.
@@ -90,7 +93,7 @@ public class ShoppingFragment extends Fragment {
         ArrayList<ShoppingIngredient> shoppingArrayList = new ArrayList<>();
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
-        ArrayList<Meal> mealList = new ArrayList<>();
+        ArrayList<Meal> mealArrayList = new ArrayList<Meal>();
 
 
         // Create the adapter and set it to the arraylist
@@ -237,43 +240,108 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // TODO: Getting all the meals from the Firebase
-        /*
-        final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
-        shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        final CollectionReference mealCollection = dbf.collection("MealPlan");
+        mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+             * that was created for each respective lists.
+             *
+             * @param queryDocumentSnapshots returns each document within the collection
+             * @param error
+             */
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
                     FirebaseFirestoreException error) {
+                mealArrayList.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String startDate = (String) doc.getData().get("Start Date");
+                    String endDate = (String) doc.getData().get("End Date");
 
-                // Clear the old list
-                recipeIngredientsList.clear();
 
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                {
-                    try {
 
-                        Log.d(TAG, (doc.getId()));
-                        // get available categories
-                        String endDate = (String) doc.getData().get("End Date");
-                        String startDate = (String) doc.getData().get("Start Date");
-                        String servings = (String) doc.getData().get("Servings");
-                        String title = (String) doc.getData().get("Title");
-                        String recipes = (String) doc.getData().get("Recipes");
-                        String ingredients = (String) doc.getData().get("Ingredients");
 
-                        RecipeIngredient ingredientRec = new RecipeIngredient(title, description, amount, unit, category, unitCategory);
-                        recipeIngredientsList.add(ingredientRec); // Adding Ingredients from FireStore
-                    } catch (Exception e) {
-                        System.out.println("Error with firebase pull, incorrect formatting");
+                    System.out.println("Meal plan detected for this day!");
+                    String mealPlan = (String) doc.getId();
+                    ArrayList<HashMap<String, String>> listIng = (ArrayList<HashMap<String, String>>) doc.getData().get("Ingredients");
+                    ArrayList<HashMap<String, String>> listRec = (ArrayList<HashMap<String, String>>) doc.getData().get("Recipes");
+
+                    ArrayList<Ingredient> listofIng = new ArrayList<Ingredient>();
+                    ArrayList<Recipe> listofRec = new ArrayList<Recipe>();
+
+                    for ( HashMap<String, String> x : listIng) {
+                        String amount = "", category = "", desc = "", exp = "", location = "", unit = "", unitCategory = "", ingName = "";
+                        for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                            if (ntry.getKey() == "amount") {
+                                amount = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "category") {
+                                category = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "description") {
+                                desc = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "expiryDate") {
+                                exp = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "location") {
+                                location = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "unit") {
+                                unit = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "unitCategory") {
+                                unitCategory = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "name") {
+                                ingName = ntry.getValue();
+                            }
+
+                            Ingredient addIng = new Ingredient(ingName, desc, amount, unit, unitCategory, category, location, exp);
+                            listofIng.add(addIng);
+                        }
+                        // do something with key and/or tab
                     }
-                }*/
+                    for (  HashMap<String, String> x : listRec) {
+                        String comments = "", category = "", prepHour = "0", prepMin = "0", servings = "0", recName = "";
+                        for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                            if (ntry.getKey() == "comments") {
+                                comments = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "category") {
+                                category = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "preptimeHours") {
+                                prepHour = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "preptimeMins") {
+                                prepMin = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "servings") {
+                                servings = ntry.getValue();
+                            }
+                            else if (ntry.getKey() == "title") {
+                                recName = ntry.getValue();
+                            }
+
+                            ArrayList<Ingredient> noIng = new ArrayList<>();
+                            Recipe addRec = new Recipe(recName, comments, Integer.parseInt(servings), Integer.parseInt(prepHour), Integer.parseInt(prepMin), category, noIng);
+                            listofRec.add(addRec);
+                        }
+                        // do something with key and/or tab
+                    }
+                    Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
+                    mealArrayList.add(addMeal);
+
+                }
+            }
+        });
 
         ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
 
         storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("CLICKING", "CLIOKING");
+                Log.d("CLICKING", "CLICKING");
                 CheckBox checkBox = view.findViewById(R.id.checkbox);
                 checkBox.toggle();
                 if(checkBox.isChecked()){
@@ -287,18 +355,52 @@ public class ShoppingFragment extends Fragment {
 
 
         // TODO: get the ingredients from meal and import them into shoppingArrayList
-        for (Meal x : mealList){
-            String recipes = x.getTitle(); // This is supposed to get the recipes
+        for (Meal x : mealArrayList){
+            List<Recipe> recipeMealList = x.getMealRecipes();
+            List<Ingredient> ingredientMealList = x.getMealIngredients();
 
+            // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
+            for (Recipe y : recipeMealList){
+                String recipeName = y.getTitle();
+                // Checking all the ingredients of the receipe and adding them to ingredientMealList
+                for (RecipeIngredient z : recipeIngredientsList){
+                    String tempTitle[] = z.getTitle().split(",");
+                    if(tempTitle[1] == recipeName){
+                        Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), "NULL", "NULL", "NULL");
+                        ingredientMealList.add(tempIngredient);
+                    }
+                }
+            }
+
+            // Adding ingredients into the shopping ingredient list
+            for (Ingredient y : ingredientMealList){
+                ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
+                String tempName = tempIngredient.getName();
+                boolean shoppingIngredientExists = false;
+                // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
+                for(ShoppingIngredient z : shoppingArrayList){
+                    if (z.getName() == tempName){
+                        z.setQuantity(Integer.toString(Integer.valueOf(z.getQuantity()) + Integer.valueOf(tempIngredient.getQuantity())));
+                        shoppingIngredientExists = true;
+                    }
+                }
+                // Otherwise, if the ingredient does not already exists in the shopping list, then add it
+                if(shoppingIngredientExists == false){
+                    shoppingArrayList.add(tempIngredient);
+                }
+
+            }
         }
 
         // Removing items from shopping list if we already have enough the ingredients in storage
-        // Otherwise the user needs to buy them so they are in storage
+        // In other words, the user needs to buy them
         for (ShoppingIngredient x : shoppingArrayList){
             String name = x.getName();
             String amount = x.getQuantity();
             int amountNeeded = Integer.valueOf(amount);
 
+            // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
+            // If it does, then check if it need to buy more, otherwise, remove from shopping list.
             for (Ingredient y : ingredientList){
                 if(y.getName() == name){
                     String amountStorage = y.getAmount();
@@ -311,8 +413,6 @@ public class ShoppingFragment extends Fragment {
                 }
             }
         }
-
-
 
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         shoppingAdapter.notifyDataSetChanged();
