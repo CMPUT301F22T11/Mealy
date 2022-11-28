@@ -99,12 +99,8 @@ public class ShoppingFragment extends Fragment {
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
         ArrayList<Meal> mealArrayList = new ArrayList<>();
+        ArrayList<ShoppingIngredient> toRemove = new ArrayList<>();
 
-        // list that will store all our firebase objects
-        ArrayList<ShoppingIngredient> shoppingArrayListTemp = new ArrayList<>();
-        ArrayList<Ingredient> ingredientListTemp = new ArrayList<>();
-        ArrayList<RecipeIngredient> recipeIngredientsListTemp = new ArrayList<>();
-        ArrayList<Meal> mealArrayListTemp = new ArrayList<>();
 
 
         // Create the adapter and set it to the arraylist
@@ -141,7 +137,7 @@ public class ShoppingFragment extends Fragment {
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
                     FirebaseFirestoreException error) {
                 // Clear the old list
-                ingredientListTemp.clear();
+                ingredientList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
                     Log.d(TAG, (doc.getId()));
@@ -156,10 +152,7 @@ public class ShoppingFragment extends Fragment {
                     String unit = (String) doc.getData().get("Quantity Unit");
 
                     Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
-                    ingredientListTemp.add(ingred); // Adding Ingredients from FireStore
-                }
-                for(Ingredient i : ingredientListTemp){
-                    ingredientList.add(i);
+                    ingredientList.add(ingred); // Adding Ingredients from FireStore
                 }
                 Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
             }
@@ -301,20 +294,23 @@ public class ShoppingFragment extends Fragment {
                 Log.d("shoppingMeal", Integer.toString(mealArrayList.size()));
                 Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
                 Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
-
+                shoppingArrayList.clear();
+                toRemove.clear();
                 // Going through each meal and adding the ingredients required to make each meal into the shopping list
                 for (Meal x : mealArrayList){
                     List<Recipe> recipeMealList = x.getMealRecipes();
                     List<Ingredient> ingredientMealList = x.getMealIngredients();
-
+                    Log.d("meal", x.getTitle());
                     // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
                     for (Recipe y : recipeMealList){
                         String recipeName = y.getTitle();
                         // Checking all the ingredients of the recipe and adding them to ingredientMealList
                         for (RecipeIngredient z : recipeIngredientsList){
                             String tempTitle[] = z.getTitle().split(",");
-                            if(tempTitle[1] == recipeName){
-                                Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), "NULL", "NULL", "NULL");
+                            Log.d("tempTitle", tempTitle[1]);
+                            Log.d("recipe name", recipeName);
+                            if(tempTitle[1].equals(recipeName)){
+                                Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), z.getCategory(), "NULL", "NULL");
                                 ingredientMealList.add(tempIngredient);
                             }
                         }
@@ -348,28 +344,35 @@ public class ShoppingFragment extends Fragment {
 
                 // Removing items from shopping list if we already have enough ingredients in storage
                 // In other words, the user needs to buy them if they are not in storage
+
                 for (ShoppingIngredient x : shoppingArrayList){
                     String name = x.getName();
                     String amount = x.getQuantity();
-                    int amountNeeded = Integer.valueOf(amount);
+                    double amountNeeded = Double.valueOf(amount);
                     Log.d("shoppingName", name);
                     Log.d("shoppingAmount", amount);
 
                     // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
                     // If it does, then check if it need to buy more, otherwise, remove from shopping list.
                     for (Ingredient y : ingredientList){
-                        if(y.getName() == name){
+                        Log.d("shoppingIngredientName", y.getName());
+                        if(y.getName().equals(name)){
                             String amountStorage = y.getAmount();
-                            int amountHave = Integer.valueOf(amountStorage);
+                            double amountHave = Double.valueOf(amountStorage);
+                            Log.d("shoppingHave", amountStorage);
                             if(amountNeeded <= amountHave){
-                                shoppingArrayList.remove(x);
+                                toRemove.add(x);
                             } else {
-                                x.setQuantity(Integer.toString(amountNeeded - amountHave));
+                                x.setQuantity(Double.toString(amountNeeded - amountHave));
                             }
                         }
                     }
-                    shoppingAdapter.notifyDataSetChanged();
                 }
+                // Removing items from the shopping list that we already own
+                for(ShoppingIngredient i : toRemove){
+                    shoppingArrayList.remove(i);
+                }
+                shoppingAdapter.notifyDataSetChanged();
             }
         });
 
