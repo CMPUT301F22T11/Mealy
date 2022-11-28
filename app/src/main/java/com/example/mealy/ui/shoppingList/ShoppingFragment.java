@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -368,6 +369,7 @@ public class ShoppingFragment extends Fragment {
                         }
                     }
 
+                    // Adding ingredients into the shopping ingredient list
                     for (Ingredient y : ingredientMealListTemp){
                         ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
                         String tempName = tempIngredient.getName();
@@ -390,6 +392,12 @@ public class ShoppingFragment extends Fragment {
                             shoppingArrayList.add(tempIngredient);
                         }
                     }
+                }
+
+                if(shoppingArrayList.isEmpty()){
+                    Toast toast=Toast.makeText(getContext(),"Add meals into the meal planner to update your shopping list!",Toast.LENGTH_LONG);
+                    toast.setMargin(50,50);
+                    toast.show();
                 }
 
                 // Removing items from shopping list if we already have enough ingredients in storage
