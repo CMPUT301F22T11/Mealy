@@ -27,16 +27,16 @@ import java.util.List;
 
 public class DisplayMealInfo extends DialogFragment {
 
-    private Meal meal;
+    private final Meal meal;
 
-    private String mealName;
-    private String servingsString;
-    private String startDate;
-    private String endDate;
-    private Integer servings;
+    private  String mealName;
+    private  String servingsString;
+    private  String startDate;
+    private  String endDate;
+    private  Integer servings;
 
     private List<Recipe> mealRecipes;
-    private List<Ingredient> mealIngredients;
+    private  List<Ingredient> mealIngredients;
 
     TextView view_date;
     TextView view_servings;
@@ -45,7 +45,7 @@ public class DisplayMealInfo extends DialogFragment {
     TextView meal_title;
 
     View view;
-    private DisplayMealInfo fragment = this;
+    private  DisplayMealInfo fragment = this;
 
     public DisplayMealInfo(Meal meal) {
         this.meal = meal;
@@ -54,7 +54,6 @@ public class DisplayMealInfo extends DialogFragment {
         this.endDate = meal.getEndDate();
         this.mealRecipes = meal.getMealRecipes();
         this.mealIngredients = meal.getMealIngredients();
-
     }
 
     @NonNull
@@ -91,6 +90,8 @@ public class DisplayMealInfo extends DialogFragment {
 
         for (Recipe x : mealRecipes) {
 
+            System.out.println("Iterating over a recipe in this meal");
+            System.out.println("Recipe title: " + x.getTitle());
             recipes += (x.getTitle() + ", Servings: " + x.getServings() + "\n");
         }
 

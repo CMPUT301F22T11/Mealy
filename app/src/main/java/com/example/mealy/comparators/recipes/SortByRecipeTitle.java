@@ -9,7 +9,7 @@ import java.util.Comparator;
  */
 public class SortByRecipeTitle implements Comparator<Recipe> {
 
-    private int asc;
+    private final int asc;
 
     public SortByRecipeTitle(int asc) {
         super();

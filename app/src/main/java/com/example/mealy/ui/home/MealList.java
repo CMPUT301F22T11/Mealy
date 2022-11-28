@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
+import com.example.mealy.ui.recipes.Recipe;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,13 @@ public class MealList extends ArrayAdapter<Meal> {
 
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.mealServingDisplay);
+        int totalServings = 0;
+
+        for (Recipe x : currentMeal.getMealRecipes()) {
+            totalServings = totalServings + x.getServings();
+        }
+
+        textView2.setText("Total servings: " + totalServings);
 
         // then return the recyclable view
         return currentItemView;

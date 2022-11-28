@@ -25,8 +25,8 @@ import java.util.ArrayList;
  */
 public class RecipeIngredientList extends ArrayAdapter<RecipeIngredient> {
 
-    private ArrayList<RecipeIngredient> ingredients;
-    private Context context;
+    private final ArrayList<RecipeIngredient> ingredients;
+    private final Context context;
 
     /**
      * Constructor for the class.

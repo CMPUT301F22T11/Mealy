@@ -51,20 +51,18 @@
     <ListView
         android:id="@+id/shoppingStorage"
         android:layout_width="match_parent"
-        android:layout_height="488sp"
+        android:layout_height="0sp"
         android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
         android:layout_marginTop="16sp"
-
+        android:layout_marginBottom="?attr/actionBarSize"
         android:clickable="true"
         android:scrollbars="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:drawSelectorOnTop="true"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/groupShopping"/>
 
     <ImageButton
@@ -72,13 +70,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/recipe_add_bg"
-        android:scaleX="0.85"
-        android:scaleY="0.85"
         android:padding="6sp"
-        android:layout_marginBottom="4sp"
+        android:layout_marginRight="16sp"
+        android:layout_marginBottom="16sp"
         app:layout_constraintBottom_toBottomOf="@id/shoppingStorage"
         app:layout_constraintEnd_toEndOf="@id/shoppingStorage"
-        android:layout_marginEnd="16sp"
         android:minHeight="48sp"
         android:src="@drawable/ic_baseline_add_shopping_cart_24"/>
 

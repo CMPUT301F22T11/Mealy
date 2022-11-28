@@ -112,6 +112,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="10sp"
+        android:background="@drawable/circle"
         android:orientation="horizontal">
 
         <EditText
@@ -287,10 +289,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:layout_marginHorizontal="10sp"
+        android:orientation="horizontal"
+        android:background="@drawable/circle"
+        >
 
         <EditText
             android:id="@+id/newLocation"
+            android:background="@android:color/transparent"
+            android:textColor="@color/accent_red"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -301,6 +308,8 @@
             android:inputType="textPersonName"
             android:maxLength="30"
             android:maxLines="1"
+            android:textSize="16sp"
+            android:layout_margin="10sp"
             android:visibility="gone"
             android:minHeight="48dp"
             android:textColorHint="@color/gray" />
@@ -359,7 +368,6 @@
 
         <EditText
             android:id="@+id/descriptionText"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description"

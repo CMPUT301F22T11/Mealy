@@ -125,8 +125,8 @@ public class RecipeIngredientTest {
                 assertTrue(task.isSuccessful());
                 for (DocumentSnapshot document : task.getResult()) {
                     assertTrue(document.exists());
-                    assertTrue((String) document.getData().get("Category") == "Veggie");
-                    assertTrue((String) document.getData().get("Recipe Name") == "Potato Soup");
+                    assertTrue(document.getData().get("Category") == "Veggie");
+                    assertTrue(document.getData().get("Recipe Name") == "Potato Soup");
                 }
 
             }
@@ -140,8 +140,8 @@ public class RecipeIngredientTest {
                 assertTrue(task.isSuccessful());
                 for (DocumentSnapshot document : task.getResult()) {
                     assertTrue(document.exists());
-                    assertTrue((String) document.getData().get("Category") == "Puke");
-                    assertTrue((String) document.getData().get("Recipe Name") == "Potato Soup");
+                    assertTrue(document.getData().get("Category") == "Puke");
+                    assertTrue(document.getData().get("Recipe Name") == "Potato Soup");
                 }
 
             }
@@ -262,8 +262,8 @@ public class RecipeIngredientTest {
                 assertTrue(task.isSuccessful());
                 for (DocumentSnapshot document : task.getResult()) {
                     assertTrue(document.exists());
-                    assertTrue((String) document.getData().get("Category") == "Yummy Food");
-                    assertTrue((String) document.getData().get("Recipe Name") == "Donkey Soup");
+                    assertTrue(document.getData().get("Category") == "Yummy Food");
+                    assertTrue(document.getData().get("Recipe Name") == "Donkey Soup");
                 }
 
             }
