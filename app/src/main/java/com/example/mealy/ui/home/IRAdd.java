@@ -52,7 +52,8 @@ public class IRAdd extends DialogFragment {
 
 
     Button Save;
-    EditText RecipeIngredientName, RecipeServings;
+    EditText  RecipeServings;
+    TextView RecipeIngredientName;
 
     ArrayList<String> IngredientRecipeList = new ArrayList<String>();
 
@@ -129,6 +130,8 @@ public class IRAdd extends DialogFragment {
             RecipeServings.setText("");
 
         }
+
+        RecipeIngredientName = (TextView) view.findViewById(R.id.ir_select);
     }
     /**
      * Initialize an addSnapshotListener that retrieves all current entries of Ingredients, alongside the category in which
