@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/ -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:elevation="4sp"
+    android:clickable="true"
+    style="@style/CustomListItem"
+    tools:ignore="UselessParent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ShoppingListAddConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:gravity="center_vertical">
+
+        <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
+        <!--scaletype to fitXY if we want no cropping but to stretch it to image view-->
+
+        <ImageView
+            android:id="@+id/shoppingListAddImageView"
+            android:layout_width="74sp"
+            android:layout_height="41sp"
+            android:layout_marginStart="275sp"
+            android:layout_marginTop="32sp"
+            android:adjustViewBounds="true"
+            android:padding="0sp"
+            android:scaleType="fitXY"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/shoppingListAddIngredientName"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8sp"
+            android:layout_marginTop="4sp"
+            android:gravity="top"
+            android:text="Ingredient Name"
+            android:textColor="@color/accent_red"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:clickable="false"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingListAddImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/shoppingListAddDescription"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
+            android:layout_marginStart="8sp"
+            android:gravity="top|left"
+            android:text="Description"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingListAddImageView"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shoppingListAddIngredientName"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/ShoppingListAddCategory"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
+            android:layout_marginStart="8sp"
+            android:gravity="top|left"
+            android:text="Category"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingListAddImageView"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shoppingListAddDescription"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/ShoppingListAddQuantity"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
+            android:layout_marginStart="8sp"
+            android:layout_marginBottom="4sp"
+            android:gravity="top|left"
+            android:text="Quantity"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shoppingListAddImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ShoppingListAddCategory"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="RtlHardcoded" />
+
+        <CheckBox
+            android:id="@+id/ShoppingListAddCheckbox"
+            android:layout_width="32sp"
+            android:layout_height="20sp"
+            android:layout_marginTop="4sp"
+            android:layout_marginEnd="8sp"
+            android:buttonTint="@color/green"
+            android:theme="@style/CheckboxStyle"
+            android:clickable="true"
+            android:focusable="false"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.075" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
