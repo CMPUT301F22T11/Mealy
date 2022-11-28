@@ -324,16 +324,19 @@ public class ShoppingFragment extends Fragment {
 
             }
         });
+        
+        Log.d("shopping", Integer.toString(mealArrayList.size()));
 
         // Going through each meal and adding the ingredients required to make each meal into the shopping list
         for (Meal x : mealArrayList){
             List<Recipe> recipeMealList = x.getMealRecipes();
             List<Ingredient> ingredientMealList = x.getMealIngredients();
+            Log.d("shopping", "AAAAAAAAAAA");
 
             // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
             for (Recipe y : recipeMealList){
                 String recipeName = y.getTitle();
-                Log.d("TAG", recipeName);
+                Log.d("shopping", recipeName);
                 // Checking all the ingredients of the recipe and adding them to ingredientMealList
                 for (RecipeIngredient z : recipeIngredientsList){
                     String tempTitle[] = z.getTitle().split(",");
@@ -371,8 +374,8 @@ public class ShoppingFragment extends Fragment {
             String name = x.getName();
             String amount = x.getQuantity();
             int amountNeeded = Integer.valueOf(amount);
-            Log.d("TAG", name);
-            Log.d("TAG", amount);
+            Log.d("shopping", name);
+            Log.d("shopping", amount);
 
             // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
             // If it does, then check if it need to buy more, otherwise, remove from shopping list.
