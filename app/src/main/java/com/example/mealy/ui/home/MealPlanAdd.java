@@ -465,6 +465,16 @@ public class MealPlanAdd extends DialogFragment {
         System.out.println("Start date format: " + compareStart);
         System.out.println("End date format: " + compareEnd);
 
+        boolean isValid = true;
+
+        if (startD.equals("Start Date") || Validate.isEmpty(startD)) {
+            startDate.setError("Please select a starting date!");
+            return false;
+        } else if (endD.equals("End Date")|| Validate.isEmpty(endD)) {
+            endDate.setError("Please select an ending date!");
+            return false;
+        }
+
         String[] startDateComponents = compareStart.split("-");
         String[] endDateComponents = compareEnd.split("-");
 
@@ -476,20 +486,11 @@ public class MealPlanAdd extends DialogFragment {
         int endMonth = Integer.parseInt(endDateComponents[1]);
         int endDay = Integer.parseInt(endDateComponents[2]);
 
-        boolean isValid = true;
-
         if (Validate.isEmpty(mealPlan)) {
             MealPlanTitle.setError("Please give a name to the Meal Plan");
             isValid =  false;
         }
 
-        if (startD.equals("Start Date") || Validate.isEmpty(startD)) {
-            startDate.setError("Please select a starting date!");
-            isValid =  false;
-        } else if (endD.equals("End Date")|| Validate.isEmpty(endD)) {
-            endDate.setError("Please select an ending date!");
-            isValid =  false;
-        }
         // compare start date with end date
         else if ((startYear > endYear) || ((startYear == endYear) && ((startMonth > endMonth) || ((startMonth == endMonth) && (startDay > endDay))))) {
             startDate.setError("Start date has to come before end date!");

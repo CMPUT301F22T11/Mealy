@@ -53,9 +53,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-
-
+/**
+ * The home tab fragment. This fragment is the homescreen of the app and displays
+ * all of the user's current meal plans. In addition, the user can add and display
+ * meal plans in this tab.
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;

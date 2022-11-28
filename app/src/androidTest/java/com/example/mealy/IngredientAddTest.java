@@ -63,7 +63,9 @@ public class IngredientAddTest {
 
         // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnButton("Ingredient"); //Click add recipe button
+
+        solo.clickOnImageButton(    2  ); //Click add recipe button
+        solo.sleep(3000);
 
         // Get view for EditText and Spinner and enter the parameters
         solo.enterText((EditText) solo.getView(R.id.ingredientName), "Tomato");
