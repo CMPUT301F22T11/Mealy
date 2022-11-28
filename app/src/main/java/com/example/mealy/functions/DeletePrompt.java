@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 
 /**
  *  Prompts the user to delete an item, if they accept, it deletes it from Firestore.
+ *  How to call: new DeletePrompt(collection, document).show(getParentFragmentManager(),"delete_prompt");
  */
 public class DeletePrompt extends DialogFragment {
 
