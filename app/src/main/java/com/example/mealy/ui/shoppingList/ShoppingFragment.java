@@ -246,7 +246,7 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // Getting all the meals from the Firebase
+        // TODO: Getting all the meals from the Firebase
         /*
         final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
         shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -281,7 +281,7 @@ public class ShoppingFragment extends Fragment {
 
         // TODO: get the ingredients from meal and import them into shoppingArrayList
         for (Meal x : mealList){
-            x.getTitle();
+            String recipes = x.getTitle(); // This is supposed to get the recipes
 
         }
 
