@@ -40,6 +40,8 @@ public class DisplayMealInfo extends DialogFragment {
 
     TextView view_date;
     TextView view_servings;
+    TextView recipeDisplay;
+    TextView ingredientDisplay;
 
     View view;
     private DisplayMealInfo fragment = this;
@@ -49,8 +51,6 @@ public class DisplayMealInfo extends DialogFragment {
         this.mealName = meal.getTitle();
         this.startDate = meal.getStartDate();
         this.endDate = meal.getEndDate();
-        this.servingsString = meal.getServingsString();
-        this.servings = meal.getServings();
         this.mealRecipes = meal.getMealRecipes();
         this.mealIngredients = meal.getMealIngredients();
 
@@ -70,7 +70,7 @@ public class DisplayMealInfo extends DialogFragment {
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new DeletePrompt("Meal", mealName).show(getParentFragmentManager(),"delete_prompt");
+                        new DeletePrompt("MealPlan", mealName).show(getParentFragmentManager(),"delete_prompt");
                     }
                 }).create();
     }
@@ -82,10 +82,26 @@ public class DisplayMealInfo extends DialogFragment {
         // set date
         view_date = view.findViewById(R.id.mealDate);
         view_date.setText(startDate + " to " + endDate);
+        recipeDisplay = view.findViewById(R.id.mealRecipeListDisplay);
+        ingredientDisplay = view.findViewById(R.id.mealIngredientListDisplay);
+
+
+        for (Recipe x : mealRecipes) {
+
+            recipeDisplay.setText("\n" + x.getTitle() + "    Servings: " + x.getServings());
+        }
+
+        for (Ingredient x : mealIngredients) {
+            ingredientDisplay.setText("\n" + x.getName());
+        }
+
+
+
+
 
         // set servings
-        view_servings = view.findViewById(R.id.mealServings);
-        view_servings.setText(servings.toString());
+//        view_servings = view.findViewById(R.id.mealServings);
+//        view_servings.setText(servings.toString());
 
         return view;
     }

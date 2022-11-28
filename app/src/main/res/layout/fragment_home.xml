@@ -38,6 +38,17 @@
         app:layout_constraintTop_toBottomOf="@id/textLayout"
         app:layout_constraintBottom_toTopOf="@id/cardCal"/>
 
+    <Button
+        android:id="@+id/meal_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="+ Meal Plan"
+        app:layout_constraintBottom_toTopOf="@+id/cardCal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealplanlistview" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardCal"
         android:layout_width="wrap_content"
@@ -48,6 +59,7 @@
         app:cardElevation="6sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meal_button"
         app:layout_constraintRight_toRightOf="parent">
 
         <CalendarView

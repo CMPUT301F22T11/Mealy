@@ -25,5 +25,11 @@
     <string name="ingredient_sort">Sort By</string>
     <string name="TEMP">TEMP</string>
     <string name="Recipe_Ingredient_save">SUBMIT</string>
+    <string name="Meal_Name">Title</string>
+    <string name="Meal_Name_Plan">Title:</string>
+    <string name="Meal_Plan_submit">SUBMIT</string>
+    <string name="meal_Plan_add">Add Recipe/Ingredient to Meal Plan</string>
+    <string name="select_ir">Select Ingredient/Recipe</string>
+    <string name="ir">Ingredient/Recipe</string>
 
 </resources>
