@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -64,6 +65,7 @@ public class ShoppingFragment extends Fragment {
 
         // assign UI elements
         shoppingIngredientListView = root.findViewById(R.id.shoppingStorage);
+        shoppingIngredientListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         flipButton = root.findViewById(R.id.flip_shopping_sort);
         sortSpinner = root.findViewById(R.id.shoppingSort);
         addButton = root.findViewById(R.id.addShoppingIngredient);
@@ -99,29 +101,53 @@ public class ShoppingFragment extends Fragment {
         // List of checked items
         ArrayList<Integer> checkedItems = new ArrayList<Integer>();
 
+
+
         // get all checked items
         SparseBooleanArray checked = shoppingIngredientListView.getCheckedItemPositions();
-
 
         // add button on click
         // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("TAG", String.valueOf(shoppingArrayList.size()));
-                for (int i = 0; i < shoppingArrayList.size(); i++) {
-                    if (checked.get(i)) {
-                        checkedItems.add(i);
+                // from https://stackoverflow.com/questions/19027843/android-get-text-of-all-checked-checkboxes-in-listview
+                CheckBox cb;
+                for (int x = 0; x<shoppingIngredientListView.getChildCount();x++){
+                    cb = (CheckBox) shoppingIngredientListView.getChildAt(x).findViewById(R.id.checkbox);
+                    if(cb.isChecked()){
+                        checkedItems.add(x);
+                        Log.d("TAG", "Index " + x + " is counted");
                     }
                 }
-
-                for (int i = 0; i < checkedItems.size(); i++) {
-                    Log.d("TAG", checkedItems.get(i).toString());
+                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
+                if (! checkedItems.isEmpty()) {
+                    ShoppingListAdd disp = new ShoppingListAdd();
+                    disp.show(getChildFragmentManager(), TAG);
                 }
-                ShoppingListAdd disp = new ShoppingListAdd();
-                disp.show(getChildFragmentManager(), TAG);
+                checkedItems.clear();
+                /*
+                if (checked != null) {
+                    Log.d("TAG", String.valueOf("Checked Size:" + checked.size()));
+                    for (int i = 0; i < checked.size(); i++) {
+                        if (checked.valueAt(i)) {
+                            checkedItems.add(i);
+                        }
+                    }
+
+                    for (int i = 0; i < checkedItems.size(); i++) {
+                        Log.d("TAG", "Checked Item: " + checkedItems.get(i).toString());
+                    }
+
+
+                } else {
+                    Log.i(TAG, "Failed");
+                }
+                 */
             }
         });
+
+
 
 
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
