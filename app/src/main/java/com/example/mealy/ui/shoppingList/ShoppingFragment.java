@@ -379,7 +379,7 @@ public class ShoppingFragment extends Fragment {
                     if(amountNeeded <= amountHave){
                         shoppingArrayList.remove(x);
                     } else {
-                        x.setQuantity(Integer.toString(amountHave - amountNeeded));
+                        x.setQuantity(Integer.toString(amountNeeded - amountHave));
                     }
                 }
             }
