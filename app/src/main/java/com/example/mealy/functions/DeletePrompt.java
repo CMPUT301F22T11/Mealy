@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mealy.R;
+
 /**
  *  Prompts the user to delete an item, if they accept, it deletes it from Firestore.
  *  How to call: new DeletePrompt(collection, document).show(getParentFragmentManager(),"delete_prompt");
@@ -40,9 +42,9 @@ public class DeletePrompt extends DialogFragment {
         //view = LayoutInflater.from(getActivity()).inflate(R.layout.display_ingredient_info, null);
 
         // Creates a dialog builder thing that lets you display information and click buttons and stuff
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         return builder
-                .setTitle("Confirm Deletion?")
+                .setTitle("Are you sure you want to delete?")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

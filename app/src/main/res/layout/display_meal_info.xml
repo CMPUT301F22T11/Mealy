@@ -6,11 +6,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/accent_grey"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/meal_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:minHeight="64sp"
+            android:text="Meal Title"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/accent_grey"
+            android:textSize="25sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
             android:orientation="horizontal">
 
             <TextView
@@ -22,12 +37,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
                 android:textSize="18sp"
+                android:textColor="@color/dark_gray"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/mealDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_red"
                 android:textSize="16sp"
                 android:text="Empty" />
         </LinearLayout>
@@ -36,12 +54,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="16sp"
+
+            android:layout_marginLeft="16sp"
             android:orientation="horizontal">
 
             <TextView
@@ -49,6 +69,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/dark_gray"
                 android:text="Recipes: "
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
@@ -59,13 +80,19 @@
                 android:id="@+id/mealRecipeListDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_red"
                 android:textSize="16sp"
-                android:text="Recipe" />
+
+                android:text="" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginBottom="16sp"
             android:orientation="horizontal">
 
             <TextView
@@ -73,6 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/dark_gray"
                 android:text="Ingredients: "
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10sp"
@@ -83,8 +111,10 @@
                 android:id="@+id/mealIngredientListDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_red"
                 android:textSize="16sp"
-                android:text="Ingredients" />
+                android:text="" />
         </LinearLayout>
 
     </LinearLayout>
