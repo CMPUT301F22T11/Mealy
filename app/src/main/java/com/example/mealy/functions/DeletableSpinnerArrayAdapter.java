@@ -59,10 +59,8 @@ public class DeletableSpinnerArrayAdapter extends ArrayAdapter<String> {
         }
 
         if (position == 1) {
-
+            view.findViewById(R.id.spnItemDel).setVisibility(View.GONE);
         }
-
-
 
         Delete.setOnClickListener(new View.OnClickListener() {
             @Override

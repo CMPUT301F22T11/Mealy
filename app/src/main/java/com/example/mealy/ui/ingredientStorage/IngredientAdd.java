@@ -63,14 +63,14 @@ public class IngredientAdd extends DialogFragment {
     Spinner quantityUnits;
     Spinner locationSpinner;
     DeletableSpinnerArrayAdapter categoryAdapter;
-    ArrayAdapter<String> locationAdapter;
+    DeletableSpinnerArrayAdapter locationAdapter;
     ArrayAdapter<String> ingredientAdapter;
     ArrayAdapter<CharSequence> unitsAdapter;
     ArrayList<String> Location = new ArrayList<>();
     ArrayList<String> Category = new ArrayList<>();
     ArrayList<String> Ingredients = new ArrayList<>();
     ArrayList<String> RecipeIngredients = new ArrayList<>();
-   HashMap<String, Map<String, Object>> RecipeIngredientsMaps = new HashMap<>();
+    HashMap<String, Map<String, Object>> RecipeIngredientsMaps = new HashMap<>();
 
     String[] whole;
     String[] weight;
@@ -227,8 +227,7 @@ public class IngredientAdd extends DialogFragment {
         //locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
         Location.add("Select Location");
         Location.add("Add Location");
-        locationAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Location);
-        locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
         locationAdapter.setNotifyOnChange(true);
         locationSpinner.setAdapter(locationAdapter);
         AddLocation = view.findViewById(R.id.newLocation);
@@ -584,7 +583,6 @@ public class IngredientAdd extends DialogFragment {
                         categoryData = document.getData();
                         Category = General.mapToArrayList(categoryData);
                         categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
-                        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         categorySpinner.setAdapter(categoryAdapter);
                         if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
 
@@ -599,6 +597,22 @@ public class IngredientAdd extends DialogFragment {
                 }
             }
         });
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
+                if (doc != null) {
+                    if ((doc.getData() != null) && (getContext() != null))
+                    {
+                        categoryData = doc.getData();
+                        Category = General.mapToArrayList(categoryData);
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
+                        categorySpinner.setAdapter(categoryAdapter);
+                    }
+                }
+            }
+        });
+
     }
 
     public void readLocationFirebase() {
@@ -614,7 +628,7 @@ public class IngredientAdd extends DialogFragment {
                     if (document.exists()) {
                         locationData = document.getData();
                         Location = General.mapToArrayList(locationData);
-                        locationAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Location);
+                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
                         locationSpinner.setAdapter(locationAdapter);
                         if (edit && ingredient!=null) {locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));}
 
@@ -632,17 +646,22 @@ public class IngredientAdd extends DialogFragment {
 
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-
+            public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
+                if (doc != null) {
+                    if ((doc.getData() != null) && (getContext() != null))
+                    {
+                        locationData = doc.getData();
+                        Location = General.mapToArrayList(locationData);
+                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
+                        locationSpinner.setAdapter(locationAdapter);
+                    }
+                }
             }
         });
-
-
     }
 
     private void GetIngredientNames() {
         CollectionReference ingredientReference = db.collection("Ingredients");
-
         ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
              * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
