@@ -47,7 +47,10 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -171,78 +174,12 @@ public class HomeFragment extends Fragment {
                                 // format in String type Variable
                                 // Add 1 in month because month
                                 // index is start with 0
-                                String Date
+                                String date_string
                                         = year + "-"
                                         + (month + 1) + "-" + dayOfMonth;
 
                                 // set this date in TextView for Display
-                                date_viewThis.setText("Planned Meals For: " + Date);
-
-                                // pull only meal plans that have this corresponding date
-                                // PULL FROM FIREBASE
-
-//                                // get recipe table
-//                                FirebaseFirestore dbf = FirebaseFirestore.getInstance();
-//                                final CollectionReference mealCollection = dbf.collection("Meals");
-//
-//                                mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                                    @Override
-//                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-//                                            FirebaseFirestoreException error) {
-//
-//                                        // Clear the old list
-//                                        mealArrayList.clear();
-//
-//                                        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-//                                        {
-//                                            try {
-//
-//                                                // fetch meal info
-//                                                // fetch rest of recipe info
-//                                                String mealStartDate = (String) doc.getData().get("Start Date");
-//                                                String mealEndDate = (String) doc.getData().get("End Date");
-//
-//                                                String[] startDateComponents = mealStartDate.split("-");
-//                                                String[] endDateComponents = mealEndDate.split("-");
-//                                                String[] currentDateComponents = Date.split("-");
-//
-//                                                int startYear = Integer.parseInt(startDateComponents[0]);
-//                                                int startMonth = Integer.parseInt(startDateComponents[1]);
-//                                                int startDay = Integer.parseInt(startDateComponents[2]);
-//
-//                                                int endYear = Integer.parseInt(endDateComponents[0]);
-//                                                int endMonth = Integer.parseInt(endDateComponents[1]);
-//                                                int endDay = Integer.parseInt(endDateComponents[2]);
-//
-//                                                int thisYear = Integer.parseInt(currentDateComponents[0]);
-//                                                int thisMonth = Integer.parseInt(currentDateComponents[1]);
-//                                                int thisDay = Integer.parseInt(currentDateComponents[2]);
-//
-//                                                // ONLY FETCH IF DATE IN BETWEEN THIS PARTICULAR RANGE OF DATES
-//                                                if (!((thisYear >= startYear && thisYear <= endYear) &&
-//                                                        (thisMonth >= startMonth && thisMonth <= endMonth) &&
-//                                                        thisDay >= startDay && thisDay <= endDay)) {
-//                                                    continue;
-//                                                }
-//
-//                                                System.out.println("Meal plan detected for this day!");
-//
-//                                                String title = (String) doc.getData().get("Title");
-//                                                System.out.println("Got title");
-//                                                String servingsString = (String) doc.getData().get("Servings");
-//                                                System.out.println("Got servings");
-//
-//                                                Meal meal = new Meal(title, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
-//
-//                                                mealArrayList.add(meal); // Adding new recipe using Firebase data
-//
-//                                            } catch (Exception e) {
-//                                                System.out.println("Error with firebase pull, incorrect formatting");
-//                                            }
-//                                        }
-//                                        mealAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-//                                    }
-//                                });
+                                date_viewThis.setText("Planned Meals For: " + date_string);
 
                                 collectionReference = db.collection("MealPlan");
                                 collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -257,13 +194,15 @@ public class HomeFragment extends Fragment {
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                                             FirebaseFirestoreException error) {
                                         mealArrayList.clear();
+
+                                        // Pull every meal
                                         for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                                             String startDate = (String) doc.getData().get("Start Date");
                                             String endDate = (String) doc.getData().get("End Date");
 
                                             String[] startDateComponents = startDate.split("-");
                                             String[] endDateComponents = endDate.split("-");
-                                            String[] currentDateComponents = Date.split("-");
+                                            String[] currentDateComponents = date_string.split("-");
 
                                             int startYear = Integer.parseInt(startDateComponents[0]);
                                             int startMonth = Integer.parseInt(startDateComponents[1]);
@@ -277,11 +216,23 @@ public class HomeFragment extends Fragment {
                                             int thisMonth = Integer.parseInt(currentDateComponents[1]);
                                             int thisDay = Integer.parseInt(currentDateComponents[2]);
 
-                                            if (!((thisYear >= startYear && thisYear <= endYear) &&
-                                                        (thisMonth >= startMonth && thisMonth <= endMonth) &&
-                                                        thisDay >= startDay && thisDay <= endDay)) {
+                                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                            try {
+                                                Date startDateObj = sdf.parse(startDate);
+                                                Date endDateObj = sdf.parse(endDate);
+                                                Date thisDateObj = sdf.parse(date_string);
+
+                                                // PULL ONLY IF OUR SELECTED DATE IS WITHIN RANGE OF THIS DOCUMENT
+                                                // check if date in between two years
+                                                // if not, then check if date is in between
+                                                // https://stackoverflow.com/questions/883060/how-can-i-determine-if-a-date-is-between-two-dates-in-java
+                                                if (!(startDateObj.compareTo(thisDateObj) * thisDateObj.compareTo(endDateObj) >= 0)) {
                                                     continue;
                                                 }
+
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
 
                                             System.out.println("Meal plan detected for this day!");
                                             String mealPlan = (String) doc.getId();
