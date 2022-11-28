@@ -278,7 +278,7 @@ public class RecipeEntry extends DialogFragment {
                         Firestore.deleteFromFirestore("RecipeIngredients", thisIngredientID);
                     }
                 } else {
-                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    getParentFragmentManager().beginTransaction().remove(fragment).commit();
 
                 }
                 Firestore.storeToFirestore("Recipe", RecipeName, data);

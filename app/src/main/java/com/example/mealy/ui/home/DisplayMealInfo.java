@@ -29,14 +29,14 @@ public class DisplayMealInfo extends DialogFragment {
 
     private final Meal meal;
 
-    private final String mealName;
-    private final String servingsString;
-    private final String startDate;
-    private final String endDate;
-    private final Integer servings;
+    private  String mealName;
+    private  String servingsString;
+    private  String startDate;
+    private  String endDate;
+    private  Integer servings;
 
-    private final List<Recipe> mealRecipes;
-    private final List<Ingredient> mealIngredients;
+    private List<Recipe> mealRecipes;
+    private  List<Ingredient> mealIngredients;
 
     TextView view_date;
     TextView view_servings;
@@ -45,7 +45,7 @@ public class DisplayMealInfo extends DialogFragment {
     TextView meal_title;
 
     View view;
-    private final DisplayMealInfo fragment = this;
+    private  DisplayMealInfo fragment = this;
 
     public DisplayMealInfo(Meal meal) {
         this.meal = meal;
@@ -54,7 +54,6 @@ public class DisplayMealInfo extends DialogFragment {
         this.endDate = meal.getEndDate();
         this.mealRecipes = meal.getMealRecipes();
         this.mealIngredients = meal.getMealIngredients();
-
     }
 
     @NonNull

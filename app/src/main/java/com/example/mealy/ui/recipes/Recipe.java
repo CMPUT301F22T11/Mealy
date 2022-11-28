@@ -30,7 +30,7 @@ public class Recipe implements Serializable, Parcelable {
     Bitmap bitmap; // image of recipe
     boolean hasImage = false; // is this recipe associated with an image
 
-    private final List<Ingredient> recipeIngredients;
+    private List<Ingredient> recipeIngredients;
 
     /**
      * Set the bitmap of the recipe associated with this image

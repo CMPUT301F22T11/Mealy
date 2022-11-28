@@ -1,5 +1,4 @@
 package com.example.mealy.ui.recipes;
-import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,7 +30,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.example.mealy.R;
-import com.example.mealy.functions.DateFunc;
 import com.example.mealy.functions.DeletableSpinnerArrayAdapter;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
@@ -73,7 +71,6 @@ public class RecipeIngredientAdd extends DialogFragment {
     RadioButton volumeButton;
 
     Button Save;
-    EditText RecipeIngredientName;
     EditText RecipeIngredientAmount;
     EditText RecipeIngredientDescription;
     EditText RecipeIngredientCategory;
@@ -336,6 +333,13 @@ public class RecipeIngredientAdd extends DialogFragment {
                 if (ValidData()) {
                     String name, category;
 
+                    if (RecipeIngredientCategory.getVisibility() == View.VISIBLE){
+                        if (!categoryData.containsValue(RecipeIngredientCategory.getText().toString())) {
+                            categoryData.put(String.valueOf(categoryData.size()+1), RecipeIngredientCategory.getText().toString());
+                            Firestore.storeToFirestore("Spinner","Category", categoryData);
+                        }
+                    }
+
                     name = ingredientName.getText().toString();
                     String recipeIngredientCategory = categorySpinner.getSelectedItem().toString();
                     String ingredientCategoryNew = RecipeIngredientCategory.getText().toString();
@@ -385,7 +389,7 @@ public class RecipeIngredientAdd extends DialogFragment {
      * @return Returns the name of the recipe ingredient that was created.
      */
     private String GetRecipeIngredientName() {
-        return RecipeIngredientName.getText().toString();
+        return ingredientName.getText().toString();
     }
 
     /**
@@ -396,7 +400,7 @@ public class RecipeIngredientAdd extends DialogFragment {
      */
     private boolean ValidData(){
 
-        String recipeIngredientNew = RecipeIngredientName.getText().toString();
+        String recipeIngredientNew = ingredientName.getText().toString();
         String recipeIngredientName = ingredientName.getText().toString();
         String recipeIngredientCategory = categorySpinner.getSelectedItem().toString();
         String ingredientCategoryNew = RecipeIngredientCategory.getText().toString();
@@ -408,7 +412,7 @@ public class RecipeIngredientAdd extends DialogFragment {
         boolean isValid = true;
 
         if (Validate.isEmpty(recipeIngredientNew)  && nameNewSelected == true) {
-            RecipeIngredientName.setError("Please give an ingredient name");
+            ingredientName.setError("Please give an ingredient name");
             isValid =  false;
         }
 
@@ -426,10 +430,6 @@ public class RecipeIngredientAdd extends DialogFragment {
             isValid = false;
         }
 
-        if (IngredientNames.contains(recipeIngredientName)) {
-            ingredientName.setError("This ingredient already exists");
-            isValid = false;
-        }
 
         if (Validate.isEmpty(recipeIngredientAmount)) {
             RecipeIngredientAmount.setError("Please input amount");
