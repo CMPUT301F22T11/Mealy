@@ -7,6 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:elevation="4sp"
+    android:clickable="false"
     style="@style/CustomListItem"
     tools:ignore="UselessParent">
 
@@ -14,6 +16,7 @@
         android:id="@+id/ShoppingListConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="false"
         android:gravity="center_vertical">
 
         <!--scaletype to centerCrop if we want to maintain aspect ratio and crop outlier-->
@@ -21,13 +24,14 @@
 
         <ImageView
             android:id="@+id/shoppingimageView"
-            android:layout_width="74dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="275dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="74sp"
+            android:layout_height="41sp"
+            android:layout_marginStart="275sp"
+            android:layout_marginTop="32sp"
             android:adjustViewBounds="true"
-            android:padding="0dp"
+            android:padding="0sp"
             android:scaleType="fitXY"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -38,15 +42,16 @@
 
         <TextView
             android:id="@+id/shoppingNameDisplay"
-            android:layout_width="0dp"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8sp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="4sp"
             android:gravity="top"
             android:text="Ingredient Name"
             android:textColor="@color/accent_red"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:clickable="false"
             app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,13 +59,14 @@
 
         <TextView
             android:id="@+id/shoppingListViewDescription"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
             android:layout_marginStart="8sp"
             android:gravity="top|left"
             android:text="Description"
             android:textColor="@color/accent_red"
             android:textSize="14sp"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
             app:layout_constraintHorizontal_bias="0.49"
@@ -71,13 +77,14 @@
 
         <TextView
             android:id="@+id/categoryDisplay"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
             android:layout_marginStart="8sp"
             android:gravity="top|left"
             android:text="Category"
             android:textColor="@color/accent_red"
             android:textSize="14sp"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
             app:layout_constraintHorizontal_bias="0.49"
@@ -88,14 +95,15 @@
 
         <TextView
             android:id="@+id/quantityDisplay"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_width="0sp"
+            android:layout_height="20sp"
             android:layout_marginStart="8sp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="4sp"
             android:gravity="top|left"
             android:text="Quantity"
             android:textColor="@color/accent_red"
             android:textSize="14sp"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/shoppingimageView"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,12 +113,14 @@
 
         <CheckBox
             android:id="@+id/checkbox"
-            android:layout_width="32dp"
+            android:layout_width="32sp"
             android:layout_height="20sp"
             android:layout_marginTop="4sp"
             android:layout_marginEnd="8sp"
             android:buttonTint="@color/green"
             android:theme="@style/CheckboxStyle"
+            android:clickable="false"
+            android:focusable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

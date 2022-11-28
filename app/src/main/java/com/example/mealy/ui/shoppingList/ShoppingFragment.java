@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -37,6 +37,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +54,7 @@ public class ShoppingFragment extends Fragment {
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
-    private Button addButton;
+    private ImageButton addButton;
 
     final String TAG = "Logging";
 
@@ -111,16 +112,6 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // add button on click
-        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShoppingListAdd disp = new ShoppingListAdd();
-                disp.show(getChildFragmentManager(), TAG);
-            }
-        });
-
         // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
         ShoppingIngredient sample = new ShoppingIngredient("Tomato",
                 "Tomato is a red fruit",
@@ -171,11 +162,10 @@ public class ShoppingFragment extends Fragment {
                 "Fruit");
         shoppingArrayList.add(sample7);
 
-        // PULL FROM FIREBASE
-        // https://www.youtube.com/watch?v=xzCsJF9WtPU
-        // get shopping table
-        FirebaseFirestore dbf = FirebaseFirestore.getInstance();
-        //TODO: Fix this for firebase
+        // create the instance of the ListView to set the shopping list adapter
+        ListView storage = root.findViewById(R.id.shoppingStorage);
+        storage.setAdapter(shoppingAdapter);
+
 
         // Getting all the ingredients from the FireBase
         final CollectionReference shoppingCollectionIngredient = dbf.collection("Ingredients");
@@ -276,8 +266,24 @@ public class ShoppingFragment extends Fragment {
                         System.out.println("Error with firebase pull, incorrect formatting");
                     }
                 }
+
+        ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
+
+        storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("CLICKING", "CLIOKING");
+                CheckBox checkBox = view.findViewById(R.id.checkbox);
+                checkBox.toggle();
+                if(checkBox.isChecked()){
+                    checkedItems.add(shoppingArrayList.get(i));
+                } else {
+                    checkedItems.remove(shoppingArrayList.get(i));
+                }
+
             }
-        });*/
+        });
+
 
         // TODO: get the ingredients from meal and import them into shoppingArrayList
         for (Meal x : mealList){
@@ -310,9 +316,25 @@ public class ShoppingFragment extends Fragment {
         // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         shoppingAdapter.notifyDataSetChanged();
 
-        // create the instance of the ListView to set the shopping list adapter
-        ListView storage = root.findViewById(R.id.shoppingStorage);
-        storage.setAdapter(shoppingAdapter);
+        // add button on click
+        // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // List of checked items
+                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
+                for(int j=0; j<checkedItems.size(); j++){
+                    Log.d("LIST", checkedItems.get(j).toString());
+                }
+                if (! checkedItems.isEmpty()) {
+                    ShoppingListAdd displayAdd = new ShoppingListAdd(checkedItems);
+                    displayAdd.show(getChildFragmentManager(), TAG);
+                }
+
+            }
+        });
+
+
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -333,6 +355,7 @@ public class ShoppingFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

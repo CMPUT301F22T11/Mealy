@@ -3,15 +3,11 @@ package com.example.mealy;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealy.ui.home.HomeFragment;
 import com.example.mealy.ui.ingredientStorage.IngredientFragment;
-import com.example.mealy.ui.ingredientStorage.IngredientAdd;
-import com.example.mealy.ui.recipes.RecipeEntry;
 import com.example.mealy.ui.recipes.RecipeFragment;
 import com.example.mealy.ui.shoppingList.ShoppingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,9 +16,6 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
     // for image upload
     public static Context contextOfApplication;
-
-    Button Home_Add_Ingredient_Entry;
-    Button Home_Add_Recipe_Entry;
 
     RecipeFragment recipeFragment = new RecipeFragment();
     IngredientFragment ingredientFragment = new IngredientFragment();
@@ -62,22 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Home_Add_Ingredient_Entry = findViewById(R.id.Home_Add_Ingredient_Entry);
-        Home_Add_Recipe_Entry = findViewById(R.id.Home_Add_Recipe_Entry);
-        //This is for testing, to set the button to your view, modify it in test view
-        Home_Add_Ingredient_Entry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new IngredientAdd().show(getSupportFragmentManager(),"food_entry");
-            }
-        });
 
-        Home_Add_Recipe_Entry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new RecipeEntry().show(getSupportFragmentManager(),"test");
-            }
-        });
     }
 
     public static Context getContextOfApplication()

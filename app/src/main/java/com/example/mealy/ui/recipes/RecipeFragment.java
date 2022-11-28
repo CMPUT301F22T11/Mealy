@@ -22,10 +22,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mealy.databinding.FragmentNotificationsBinding;
-import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.R;
 import com.example.mealy.comparators.recipes.CompareRecipes;
+import com.example.mealy.databinding.FragmentNotificationsBinding;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -59,6 +59,7 @@ public class RecipeFragment extends Fragment {
     private ListView recipeListView; // list of recipes
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
     private ImageButton flipButton; // for flipping the recipe items
+    private ImageButton Home_Add_Recipe_Entry;
 
     final String TAG = "Logging";
 
@@ -82,6 +83,7 @@ public class RecipeFragment extends Fragment {
         sortSpinner = root.findViewById(R.id.recipesort);
         recipeListView = root.findViewById(R.id.recipestorage);
         flipButton = root.findViewById(R.id.flip_recipe_sort);
+        Home_Add_Recipe_Entry = root.findViewById(R.id.Home_Add_Recipe_Entry);
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Prep Time", "Servings", "Category"));
@@ -233,6 +235,13 @@ public class RecipeFragment extends Fragment {
             }
         });
 
+        Home_Add_Recipe_Entry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecipeEntry addRecipe = new RecipeEntry();
+                addRecipe.show(getChildFragmentManager(), TAG);
+            }
+        });
         return root;
     }
 

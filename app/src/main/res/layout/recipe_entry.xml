@@ -149,16 +149,15 @@
                 android:id="@+id/Recipe_Entry_Servings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:autofillHints=""
-                android:hint="@string/Recipe_Entry_enter_servings"
-                android:inputType="number"
-                android:minHeight="48sp"
-                android:gravity="end|center_vertical"
-                android:layout_marginEnd="6sp"
                 android:background="@android:color/transparent"
-                android:textColorHint="@color/gray"
+                android:gravity="center"
+                android:hint="1,2,3 ,..."
+                android:inputType="numberDecimal"
+                android:minHeight="48sp"
                 android:textColor="@color/accent_red"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:textColorHint="@color/gray" />
 
         </LinearLayout>
 

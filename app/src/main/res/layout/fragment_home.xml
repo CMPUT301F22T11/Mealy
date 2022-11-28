@@ -6,58 +6,73 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/textLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:background="@drawable/listitem"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Meal Plan"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.033" />
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/date_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:text="Select a Date"
+            android:padding="6sp"
+            android:textColor="@color/dark_gray"/>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/mealplanlistview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:layout_marginTop="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
         android:clickable="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home"
-        app:layout_constraintBottom_toTopOf="@+id/date_view" />
-
-
-    <TextView
-        android:id="@+id/date_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select a Date"
-        android:textColor="@android:color/background_dark"
-        android:textStyle="bold"
-        android:scaleX="0.8"
-        android:scaleY="0.8"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealplanlistview"
-        app:layout_constraintBottom_toTopOf="@+id/calendar" />
-
-
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
         android:scaleX="0.9"
         android:scaleY="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textLayout"
+        app:layout_constraintBottom_toTopOf="@id/cardCal"/>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:cardBackgroundColor="@color/accent_grey"
+        app:cardCornerRadius="16sp"
+        app:cardElevation="6sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_view"
-        app:layout_constraintBottom_toBottomOf="parent">
-    </CalendarView>
+        app:layout_constraintTop_toBottomOf="@+id/meal_button"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/calendar_bg"
+            android:dateTextAppearance="@style/CalenderViewDateCustomText"
+            android:theme="@style/CalenderViewCustom"
+            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/meal_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_library_add_24"
+        android:background="@drawable/recipe_add_bg"
+        android:padding="6sp"
+        android:layout_marginBottom="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/mealplanlistview"
+        app:layout_constraintEnd_toEndOf="@id/mealplanlistview"
+        android:layout_marginEnd="16sp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

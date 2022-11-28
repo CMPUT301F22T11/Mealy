@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import android.widget.AdapterView;
@@ -25,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.databinding.FragmentHomeBinding;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
+import com.example.mealy.ui.ingredientStorage.IngredientAdd;
 import com.example.mealy.ui.recipes.DisplayRecipeInfo;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeList;
@@ -40,9 +43,12 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -54,6 +60,16 @@ public class HomeFragment extends Fragment {
     private ListView mealPlanListView; // list of mealplans
 
     final String TAG = "Logging";
+
+    CollectionReference collectionReference;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    ImageButton Add_Meal_Button;
+
+    ArrayList<Meal> listofMeals = new ArrayList<Meal>();
+    ArrayList<Meal> mealAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,8 +83,20 @@ public class HomeFragment extends Fragment {
         CalendarView calendarThis = (CalendarView) root.findViewById(R.id.calendar);
         TextView date_viewThis = (TextView) root.findViewById(R.id.date_view);
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        mealPlanListView = root.findViewById(R.id.mealplanlistview);
+        // list that will store all our recipe objects
+        ArrayList<Meal> mealArrayList = new ArrayList<Meal>();
+
+        // Create the adapter and set it to the arraylist
+        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
+
+        // create the instance of the ListView to set the meal adapter
+        mealPlanListView.setAdapter(mealAdapter);
+
+
 
 //
         // Add Listener in calendar
@@ -101,16 +129,16 @@ public class HomeFragment extends Fragment {
                             }
                         });
         //
-        mealPlanListView = root.findViewById(R.id.mealplanlistview);
 
-        // list that will store all our recipe objects
-        ArrayList<Meal> mealArrayList = new ArrayList<>();
 
-        // Create the adapter and set it to the arraylist
-        MealList mealAdapter = new MealList(getActivity(), mealArrayList);
-
-        // create the instance of the ListView to set the meal adapter
-        mealPlanListView.setAdapter(mealAdapter);
+        Add_Meal_Button = root.findViewById(R.id.meal_button);
+        //This is for testing, to set the button to your view, modify it in test view
+        Add_Meal_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MealPlanAdd().show(getParentFragmentManager(),"meal_plan");
+            }
+        });
 
         // set some sample meal plans
         Ingredient apple = new Ingredient("Apple",
@@ -141,7 +169,7 @@ public class HomeFragment extends Fragment {
         sampleRecipes.add(applePie);
         sampleRecipes.add(friedApple);
 
-        Meal sample = new Meal("Lunch", 3, "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
+        Meal sample = new Meal("Lunch", "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
 
         // add the meals to the list and connect it to the adapter
         mealArrayList.add(sample);
@@ -183,72 +211,188 @@ public class HomeFragment extends Fragment {
                                         + (month + 1) + "-" + dayOfMonth;
 
                                 // set this date in TextView for Display
-                                date_viewThis.setText(Date);
+                                date_viewThis.setText("Planned Meals For: " + Date);
 
                                 // pull only meal plans that have this corresponding date
                                 // PULL FROM FIREBASE
 
-                                // get recipe table
-                                FirebaseFirestore dbf = FirebaseFirestore.getInstance();
-                                final CollectionReference mealCollection = dbf.collection("Meals");
+//                                // get recipe table
+//                                FirebaseFirestore dbf = FirebaseFirestore.getInstance();
+//                                final CollectionReference mealCollection = dbf.collection("Meals");
+//
+//                                mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                                    @Override
+//                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+//                                            FirebaseFirestoreException error) {
+//
+//                                        // Clear the old list
+//                                        mealArrayList.clear();
+//
+//                                        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+//                                        {
+//                                            try {
+//
+//                                                // fetch meal info
+//                                                // fetch rest of recipe info
+//                                                String mealStartDate = (String) doc.getData().get("Start Date");
+//                                                String mealEndDate = (String) doc.getData().get("End Date");
+//
+//                                                String[] startDateComponents = mealStartDate.split("-");
+//                                                String[] endDateComponents = mealEndDate.split("-");
+//                                                String[] currentDateComponents = Date.split("-");
+//
+//                                                int startYear = Integer.parseInt(startDateComponents[0]);
+//                                                int startMonth = Integer.parseInt(startDateComponents[1]);
+//                                                int startDay = Integer.parseInt(startDateComponents[2]);
+//
+//                                                int endYear = Integer.parseInt(endDateComponents[0]);
+//                                                int endMonth = Integer.parseInt(endDateComponents[1]);
+//                                                int endDay = Integer.parseInt(endDateComponents[2]);
+//
+//                                                int thisYear = Integer.parseInt(currentDateComponents[0]);
+//                                                int thisMonth = Integer.parseInt(currentDateComponents[1]);
+//                                                int thisDay = Integer.parseInt(currentDateComponents[2]);
+//
+//                                                // ONLY FETCH IF DATE IN BETWEEN THIS PARTICULAR RANGE OF DATES
+//                                                if (!((thisYear >= startYear && thisYear <= endYear) &&
+//                                                        (thisMonth >= startMonth && thisMonth <= endMonth) &&
+//                                                        thisDay >= startDay && thisDay <= endDay)) {
+//                                                    continue;
+//                                                }
+//
+//                                                System.out.println("Meal plan detected for this day!");
+//
+//                                                String title = (String) doc.getData().get("Title");
+//                                                System.out.println("Got title");
+//                                                String servingsString = (String) doc.getData().get("Servings");
+//                                                System.out.println("Got servings");
+//
+//                                                Meal meal = new Meal(title, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
+//
+//                                                mealArrayList.add(meal); // Adding new recipe using Firebase data
+//
+//                                            } catch (Exception e) {
+//                                                System.out.println("Error with firebase pull, incorrect formatting");
+//                                            }
+//                                        }
+//                                        mealAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+//                                    }
+//                                });
 
-                                mealCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                collectionReference = db.collection("MealPlan");
+                                collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    /**
+                                     * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
+                                     * that was created for each respective lists.
+                                     *
+                                     * @param queryDocumentSnapshots returns each document within the collection
+                                     * @param error
+                                     */
                                     @Override
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                                             FirebaseFirestoreException error) {
-
-                                        // Clear the old list
                                         mealArrayList.clear();
+                                        for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                                            String startDate = (String) doc.getData().get("Start Date");
+                                            String endDate = (String) doc.getData().get("End Date");
 
-                                        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-                                        {
-                                            try {
+                                            String[] startDateComponents = startDate.split("-");
+                                            String[] endDateComponents = endDate.split("-");
+                                            String[] currentDateComponents = Date.split("-");
 
-                                                // fetch meal info
-                                                // fetch rest of recipe info
-                                                String mealStartDate = (String) doc.getData().get("Start Date");
-                                                String mealEndDate = (String) doc.getData().get("End Date");
+                                            int startYear = Integer.parseInt(startDateComponents[0]);
+                                            int startMonth = Integer.parseInt(startDateComponents[1]);
+                                            int startDay = Integer.parseInt(startDateComponents[2]);
 
-                                                String[] startDateComponents = mealStartDate.split("-");
-                                                String[] endDateComponents = mealEndDate.split("-");
-                                                String[] currentDateComponents = Date.split("-");
+                                            int endYear = Integer.parseInt(endDateComponents[0]);
+                                            int endMonth = Integer.parseInt(endDateComponents[1]);
+                                            int endDay = Integer.parseInt(endDateComponents[2]);
 
-                                                int startYear = Integer.parseInt(startDateComponents[0]);
-                                                int startMonth = Integer.parseInt(startDateComponents[1]);
-                                                int startDay = Integer.parseInt(startDateComponents[2]);
+                                            int thisYear = Integer.parseInt(currentDateComponents[0]);
+                                            int thisMonth = Integer.parseInt(currentDateComponents[1]);
+                                            int thisDay = Integer.parseInt(currentDateComponents[2]);
 
-                                                int endYear = Integer.parseInt(endDateComponents[0]);
-                                                int endMonth = Integer.parseInt(endDateComponents[1]);
-                                                int endDay = Integer.parseInt(endDateComponents[2]);
-
-                                                int thisYear = Integer.parseInt(currentDateComponents[0]);
-                                                int thisMonth = Integer.parseInt(currentDateComponents[1]);
-                                                int thisDay = Integer.parseInt(currentDateComponents[2]);
-
-                                                // ONLY FETCH IF DATE IN BETWEEN THIS PARTICULAR RANGE OF DATES
-                                                if (!((thisYear >= startYear && thisYear <= endYear) &&
+                                            if (!((thisYear >= startYear && thisYear <= endYear) &&
                                                         (thisMonth >= startMonth && thisMonth <= endMonth) &&
                                                         thisDay >= startDay && thisDay <= endDay)) {
                                                     continue;
                                                 }
 
-                                                System.out.println("Meal plan detected for this day!");
+                                            System.out.println("Meal plan detected for this day!");
+                                            String mealPlan = (String) doc.getId();
+                                            ArrayList<HashMap<String, String>> listIng = (ArrayList<HashMap<String, String>>) doc.getData().get("Ingredients");
+                                            ArrayList<HashMap<String, String>> listRec = (ArrayList<HashMap<String, String>>) doc.getData().get("Recipes");
 
-                                                String title = (String) doc.getData().get("Title");
-                                                System.out.println("Got title");
-                                                String servingsString = (String) doc.getData().get("Servings");
-                                                System.out.println("Got servings");
-                                                int servings = Integer.parseInt(servingsString);
+                                            ArrayList<Ingredient> listofIng = new ArrayList<Ingredient>();
+                                            ArrayList<Recipe> listofRec = new ArrayList<Recipe>();
 
-                                                Meal meal = new Meal(title, servings, mealStartDate, mealEndDate, sampleRecipes, sampleIngredients);
+                                            for ( HashMap<String, String> x : listIng) {
+                                                String amount = "", category = "", desc = "", exp = "", location = "", unit = "", unitCategory = "", ingName = "";
+                                                for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                                                    if (ntry.getKey() == "amount") {
+                                                        amount = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "category") {
+                                                        category = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "description") {
+                                                        desc = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "expiryDate") {
+                                                        exp = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "location") {
+                                                        location = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "unit") {
+                                                        unit = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "unitCategory") {
+                                                        unitCategory = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "name") {
+                                                        ingName = ntry.getValue();
+                                                    }
 
-                                                mealArrayList.add(meal); // Adding new recipe using Firebase data
-
-                                            } catch (Exception e) {
-                                                System.out.println("Error with firebase pull, incorrect formatting");
+                                                    Ingredient addIng = new Ingredient(ingName, desc, amount, unit, unitCategory, category, location, exp);
+                                                    listofIng.add(addIng);
+                                                }
+                                                // do something with key and/or tab
                                             }
+                                            for (  HashMap<String, String> x : listRec) {
+                                                String comments = "", category = "", prepHour = "0", prepMin = "0", servings = "0", recName = "";
+                                                for (HashMap.Entry<String, String> ntry : x.entrySet()) {
+                                                    if (ntry.getKey() == "comments") {
+                                                        comments = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "category") {
+                                                        category = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "preptimeHours") {
+                                                        prepHour = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "preptimeMins") {
+                                                        prepMin = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "servings") {
+                                                        servings = ntry.getValue();
+                                                    }
+                                                    else if (ntry.getKey() == "title") {
+                                                        recName = ntry.getValue();
+                                                    }
+
+                                                    ArrayList<Ingredient> noIng = new ArrayList<>();
+                                                    Recipe addRec = new Recipe(recName, comments, Integer.parseInt(servings), Integer.parseInt(prepHour), Integer.parseInt(prepMin), category, noIng);
+                                                    listofRec.add(addRec);
+                                                }
+                                                // do something with key and/or tab
+                                            }
+
+                                            Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
+                                            mealArrayList.add(addMeal);
+
                                         }
-                                        mealAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+                                        mealAdapter.notifyDataSetChanged();
                                     }
                                 });
 
@@ -260,6 +404,7 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

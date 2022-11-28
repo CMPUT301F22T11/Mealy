@@ -281,19 +281,22 @@ public class RecipeIngredientAdd extends DialogFragment {
                 switch (checkedId) {
                     case R.id.r_ingredient_quantity_whole:
                         current = whole;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Whole";
                         break;
                     case R.id.r_ingredient_quantity_weight:
                         current = weight;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Weight";
                         break;
                     case R.id.r_ingredient_quantity_volume:
                         current = volume;
-                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_dropdown_item, current);
+                        unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
+                        unitsAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Volume";
                         break;
