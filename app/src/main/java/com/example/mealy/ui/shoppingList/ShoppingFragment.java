@@ -175,7 +175,7 @@ public class ShoppingFragment extends Fragment {
                     Log.d("LIST", checkedItems.get(j).toString());
                 }
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAdd displayAdd = new ShoppingListAdd(checkedItems);
+                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems);
                     displayAdd.show(getChildFragmentManager(), TAG);
                 }
 
