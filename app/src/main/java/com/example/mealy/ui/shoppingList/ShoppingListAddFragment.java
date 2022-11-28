@@ -67,7 +67,7 @@ public class ShoppingListAddFragment extends DialogFragment {
             }
         }
         // Create the adapter and set it to the arraylist
-        ShoppingList shoppingAdapter = new ShoppingList(getActivity(), items);
+        ShoppingListAdd shoppingAdapter = new ShoppingListAdd(getActivity(), items);
 
         shoppingAdapter.notifyDataSetChanged();
 
