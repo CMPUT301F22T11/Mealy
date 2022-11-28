@@ -374,7 +374,7 @@ public class MealPlanAdd extends DialogFragment {
                 // months index from 0-11
                 month = month + 1;
                 startDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
-                compareStart = Integer.toString(year)+Integer.toString(month)+Integer.toString(day);
+                compareStart = Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day);
             }
         };
 
@@ -409,7 +409,7 @@ public class MealPlanAdd extends DialogFragment {
                 // months index from 0-11
                 month = month + 1;
                 endDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
-                compareEnd = Integer.toString(year)+Integer.toString(month)+Integer.toString(day);
+                compareEnd = Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day);
             }
         };
         // create the date from whatever was input by the user
@@ -456,6 +456,19 @@ public class MealPlanAdd extends DialogFragment {
         String startD = startDate.getText().toString();
         String endD = endDate.getText().toString();
 
+        System.out.println("Start date format: " + compareStart);
+        System.out.println("End date format: " + compareEnd);
+
+        String[] startDateComponents = compareStart.split("-");
+        String[] endDateComponents = compareEnd.split("-");
+
+        int startYear = Integer.parseInt(startDateComponents[0]);
+        int startMonth = Integer.parseInt(startDateComponents[1]);
+        int startDay = Integer.parseInt(startDateComponents[2]);
+
+        int endYear = Integer.parseInt(endDateComponents[0]);
+        int endMonth = Integer.parseInt(endDateComponents[1]);
+        int endDay = Integer.parseInt(endDateComponents[2]);
 
         boolean isValid = true;
 
@@ -471,7 +484,8 @@ public class MealPlanAdd extends DialogFragment {
             endDate.setError("Please select an ending date!");
             isValid =  false;
         }
-        else if (Integer.parseInt(compareEnd) - Integer.parseInt(compareStart) < 0) {
+        // compare start date with end date
+        else if ((startYear > endYear) || ((startYear == endYear) && ((startMonth > endMonth) || ((startMonth == endMonth) && (startDay > endDay))))) {
             startDate.setError("Start date has to come before end date!");
             endDate.setError("Start date has to come before end date!");
             isValid = false;
