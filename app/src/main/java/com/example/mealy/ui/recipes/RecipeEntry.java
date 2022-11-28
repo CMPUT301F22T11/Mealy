@@ -143,19 +143,23 @@ public class RecipeEntry extends DialogFragment {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
 
-                RecipeIngredient thisIngredient = (RecipeIngredient)  bundle.getParcelable("RecipeIngredient");
+                RecipeIngredient thisIngredient = bundle.getParcelable("RecipeIngredient");
+                Log.wtf("test", "got here wtf");
                 if (ingredientClicked == false) {
                     listOfIngredients.add(thisIngredient);
                     recipeIngredientAdapter.notifyDataSetChanged();
+                    Log.wtf("test", listOfIngredients.toString());
 //                    recipeIngredientAdapter.add(thisIngredient);
                 }
                 else {
                     listOfIngredients.set(ingredientIndex, thisIngredient);
                     recipeIngredientAdapter.notifyDataSetChanged();
+                    Log.wtf("test2", listOfIngredients.toString());
 
                 }
             }
         });
+        Log.wtf("test", getParentFragmentManager().toString());
     }
 
     /**
@@ -255,7 +259,7 @@ public class RecipeEntry extends DialogFragment {
      * This function initializes the save button in the recipe entry fragment
      */
     private void InitializeSaveButton() {
-        Save = (Button) view.findViewById(R.id.Recipe_Entry_saveButton);
+        Save = view.findViewById(R.id.Recipe_Entry_saveButton);
 
         Save.setOnClickListener(view -> {
             // add data to firestore
@@ -274,7 +278,7 @@ public class RecipeEntry extends DialogFragment {
                         Firestore.deleteFromFirestore("RecipeIngredients", thisIngredientID);
                     }
                 } else {
-                    requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    getParentFragmentManager().beginTransaction().remove(fragment).commit();
 
                 }
                 Firestore.storeToFirestore("Recipe", RecipeName, data);
@@ -310,18 +314,8 @@ public class RecipeEntry extends DialogFragment {
              */
             @Override
             public void onClick(View view) {
-
                 ingredientClicked = false;
-                if (edit) {
-                    new RecipeIngredientAdd().show(getParentFragmentManager(), "RecipeIngredient");
-                    Log.wtf("idk", "Here");
-                }
-                else {
-                    new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
-                    Log.wtf("idk", "Here2");
-                }
-
-
+                new RecipeIngredientAdd().show(getParentFragmentManager(), "RecipeIngredient");
             }
         });
     }

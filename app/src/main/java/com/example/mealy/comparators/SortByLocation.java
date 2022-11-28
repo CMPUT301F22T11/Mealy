@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Small class for sorting ingredients by location.
  */
 public class SortByLocation implements Comparator<Ingredient> {
-    private int asc;
+    private final int asc;
     /**
      * Call super of Comparator, yet set the asc attribute to whatever the user has selected.
      * @param asc

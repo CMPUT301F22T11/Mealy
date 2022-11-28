@@ -116,7 +116,7 @@ public class IngredientFragment extends Fragment {
                 {
                     Log.d(TAG, (doc.getId()));
                     // get available categories
-                    String name = (String) doc.getId();
+                    String name = doc.getId();
                     String category = (String) doc.getData().get("Category");
                     String desc = (String) doc.getData().get("Description");
                     String exp = (String) doc.getData().get("Expiry Date");

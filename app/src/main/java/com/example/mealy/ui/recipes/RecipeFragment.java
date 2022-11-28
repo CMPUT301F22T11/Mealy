@@ -176,6 +176,7 @@ public class RecipeFragment extends Fragment {
                                             System.out.println("Image received");
                                             Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                                             recipe.setBitmap(bitmap);
+                                            recipeAdapter.notifyDataSetChanged();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override

@@ -34,7 +34,7 @@ public class DisplayRecipeInfo extends DialogFragment {
     private final String Comments;
     private final Recipe recipe;
 
-    private boolean hasImage; // does this selected recipe have an image associated?
+    private final boolean hasImage; // does this selected recipe have an image associated?
     private Bitmap bitmap; // bitmap of recipe if exists
 
     TextView view_title;
@@ -52,7 +52,7 @@ public class DisplayRecipeInfo extends DialogFragment {
     String ingList = "";
 
     View view;
-    private DisplayRecipeInfo fragment = this;
+    private final DisplayRecipeInfo fragment = this;
 
     public DisplayRecipeInfo(Recipe recipe) {
         this.recipe = recipe;

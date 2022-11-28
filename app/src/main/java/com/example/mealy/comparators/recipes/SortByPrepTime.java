@@ -8,7 +8,7 @@ import java.util.Comparator;
  */
 public class SortByPrepTime implements Comparator<Recipe>{
 
-    private int asc;
+    private final int asc;
 
     public SortByPrepTime(int asc) {
         super();
