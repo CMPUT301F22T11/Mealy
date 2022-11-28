@@ -22,6 +22,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mealy.R;
 import com.example.mealy.comparators.shoppingList.CompareShopping;
 import com.example.mealy.databinding.ShoppingListDashboardBinding;
+import com.example.mealy.ui.home.Meal;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
+import com.example.mealy.ui.recipes.DisplayRecipeInfo;
+import com.example.mealy.ui.recipes.RecipeIngredient;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,8 +86,12 @@ public class ShoppingFragment extends Fragment {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         sortSpinner.setAdapter(adapter);
 
-        // list that will store all our shopping ingredient objects
+        // list that will store all our firebase objects
         ArrayList<ShoppingIngredient> shoppingArrayList = new ArrayList<>();
+        ArrayList<Ingredient> ingredientList = new ArrayList<>();
+        ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
+        ArrayList<Meal> mealList = new ArrayList<>();
+
 
         // Create the adapter and set it to the arraylist
         ShoppingList shoppingAdapter = new ShoppingList(getActivity(), shoppingArrayList);
@@ -147,6 +166,107 @@ public class ShoppingFragment extends Fragment {
         ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
 
+
+        // Getting all the ingredients from the FireBase
+        final CollectionReference shoppingCollectionIngredient = dbf.collection("Ingredients");
+        shoppingCollectionIngredient.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                ingredientList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    try {
+
+                        Log.d(TAG, (doc.getId()));
+                        // get available categories
+                        String name = (String) doc.getId();
+                        String category = (String) doc.getData().get("Category");
+                        String desc = (String) doc.getData().get("Description");
+                        String exp = (String) doc.getData().get("Expiry Date");
+                        String location = (String) doc.getData().get("Location");
+                        String amount = (String) doc.getData().get("Quantity");
+                        String unitC = (String) doc.getData().get("Unit Category");
+                        String unit = (String) doc.getData().get("Quantity Unit");
+
+                        Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
+                        ingredientList.add(ingred); // Adding Ingredients from FireStore
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+                }
+            }
+        });
+
+        // Getting all the recipe's ingredients from the FireBase
+        final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
+        shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                recipeIngredientsList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    try {
+
+                        Log.d(TAG, (doc.getId()));
+                        // get available categories
+                        String amount = (String) doc.getData().get("Amount");
+                        String category = (String) doc.getData().get("Category");
+                        String description = (String) doc.getData().get("Description");
+                        String ID = (String) doc.getData().get("ID");
+                        String name = (String) doc.getData().get("Name");
+                        String recipeName = (String) doc.getData().get("Recipe Name");
+                        String unit = (String) doc.getData().get("Unit");
+                        String unitCategory = (String) doc.getData().get("Unit Category");
+
+                        String title = name + "," + recipeName;
+                        RecipeIngredient ingredientRec = new RecipeIngredient(title, description, amount, unit, category, unitCategory);
+                        recipeIngredientsList.add(ingredientRec); // Adding Ingredients from FireStore
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+                }
+            }
+        });
+
+        // TODO: Getting all the meals from the Firebase
+        /*
+        final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
+        shoppingCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                recipeIngredientsList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    try {
+
+                        Log.d(TAG, (doc.getId()));
+                        // get available categories
+                        String endDate = (String) doc.getData().get("End Date");
+                        String startDate = (String) doc.getData().get("Start Date");
+                        String servings = (String) doc.getData().get("Servings");
+                        String title = (String) doc.getData().get("Title");
+                        String recipes = (String) doc.getData().get("Recipes");
+                        String ingredients = (String) doc.getData().get("Ingredients");
+
+                        RecipeIngredient ingredientRec = new RecipeIngredient(title, description, amount, unit, category, unitCategory);
+                        recipeIngredientsList.add(ingredientRec); // Adding Ingredients from FireStore
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+                }
+
         ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
 
         storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,6 +283,38 @@ public class ShoppingFragment extends Fragment {
 
             }
         });
+
+
+        // TODO: get the ingredients from meal and import them into shoppingArrayList
+        for (Meal x : mealList){
+            String recipes = x.getTitle(); // This is supposed to get the recipes
+
+        }
+
+        // Removing items from shopping list if we already have enough the ingredients in storage
+        // Otherwise the user needs to buy them so they are in storage
+        for (ShoppingIngredient x : shoppingArrayList){
+            String name = x.getName();
+            String amount = x.getQuantity();
+            int amountNeeded = Integer.valueOf(amount);
+
+            for (Ingredient y : ingredientList){
+                if(y.getName() == name){
+                    String amountStorage = y.getAmount();
+                    int amountHave = Integer.valueOf(amountStorage);
+                    if(amountNeeded <= amountHave){
+                        shoppingArrayList.remove(x);
+                    } else {
+                        x.setQuantity(Integer.toString(amountHave - amountNeeded));
+                    }
+                }
+            }
+        }
+
+
+
+        // notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        shoppingAdapter.notifyDataSetChanged();
 
         // add button on click
         // to see what items are checked https://stackoverflow.com/questions/4831918/how-to-get-all-checked-items-from-a-listview
@@ -181,6 +333,7 @@ public class ShoppingFragment extends Fragment {
 
             }
         });
+
 
 
         // set the spinner to sort things correctly
