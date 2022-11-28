@@ -373,7 +373,7 @@ public class RecipeEntry extends DialogFragment {
         HashMap<String, String> data = new HashMap<>();
 
         String CategoryText;
-        if (CategorySpinner.getVisibility() == View.VISIBLE) {
+        if (NewCategory.getVisibility() == View.VISIBLE) {
             CategoryText = NewCategory.getText().toString();
         } else {
             CategoryText = CategorySpinner.getSelectedItem().toString();
