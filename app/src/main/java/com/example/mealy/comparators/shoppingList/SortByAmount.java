@@ -22,6 +22,10 @@ public class SortByAmount implements Comparator<ShoppingIngredient> {
      * @return int
      */
     public int compare(ShoppingIngredient a, ShoppingIngredient b) {
-        return a.getQuantity().compareTo(b.getQuantity()) * asc;
+        if(Integer.valueOf(a.getQuantity()) <  Integer.valueOf(b.getQuantity())){
+            return 1 * asc;
+        } else {
+            return -1 * asc;
+        }
     }
 }

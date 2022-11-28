@@ -70,7 +70,11 @@ public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
 
         // then according to the position of the view assign the desired TextView 3 for the same
         TextView textView3 = currentItemView.findViewById(R.id.quantityDisplay);
-        textView3.setText(currentIngredient.getQuantity() + " " + currentIngredient.getUnit());
+        textView3.setText("Quantity: " + currentIngredient.getQuantity() + " | Unit: " + currentIngredient.getUnit());
+
+        // then according to the position of the view assign the desired TextView 4 for the same
+        TextView textView4 = currentItemView.findViewById(R.id.shoppingListViewDescription);
+        textView4.setText(currentIngredient.getDescription());
 
         // then return the recyclable view
         return currentItemView;
