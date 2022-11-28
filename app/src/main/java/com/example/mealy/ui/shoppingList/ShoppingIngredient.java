@@ -112,4 +112,5 @@ public class ShoppingIngredient {
     public void setCategory(String category) {
         this.category = category;
     }
+
 }
