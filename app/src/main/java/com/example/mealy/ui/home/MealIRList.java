@@ -61,8 +61,9 @@ public class MealIRList extends ArrayAdapter<Object> {
 
         if (thisOb instanceof Ingredient) {
             TextView ingredientName = view.findViewById(R.id.ir_name);
-//            TextView servingName = view.findViewById(R.id.ir_servings);
+            TextView servingName = view.findViewById(R.id.ir_servings);
             ingredientName.setText(((Ingredient) thisOb).getName());
+            servingName.setText("");
 
 
         }

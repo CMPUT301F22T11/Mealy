@@ -135,6 +135,8 @@ public class IRAdd extends DialogFragment {
      * each ingredient is in, from the Firebase.
      */
     private void InitializeGetAll() {
+        IngredientRecipeList.add("Select Ingredient/Recipe:");
+        IRAdapter.notifyDataSetChanged();
         collectionReference = db.collection("Ingredients");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
@@ -291,7 +293,7 @@ public class IRAdd extends DialogFragment {
 
         boolean isValid = true;
 
-        if (Validate.isEmpty(IRName)) {
+        if (Validate.isEmpty(IRName) || IRName.equals("Select Ingredient/Recipe:")) {
             RecipeIngredientName.setError("Please select recipe/ingredient");
             isValid =  false;
         }
