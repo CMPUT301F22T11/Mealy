@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -49,6 +50,8 @@ public class IngredientFragment extends Fragment {
     private int asc;
     FirebaseFirestore db;
 
+    private Button Home_Add_Ingredient_Entry;
+
     private ListView storage;
     // listview adapter
     private IngredientList ingredientList;
@@ -66,6 +69,8 @@ public class IngredientFragment extends Fragment {
         // initialize prompts on the screen
         spinner = root.findViewById(R.id.ingredientsort);
         flip = root.findViewById(R.id.flip);
+        Home_Add_Ingredient_Entry = root.findViewById(R.id.Home_Add_Ingredient_Entry);
+
         // create the instance of the ListView
         storage = root.findViewById(R.id.storage);
         asc = 1;
@@ -167,6 +172,13 @@ public class IngredientFragment extends Fragment {
             }
         });
 
+        Home_Add_Ingredient_Entry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IngredientAdd addIngredient = new IngredientAdd();
+                addIngredient.show(getChildFragmentManager(), TAG);
+            }
+        });
 
         return root;
     }
