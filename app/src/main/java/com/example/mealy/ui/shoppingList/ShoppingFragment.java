@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This fragment represents the shopping list screen.
@@ -213,8 +214,32 @@ public class ShoppingFragment extends Fragment {
 
                 // Pull every meal
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    long days = 1;
                     String startDate = (String) doc.getData().get("Start Date");
                     String endDate = (String) doc.getData().get("End Date");
+                    String[] startDateComponents = startDate.split("-");
+                    String[] endDateComponents = endDate.split("-");
+
+                    int startYear = Integer.parseInt(startDateComponents[0]);
+                    int startMonth = Integer.parseInt(startDateComponents[1]);
+                    int startDay = Integer.parseInt(startDateComponents[2]);
+
+                    int endYear = Integer.parseInt(endDateComponents[0]);
+                    int endMonth = Integer.parseInt(endDateComponents[1]);
+                    int endDay = Integer.parseInt(endDateComponents[2]);
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date startDateObj = sdf.parse(startDate);
+                        Date endDateObj = sdf.parse(endDate);
+
+                        long diff = endDateObj.getTime() - startDateObj.getTime();
+                        days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1;
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     String mealPlan = (String) doc.getId();
                     ArrayList<HashMap<String, String>> listIng = (ArrayList<HashMap<String, String>>) doc.getData().get("Ingredients");
@@ -287,34 +312,41 @@ public class ShoppingFragment extends Fragment {
                         // do something with key and/or tab
                     }
                     Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
-                    mealArrayList.add(addMeal);
+                    System.out.println("Days: " + days);
+                    for(int i = 0; i < days; i++){
+                        mealArrayList.add(addMeal);
+                    }
 
                 }
 
-                Log.d("shoppingMeal", Integer.toString(mealArrayList.size()));
-                Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
-                Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
+
                 shoppingArrayList.clear();
                 toRemove.clear();
+
+                // Creating the lists for the
+                List<Recipe> recipeMealList = new ArrayList<Recipe>();
+                List<Ingredient> ingredientMealList = new ArrayList<Ingredient>();
+                List<Ingredient> ingredientMealListTemp = new ArrayList<Ingredient>();
                 // Going through each meal and adding the ingredients required to make each meal into the shopping list
                 for (Meal x : mealArrayList){
-                    List<Recipe> recipeMealList = x.getMealRecipes();
-                    List<Ingredient> ingredientMealList = x.getMealIngredients();
-                    Log.d("meal", x.getTitle());
+                    ingredientMealListTemp.clear();
+                    recipeMealList = x.getMealRecipes();
+                    ingredientMealList = x.getMealIngredients();
+
                     // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
                     for (Recipe y : recipeMealList){
                         String recipeName = y.getTitle();
                         // Checking all the ingredients of the recipe and adding them to ingredientMealList
                         for (RecipeIngredient z : recipeIngredientsList){
                             String tempTitle[] = z.getTitle().split(",");
-                            Log.d("tempTitle", tempTitle[1]);
-                            Log.d("recipe name", recipeName);
+
                             if(tempTitle[1].equals(recipeName)){
                                 Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), z.getCategory(), "NULL", "NULL");
-                                ingredientMealList.add(tempIngredient);
+                                ingredientMealListTemp.add(tempIngredient);
                             }
                         }
                     }
+
 
                     // Adding ingredients into the shopping ingredient list
                     for (Ingredient y : ingredientMealList){
@@ -325,10 +357,29 @@ public class ShoppingFragment extends Fragment {
                         boolean shoppingIngredientExists = false;
 
                         for(ShoppingIngredient z : shoppingArrayList){
+                            if (z.getName().equals(tempName)){
+                                z.setQuantity(Double.toString(Double.valueOf(z.getQuantity()) + Double.valueOf(tempIngredient.getQuantity())));
+                                shoppingIngredientExists = true;
+                            }
+                        }
+                        // Otherwise, if the ingredient does not already exists in the shopping list, then add it
+                        if(shoppingIngredientExists == false){
+                            shoppingArrayList.add(tempIngredient);
+                        }
+                    }
+
+                    for (Ingredient y : ingredientMealListTemp){
+                        ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
+                        String tempName = tempIngredient.getName();
+
+                        // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
+                        boolean shoppingIngredientExists = false;
+
+                        for(ShoppingIngredient z : shoppingArrayList){
                             Log.d("TAGtempName", tempName);
                             Log.d("TAGzName", z.getName());
                             if (z.getName().equals(tempName)){
-                                z.setQuantity(Integer.toString(Integer.valueOf(z.getQuantity()) + Integer.valueOf(tempIngredient.getQuantity())));
+                                z.setQuantity(Double.toString(Double.valueOf(z.getQuantity()) + Double.valueOf(tempIngredient.getQuantity())));
                                 shoppingIngredientExists = true;
                                 Log.d("TAG", "True");
                             }
@@ -338,7 +389,6 @@ public class ShoppingFragment extends Fragment {
                             Log.d("TAG", "False");
                             shoppingArrayList.add(tempIngredient);
                         }
-
                     }
                 }
 
