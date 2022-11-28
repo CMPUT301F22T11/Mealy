@@ -241,8 +241,8 @@ public class IRAdd extends DialogFragment {
 
                             for (Ingredient x : listIngredient) {
                                 if (x.getName().equals(IRName)) {
-                                    Ingredient putIng = x;
                                     Bundle bundle = new Bundle();
+                                    Ingredient putIng = x;
                                     bundle.putParcelable("IR", putIng);
                                     getParentFragmentManager().setFragmentResult("requestKey", bundle);
                                 }
