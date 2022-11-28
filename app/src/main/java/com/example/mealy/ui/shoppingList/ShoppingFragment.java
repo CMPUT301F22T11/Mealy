@@ -396,9 +396,9 @@ public class ShoppingFragment extends Fragment {
                             }
                         }
 
-                        int count = 1;
+                        double count = 1;
                         if(userServings/recipeServings > 1){
-                            count = userServings/recipeServings;
+                            count = Math.ceil(userServings/recipeServings);
                         }
                         for (int i = 0; i < count; i++){
                             // Checking all the ingredients of the recipe and adding them to ingredientMealList
