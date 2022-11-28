@@ -68,7 +68,7 @@ public class DisplayMealInfo extends DialogFragment {
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new DeletePrompt("Meal", mealName).show(getParentFragmentManager(),"delete_prompt");
+                        new DeletePrompt("MealPlan", mealName).show(getParentFragmentManager(),"delete_prompt");
                     }
                 }).create();
     }

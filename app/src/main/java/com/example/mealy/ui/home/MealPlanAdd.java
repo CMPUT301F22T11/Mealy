@@ -69,7 +69,7 @@ public class MealPlanAdd extends DialogFragment {
 
     DatePickerDialog datePickerDialog, datePickerDialogEnd;
 
-    Calendar compareStart, compareEnd;
+    String compareStart, compareEnd;
 
     int IRIndex;
 
@@ -160,11 +160,12 @@ public class MealPlanAdd extends DialogFragment {
                     if (thisObj instanceof Ingredient) {
                         Ingredient thisIngredient = (Ingredient) thisObj;
                         if (IRList.get(IRIndex) instanceof Recipe) {
-                            recipeMap.remove(IRList.get(IRIndex));
+                            recipeMap.remove((Recipe) IRList.get(IRIndex));
                         }
                         else {
-                            ingredientArray.set(ingredientArray.indexOf(IRList.get(IRIndex)), thisIngredient);
+                            ingredientArray.remove((Ingredient) IRList.get(IRIndex));
                         }
+                        ingredientArray.add(thisIngredient);
 
                         IRList.set(IRIndex, thisIngredient);
                         IRListAdapter.notifyDataSetChanged();
@@ -173,11 +174,12 @@ public class MealPlanAdd extends DialogFragment {
                     else {
                         Recipe thisRecipe = (Recipe) thisObj;
                         if (IRList.get(IRIndex) instanceof Recipe) {
-                            recipeMap.set(recipeMap.indexOf(IRList.get(IRIndex)), thisRecipe);
+                            recipeMap.remove((Recipe) IRList.get(IRIndex));
                         }
                         else {
-                            ingredientArray.remove(IRList.get(IRIndex));
+                            ingredientArray.remove((Ingredient) IRList.get(IRIndex));
                         }
+                        recipeMap.add(thisRecipe);
                         IRList.set(IRIndex, thisRecipe);
                         IRListAdapter.notifyDataSetChanged();
                     }
@@ -374,12 +376,12 @@ public class MealPlanAdd extends DialogFragment {
                 // months index from 0-11
                 month = month + 1;
                 startDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
+                compareStart = Integer.toString(year)+Integer.toString(month)+Integer.toString(day);
             }
         };
 
         // create the date from whatever was input by the user
         Calendar cal = Calendar.getInstance();
-        compareStart = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -409,11 +411,14 @@ public class MealPlanAdd extends DialogFragment {
                 // months index from 0-11
                 month = month + 1;
                 endDate.setText(Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day));
+                compareEnd = Integer.toString(year)+Integer.toString(month)+Integer.toString(day);
             }
         };
         // create the date from whatever was input by the user
         Calendar cal = Calendar.getInstance();
-        compareEnd = Calendar.getInstance();
+
+//        String compareEnd = Integer.toString(year)+"-"+Integer.toString(month)+"-"+Integer.toString(day);
+//        compareEnd = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -468,7 +473,7 @@ public class MealPlanAdd extends DialogFragment {
             endDate.setError("Please select an ending date!");
             isValid =  false;
         }
-        else if (compareEnd.compareTo(compareStart) < 0) {
+        else if (Integer.parseInt(compareEnd) - Integer.parseInt(compareStart) < 0) {
             startDate.setError("Start date has to come before end date!");
             endDate.setError("Start date has to come before end date!");
             isValid = false;
