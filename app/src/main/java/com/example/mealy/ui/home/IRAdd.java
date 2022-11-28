@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +80,11 @@ public class IRAdd extends DialogFragment {
         // Constructor: TODO
     }
 
-//    public IRAdd(RecipeIngredient i) {
-//        edit = true;
-//        // Constructor: TODO
-//    }
+    public IRAdd(String I) {
+
+        edit = true;
+        // Constructor: TODO
+    }
 
     /**
      * This is the override for the oncreate
@@ -122,6 +124,11 @@ public class IRAdd extends DialogFragment {
 
     private void InitializeEditText() {
         RecipeServings = (EditText) view.findViewById(R.id.Meal_Plan_Servings);
+        if (edit) {
+
+            RecipeServings.setText("");
+
+        }
     }
     /**
      * Initialize an addSnapshotListener that retrieves all current entries of Ingredients, alongside the category in which

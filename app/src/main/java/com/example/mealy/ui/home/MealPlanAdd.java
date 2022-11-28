@@ -149,7 +149,7 @@ public class MealPlanAdd extends DialogFragment {
                         Recipe thisRecipe = (Recipe) thisObj;
                         IRList.add(thisRecipe);
                         IRListAdapter.notifyDataSetChanged();
-                    recipeMap.add(thisRecipe);
+                        recipeMap.add(thisRecipe);
 //                    recipeIngredientAdapter.add(thisIngredient);
 
 
@@ -159,16 +159,27 @@ public class MealPlanAdd extends DialogFragment {
                 else {
                     if (thisObj instanceof Ingredient) {
                         Ingredient thisIngredient = (Ingredient) thisObj;
+                        if (IRList.get(IRIndex) instanceof Recipe) {
+                            recipeMap.remove(IRList.get(IRIndex));
+                        }
+                        else {
+                            ingredientArray.set(ingredientArray.indexOf(IRList.get(IRIndex)), thisIngredient);
+                        }
+
                         IRList.set(IRIndex, thisIngredient);
-                        ingredientArray.set(IRIndex, thisIngredient);
                         IRListAdapter.notifyDataSetChanged();
 //                    recipeIngredientAdapter.add(thisIngredient);
                     }
                     else {
                         Recipe thisRecipe = (Recipe) thisObj;
+                        if (IRList.get(IRIndex) instanceof Recipe) {
+                            recipeMap.set(recipeMap.indexOf(IRList.get(IRIndex)), thisRecipe);
+                        }
+                        else {
+                            ingredientArray.remove(IRList.get(IRIndex));
+                        }
                         IRList.set(IRIndex, thisRecipe);
                         IRListAdapter.notifyDataSetChanged();
-                        recipeMap.set(IRIndex, thisRecipe);
                     }
                 }
             }
@@ -200,7 +211,13 @@ public class MealPlanAdd extends DialogFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 IRIndex = i;
                                 IRClicked = false;
-                                new IRAdd().show(getActivity().getSupportFragmentManager(), "IR");
+                                if (IRList.get(IRIndex) instanceof Recipe) {
+                                    new IRAdd("R").show(getActivity().getSupportFragmentManager(), "IR");
+                                }
+                                else {
+                                    new IRAdd("I").show(getActivity().getSupportFragmentManager(), "IR");
+                                }
+
                                 IRClicked = true;
                             }
                         })
