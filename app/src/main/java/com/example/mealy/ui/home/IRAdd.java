@@ -52,7 +52,8 @@ public class IRAdd extends DialogFragment {
 
 
     Button Save;
-    EditText RecipeIngredientName, RecipeServings;
+    EditText  RecipeServings;
+    TextView RecipeIngredientName;
 
     ArrayList<String> IngredientRecipeList = new ArrayList<String>();
 
@@ -129,12 +130,16 @@ public class IRAdd extends DialogFragment {
             RecipeServings.setText("");
 
         }
+
+        RecipeIngredientName = (TextView) view.findViewById(R.id.ir_select);
     }
     /**
      * Initialize an addSnapshotListener that retrieves all current entries of Ingredients, alongside the category in which
      * each ingredient is in, from the Firebase.
      */
     private void InitializeGetAll() {
+        IngredientRecipeList.add("Select Ingredient/Recipe:");
+        IRAdapter.notifyDataSetChanged();
         collectionReference = db.collection("Ingredients");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
@@ -236,8 +241,8 @@ public class IRAdd extends DialogFragment {
 
                             for (Ingredient x : listIngredient) {
                                 if (x.getName().equals(IRName)) {
-                                    Ingredient putIng = x;
                                     Bundle bundle = new Bundle();
+                                    Ingredient putIng = x;
                                     bundle.putParcelable("IR", putIng);
                                     getParentFragmentManager().setFragmentResult("requestKey", bundle);
                                 }
@@ -291,7 +296,7 @@ public class IRAdd extends DialogFragment {
 
         boolean isValid = true;
 
-        if (Validate.isEmpty(IRName)) {
+        if (Validate.isEmpty(IRName) || IRName.equals("Select Ingredient/Recipe:")) {
             RecipeIngredientName.setError("Please select recipe/ingredient");
             isValid =  false;
         }
