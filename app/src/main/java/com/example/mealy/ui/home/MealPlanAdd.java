@@ -42,7 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 /**
- * This class contains the DIalogFragment that allows the user to create/edit a RecipeIngredient entry.
+ * This class contains the DIalogFragment that allows the user to create/edit aMealPlan entry.
  * After hitting the "Save" button, the fragment passes the created (or edited) Recipe Ingredient
  * object back to the RecipeEntry fragment, and ends.
  */
@@ -128,10 +128,10 @@ public class MealPlanAdd extends DialogFragment {
     private void onCreateFragment() {
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             /**
-             * Asks for an instance of recipe ingredient that was created, and returns it be adding it to the list of
+             * Asks for an instance of meal plan that was created, and returns it be adding it to the list of
              * recipe ingredients.
              * @param requestKey
-             * @param bundle bundle that stores the data of the recipe ingredient
+             * @param bundle bundle that stores the data of the meal plan
              */
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
@@ -198,7 +198,7 @@ public class MealPlanAdd extends DialogFragment {
 
             /**
              * This function is called when the user wants to perform an action on the recipe ingredient. When the user selects an entry,
-             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient, or remove it.
+             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient/recipe, or remove it.
              * @param adapterView The adapterView where the click occurred
              * @param view The current view of the app
              * @param i Returns the index of the recipe ingredient that was selected
@@ -253,7 +253,7 @@ public class MealPlanAdd extends DialogFragment {
         Save.setOnClickListener(new View.OnClickListener() {
             /**
              * Once the save button is clicked, get the user's inputs for all the different fields, and use it to create a
-             * new Recipe Ingredient. Using Parcelable, the Recipe Ingredient gets passed back to the Recipe DialogFragment.
+             * new meal plan. Using Parcelable, the meal plane gets passed back to the meal plan DialogFragment.
              *
              * @param view returns the current view of the activity
              */
@@ -369,6 +369,9 @@ public class MealPlanAdd extends DialogFragment {
 
     }
 
+    /**
+     * Initializes the start date picker.
+     */
     private void InitializeDatePickerStart() {
         startDate = view.findViewById(R.id.Meal_Plan_start);
 
@@ -403,7 +406,9 @@ public class MealPlanAdd extends DialogFragment {
             }
         });
     }
-
+    /**
+     * Initializes the end date picker.
+     */
     private void InitializeDatePickerEnd() {
         endDate = view.findViewById(R.id.Meal_Plan_end);
 
@@ -442,7 +447,7 @@ public class MealPlanAdd extends DialogFragment {
     }
 
     /**
-     * Gets the name for the Recipe Ingredient the user gave for this current instacne of a Recipe Ingredient.
+     * Gets the name for the Meal Plan the user gave for this current instacne of a Recipe Ingredient.
      *
      * @return Returns the name of the recipe ingredient that was created.
      */
