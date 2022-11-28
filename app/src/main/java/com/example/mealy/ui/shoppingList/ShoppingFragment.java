@@ -168,6 +168,7 @@ public class ShoppingFragment extends Fragment {
 
 
         // Getting all the ingredients from the FireBase
+        FirebaseFirestore dbf = FirebaseFirestore.getInstance();
         final CollectionReference shoppingCollectionIngredient = dbf.collection("Ingredients");
         shoppingCollectionIngredient.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -265,7 +266,7 @@ public class ShoppingFragment extends Fragment {
                     } catch (Exception e) {
                         System.out.println("Error with firebase pull, incorrect formatting");
                     }
-                }
+                }*/
 
         ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
 
