@@ -98,6 +98,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/Recipe_Entry_preparation_timeHour"
                     android:ems="2"
+                    android:text=""
                     android:inputType="number"
                     android:minHeight="48dp"
                     android:background="@android:color/transparent"
@@ -105,6 +106,16 @@
                     android:gravity="center"
                     android:textColor="@color/accent_red"
                     android:autofillHints="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text=":"
+                    android:textSize="23sp"
+                    android:textColor="@color/dark_gray"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
 
                 <EditText
                     android:id="@+id/Recipe_Entry_prepTimeMin"
@@ -256,7 +267,7 @@
                 android:textColorHint="@color/gray"
                 android:textColor="@color/accent_red"
                 android:autofillHints=""
-                android:gravity="end|center_vertical"
+                android:gravity="center_vertical"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>

@@ -228,10 +228,10 @@ public class RecipeEntry extends DialogFragment {
                                     ingredientIndex = i;
                                     ingredientClicked = false;
                                     if (edit) {
-                                        new RecipeIngredientAdd(listOfIngredients.get(i)).show(getParentFragmentManager(), "RecipeIngredient");
+                                        new RecipeIngredientAdd(listOfIngredients.get(i), listOfIngredients).show(getParentFragmentManager(), "RecipeIngredient");
                                     }
                                     else {
-                                        new RecipeIngredientAdd().show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
+                                        new RecipeIngredientAdd(listOfIngredients).show(getActivity().getSupportFragmentManager(), "RecipeIngredient");
                                     }
                                     ingredientClicked = true;
 
@@ -350,7 +350,7 @@ public class RecipeEntry extends DialogFragment {
             @Override
             public void onClick(View view) {
                 ingredientClicked = false;
-                new RecipeIngredientAdd().show(getParentFragmentManager(), "RecipeIngredient");
+                new RecipeIngredientAdd(listOfIngredients).show(getParentFragmentManager(), "RecipeIngredient");
             }
         });
     }

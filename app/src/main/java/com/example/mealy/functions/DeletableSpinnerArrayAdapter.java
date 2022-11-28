@@ -40,9 +40,6 @@ public class DeletableSpinnerArrayAdapter extends ArrayAdapter<String> {
     }
 
 
-
-
-
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.spinner_dropdown_deletable, parent, false);

@@ -84,7 +84,7 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
         } catch (Exception e) {
             expiry.findViewById(R.id.expiry).setVisibility(View.VISIBLE);
             ColorStateList orange = ContextCompat.getColorStateList(getContext(), R.color.burnt_orange);
-            expiry.setText("MISSING EXPIRY DATE");
+            expiry.setText("MISSING INFO");
             textView1.setTextColor(orange);
             textView2.setTextColor(orange);
             expiry.setTextColor(orange);
