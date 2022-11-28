@@ -1,5 +1,7 @@
 package com.example.mealy.ui.recipes;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,17 +35,22 @@ import androidx.fragment.app.FragmentResultListener;
 
 import com.example.mealy.MainActivity;
 import com.example.mealy.R;
+import com.example.mealy.functions.DeletableSpinnerArrayAdapter;
 import com.example.mealy.functions.Firestore;
 import com.example.mealy.functions.General;
 import com.example.mealy.functions.Validate;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,6 +58,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -63,6 +71,7 @@ public class RecipeEntry extends DialogFragment {
     EditText PrepTime;
     EditText PrepTimeMin;
     EditText Servings;
+    EditText NewCategory;
     Spinner CategorySpinner;
     EditText Comments;
     ImageButton AddPhoto;
@@ -70,38 +79,32 @@ public class RecipeEntry extends DialogFragment {
     Button Save;
     ImageView IVPreviewImage;
 
+
     private Uri filePath;
     int SELECT_PICTURE = 200;
     FirebaseStorage storage;
     StorageReference storageReference;
 
     Context applicationContext;
-
-    String[] RecipeCategories;
-
-    ArrayAdapter<CharSequence> categoryAdapter;
-
+    ArrayList<String> RecipeCategories;
+    DeletableSpinnerArrayAdapter categoryAdapter;
     ArrayAdapter<RecipeIngredient>recipeIngredientAdapter;
-
     ArrayList<RecipeIngredient> listOfIngredients = new ArrayList<>();
-
+    Map<String, Object> categoryData;
     ListView ingredientList;
-
     ArrayList<RecipeIngredient> oldIngredients = new ArrayList<>();
 
     boolean ingredientClicked = false;
-
     int ingredientIndex;
 
     View view;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     CollectionReference collectionReference;
 
     String oldRecipName = "";
-
     Recipe recipe;
+
     boolean edit;
 
     /**
@@ -181,6 +184,7 @@ public class RecipeEntry extends DialogFragment {
         InitializeAddPhoto();
         InitializeSaveButton();
         InitializeIngredientList();
+        readCategoryFirebase();
 
         // for image upload
         storage = FirebaseStorage.getInstance();
@@ -249,10 +253,29 @@ public class RecipeEntry extends DialogFragment {
      */
     private void InitializeCategorySpinner() {
         CategorySpinner = view.findViewById(R.id.Recipe_Entry_CategoryDropdown);
-        RecipeCategories = new String[]{"Select Category", "Breakfast", "Lunch", "Dinner", "Other"};
-        categoryAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_layout, RecipeCategories);
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        NewCategory = view.findViewById(R.id.newRecipeCategory);
+        RecipeCategories = new ArrayList<String>();
+        RecipeCategories.add("Select Category");
+        RecipeCategories.add("Add Category");
+        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), RecipeCategories, "RecipeCategories");
         CategorySpinner.setAdapter(categoryAdapter);
+
+        CategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 1) {
+                    NewCategory.setVisibility(View.VISIBLE);
+
+                } else {
+                    NewCategory.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                CategorySpinner.setSelection(0);
+            }
+        });
     }
 
     /**
@@ -267,6 +290,18 @@ public class RecipeEntry extends DialogFragment {
             if (ValidData()) {
                 String RecipeName = GetRecipeName();
                 HashMap<String, String> data = GetData();
+
+                if (NewCategory.getVisibility() == View.VISIBLE){
+                        if (categoryData == null) {
+                            RecipeCategories.add(NewCategory.getText().toString());
+                            categoryData = General.listToMap(RecipeCategories);
+                        } else {
+                            if (!categoryData.containsValue(NewCategory.getText().toString())) {
+                                categoryData.put(String.valueOf(categoryData.size() + 1), NewCategory.getText().toString());
+                            }
+                        }
+                        Firestore.storeToFirestore("Spinner","RecipeCategories", categoryData);
+                }
 
                 if (edit) {
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
@@ -337,11 +372,17 @@ public class RecipeEntry extends DialogFragment {
 
         HashMap<String, String> data = new HashMap<>();
 
+        String CategoryText;
+        if (CategorySpinner.getVisibility() == View.VISIBLE) {
+            CategoryText = NewCategory.getText().toString();
+        } else {
+            CategoryText = CategorySpinner.getSelectedItem().toString();
+        }
+
         String RecipeNameText = RecipeName.getText().toString();
         String PrepTimeText = PrepTime.getText().toString();
         String PrepTimeMinText = PrepTimeMin.getText().toString();
         String ServingsText = Servings.getText().toString();
-        String CategoryText = CategorySpinner.getSelectedItem().toString();
         String CommentsText = Comments.getText().toString();
 
         // Figure out how to attach image
@@ -625,7 +666,52 @@ public class RecipeEntry extends DialogFragment {
             }
         }
         });
+    }
 
+    public void readCategoryFirebase() {
+        String CollectionName = "Spinner";
+        String documentName = "RecipeCategories";
+        DocumentReference docRef = db.collection(CollectionName).document(documentName);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        categoryData = document.getData();
+                        Log.wtf("blah", categoryData.toString());
+                        RecipeCategories = General.mapToArrayList(categoryData);
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), RecipeCategories, documentName);
+                        CategorySpinner.setAdapter(categoryAdapter);
+
+                        if (edit && recipe!=null) CategorySpinner.setSelection(RecipeCategories.indexOf(recipe.getCategory()));
+
+                        Log.d(TAG, "DocumentSnapshot data: " + categoryData);
+                    } else {
+                        Log.d(TAG, "No such document");
+                        assert RecipeCategories != null;
+                        Firestore.storeToFirestore("Spinner", documentName, General.listToMap(RecipeCategories));
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
+                if (doc != null) {
+                    if ((doc.getData() != null) && (getContext() != null))
+                    {
+                        categoryData = doc.getData();
+                        RecipeCategories = General.mapToArrayList(categoryData);
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), RecipeCategories, documentName);
+                        CategorySpinner.setAdapter(categoryAdapter);
+                    }
+                }
+            }
+        });
     }
 }
 

@@ -614,7 +614,6 @@ public class IngredientAdd extends DialogFragment {
                 }
             }
         });
-
     }
 
     public void readLocationFirebase() {

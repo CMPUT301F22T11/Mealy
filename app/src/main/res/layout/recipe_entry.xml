@@ -197,6 +197,33 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10sp"
+            android:background="@drawable/circle"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/newRecipeCategory"
+                android:background="@android:color/transparent"
+                android:textColor="@color/accent_red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:autofillHints="Ingredients"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="New Category"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:minHeight="48dp"
+                android:textColorHint="@color/gray" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
