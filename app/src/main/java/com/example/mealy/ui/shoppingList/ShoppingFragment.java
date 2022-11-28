@@ -147,7 +147,7 @@ public class ShoppingFragment extends Fragment {
         ListView storage = root.findViewById(R.id.shoppingStorage);
         storage.setAdapter(shoppingAdapter);
 
-        ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+        ArrayList<ShoppingIngredient> checkedItems = new ArrayList<ShoppingIngredient>();
 
         storage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -156,9 +156,9 @@ public class ShoppingFragment extends Fragment {
                 CheckBox checkBox = view.findViewById(R.id.checkbox);
                 checkBox.toggle();
                 if(checkBox.isChecked()){
-                    checkedItems.add(i);
+                    checkedItems.add(shoppingArrayList.get(i));
                 } else {
-                    checkedItems.remove(i);
+                    checkedItems.remove(shoppingArrayList.get(i));
                 }
 
             }
@@ -175,7 +175,7 @@ public class ShoppingFragment extends Fragment {
                     Log.d("LIST", checkedItems.get(j).toString());
                 }
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAdd displayAdd = new ShoppingListAdd(checkedItems, shoppingArrayList);
+                    ShoppingListAdd displayAdd = new ShoppingListAdd(checkedItems);
                     displayAdd.show(getChildFragmentManager(), TAG);
                 }
 
