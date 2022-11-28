@@ -225,6 +225,12 @@ public class MealPlanAdd extends DialogFragment {
                         })
                         .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                if (IRList.get(i) instanceof Ingredient) {
+                                    ingredientArray.remove((Ingredient) IRList.get(i));
+                                }
+                                else {
+                                    recipeMap.remove((Recipe) IRList.get(i));
+                                }
                                 IRList.remove(i);
                                 IRListAdapter.notifyDataSetChanged();
 
