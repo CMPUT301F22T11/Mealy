@@ -1,6 +1,8 @@
 package com.example.mealy.ui.shoppingList;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,8 @@ import com.example.mealy.ui.home.Meal;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeIngredient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -34,7 +38,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,6 +111,7 @@ public class ShoppingFragment extends Fragment {
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
         ArrayList<Meal> mealArrayList = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         ArrayList<ShoppingIngredient> toRemove = new ArrayList<>();
 
 
@@ -161,6 +171,45 @@ public class ShoppingFragment extends Fragment {
             }
         });
         Log.d("shoppingIngredientAfter", Integer.toString(ingredientList.size()));
+
+        // Getting all the recipes from firebase
+        final CollectionReference recipeCollection = dbf.collection("Recipe");
+        recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                recipeArrayList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    try {
+
+                        // fetch recipe info
+                        // fetch rest of recipe info
+                        String category = (String) doc.getData().get("Category");
+                        String comments = (String) doc.getData().get("Comments");
+                        String preptime = (String) doc.getData().get("Preparation Time");
+                        String preptimeM = (String) doc.getData().get("Preparation Time Min");
+                        String title = (String) doc.getData().get("Recipe Name");
+                        String servings = (String) doc.getData().get("Servings");
+
+                        int preptimeHours = Integer.parseInt(preptime);
+                        int preptimeMins = Integer.parseInt(preptimeM);
+                        int servingsString = Integer.parseInt(servings);
+
+                        Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,
+                                ingredientList);
+
+                        recipeArrayList.add(recipe);
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+                }
+            }
+        });
+
 
         // Getting all the recipe's ingredients from the FireBase
         final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
@@ -338,13 +387,28 @@ public class ShoppingFragment extends Fragment {
                     // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
                     for (Recipe y : recipeMealList){
                         String recipeName = y.getTitle();
-                        // Checking all the ingredients of the recipe and adding them to ingredientMealList
-                        for (RecipeIngredient z : recipeIngredientsList){
-                            String tempTitle[] = z.getTitle().split(",");
+                        int userServings = y.getServings();
+                        int recipeServings = 0;
 
-                            if(tempTitle[1].equals(recipeName)){
-                                Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), z.getCategory(), "NULL", "NULL");
-                                ingredientMealListTemp.add(tempIngredient);
+                        for (Recipe temp : recipeArrayList){
+                            if (temp.getTitle().equals(recipeName)){
+                                recipeServings = temp.getServings();
+                            }
+                        }
+
+                        double count = 1;
+                        if(userServings/recipeServings > 1){
+                            count = Math.ceil(userServings/recipeServings);
+                        }
+                        for (int i = 0; i < count; i++){
+                            // Checking all the ingredients of the recipe and adding them to ingredientMealList
+                            for (RecipeIngredient z : recipeIngredientsList){
+                                String tempTitle[] = z.getTitle().split(",");
+
+                                if(tempTitle[1].equals(recipeName)){
+                                    Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), z.getCategory(), "NULL", "NULL");
+                                    ingredientMealListTemp.add(tempIngredient);
+                                }
                             }
                         }
                     }
