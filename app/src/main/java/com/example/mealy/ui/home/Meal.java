@@ -11,7 +11,8 @@ import java.util.List;
 public class Meal implements Serializable {
     String title;
     Integer servings;
-    String date; // the day that this meal is associated with
+    String startDate; // the day that this meal plan starts with
+    String endDate; // the day that this meal plan ends with (should be consecutive)
 
     private List<Ingredient> mealIngredients;
     private List<Recipe> mealRecipes;
@@ -87,19 +88,35 @@ public class Meal implements Serializable {
     }
 
     /**
-     * Get the servings for the meal
-     * @return: servings of meal
+     * Get the start date for the meal
+     * @return: start date of meal (yyyy-mm-dd)
      */
-    public String getDate() {
-        return date;
+    public String getStartDate() {
+        return startDate;
     }
 
     /**
-     * Set the servings for the meal
-     * @param: servings of meal
+     * Set the start date for the meal
+     * @param: start date of meal (yyyy-mm-dd)
      */
-    public void setDate(String date) {
-        this.date = date;
+    public void setStartDate(String date) {
+        this.startDate = date;
+    }
+
+    /**
+     * Get the end date for the meal
+     * @return: end date of meal (yyyy-mm-dd)
+     */
+    public String getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * Set the end date for the meal
+     * @param: end date of meal (yyyy-mm-dd)
+     */
+    public void setEndDate(String date) {
+        this.endDate = date;
     }
 
     /**
@@ -109,15 +126,18 @@ public class Meal implements Serializable {
      * @param: recipes The recipes involved in this meal plan
      * @param: ingredients The ingredients involved in this meal plan
      * @param: servings The servings of this recipe
+     * @param: date The date of this meal plan in format yyyy-mm-dd
      */
     public Meal(String title,
                   Integer servings,
-                  String date,
+                  String startDate,
+                  String endDate,
                   List recipes,
                   List ingredients){
         this.title = title;
         this.servings = servings;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.mealRecipes = recipes;
         this.mealIngredients = ingredients;
     }

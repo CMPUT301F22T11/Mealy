@@ -37,4 +37,21 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="CheckboxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/green</item> <!-- for uncheck state -->
+        <item name="android:textColorSecondary">@color/accent_red</item> <!-- for check state -->
+    </style>
+    <!-- Calendar -->
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/dark_gray</item>
+        <item name="colorControlActivated">@color/background</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+    </style>
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/accent_red</item>
+    </style>
 </resources>
