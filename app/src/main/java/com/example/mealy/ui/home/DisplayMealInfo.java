@@ -40,6 +40,9 @@ public class DisplayMealInfo extends DialogFragment {
 
     TextView view_date;
     TextView view_servings;
+    TextView recipeDisplay;
+    TextView ingredientDisplay;
+    TextView meal_title;
 
     View view;
     private final DisplayMealInfo fragment = this;
@@ -49,8 +52,6 @@ public class DisplayMealInfo extends DialogFragment {
         this.mealName = meal.getTitle();
         this.startDate = meal.getStartDate();
         this.endDate = meal.getEndDate();
-        this.servingsString = meal.getServingsString();
-        this.servings = meal.getServings();
         this.mealRecipes = meal.getMealRecipes();
         this.mealIngredients = meal.getMealIngredients();
 
@@ -62,15 +63,14 @@ public class DisplayMealInfo extends DialogFragment {
         view = LayoutInflater.from(getActivity()).inflate(R.layout.display_meal_info, null);
 
         // Creates a dialog builder thing that lets you display information and click buttons and stuff
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         return builder
                 .setView(view)
-                .setTitle(mealName)
                 .setNegativeButton("Close", null) // closes the dialog
                 .setNeutralButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new DeletePrompt("Meal", mealName).show(getParentFragmentManager(),"delete_prompt");
+                        new DeletePrompt("MealPlan", mealName).show(getParentFragmentManager(),"delete_prompt");
                     }
                 }).create();
     }
@@ -82,10 +82,29 @@ public class DisplayMealInfo extends DialogFragment {
         // set date
         view_date = view.findViewById(R.id.mealDate);
         view_date.setText(startDate + " to " + endDate);
+        meal_title = view.findViewById(R.id.meal_title);
+        meal_title.setText(mealName);
+        recipeDisplay = view.findViewById(R.id.mealRecipeListDisplay);
+        ingredientDisplay = view.findViewById(R.id.mealIngredientListDisplay);
+        String recipes = "";
+        String ingredients = "";
+
+        for (Recipe x : mealRecipes) {
+
+            recipes += (x.getTitle() + ", Servings: " + x.getServings() + "\n");
+        }
+
+        for (Ingredient x : mealIngredients) {
+            ingredients += (x.getName() + "\n");
+        }
+
+        recipeDisplay.setText(recipes);
+        ingredientDisplay.setText(ingredients);
+
 
         // set servings
-        view_servings = view.findViewById(R.id.mealServings);
-        view_servings.setText(servings.toString());
+//        view_servings = view.findViewById(R.id.mealServings);
+//        view_servings.setText(servings.toString());
 
         return view;
     }
