@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16sp"
-        android:layout_marginTop="0sp"
+        android:layout_marginTop="16sp"
 
         android:layout_marginEnd="16sp"
         android:background="@color/white"
@@ -61,7 +61,7 @@
             <ListView
                 android:id="@+id/shoppingCartAddSelectedList"
                 android:layout_width="match_parent"
-                android:layout_height="400sp"
+                android:layout_height="488sp"
                 android:layout_marginLeft="16sp"
                 android:layout_marginTop="16sp"
                 android:layout_marginRight="16sp"
