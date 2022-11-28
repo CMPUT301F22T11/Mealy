@@ -460,15 +460,11 @@ public class ShoppingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // List of checked items
-                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
-                for(int j=0; j<checkedItems.size(); j++){
-                    Log.d("LIST", checkedItems.get(j).toString());
-                }
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems);
+                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems, ingredientList);
                     displayAdd.show(getChildFragmentManager(), TAG);
                 }
-
+                shoppingAdapter.notifyDataSetChanged();
             }
         });
 
