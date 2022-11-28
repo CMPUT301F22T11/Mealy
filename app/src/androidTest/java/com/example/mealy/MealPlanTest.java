@@ -71,7 +71,7 @@ public class MealPlanTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnImageButton(2); //Click add meal plan button
 
-        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "Terrible Meal Plan");
+        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "SuperHungry");
 
         // Get view for EditText and Spinner and enter the parameters
         solo.clickOnButton("Start Date");
@@ -86,7 +86,7 @@ public class MealPlanTest {
         // True if there is a MealPlan called Terrible Meal Plan in firebase.
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         CollectionReference recipeRef = rootRef.collection("MealPlan");
-        Query query = recipeRef.whereEqualTo("Name", "Terrible Meal Plan");
+        Query query = recipeRef.whereEqualTo("Name", "SuperHungry");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -104,9 +104,9 @@ public class MealPlanTest {
             }
 
         });
-//
         // Delete the meal plan.
-        Firestore.deleteFromFirestore("MealPlan", "Terrible Meal Plan");
+        rootRef.collection("MealPlan").document("SuperHungry").delete();
+
 
 
 //        solo.clickOnImageButton(2); //Click add meal plan button
