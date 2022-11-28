@@ -10,11 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mealy.R;
-import com.example.mealy.databinding.ShoppingListAddBinding;
-import com.example.mealy.ui.recipes.RecipeViewModel;
+
+import java.util.ArrayList;
 
 public class ShoppingListAdd extends DialogFragment {
 
@@ -23,8 +22,9 @@ public class ShoppingListAdd extends DialogFragment {
 
     View view;
 
+    // variables that are passed through
 
-    public ShoppingListAdd() {
+    public ShoppingListAdd(ArrayList<Integer> indices, ArrayList<ShoppingIngredient> shoppingList) {
         // Constructor: TODO
     }
     @Override
@@ -41,6 +41,8 @@ public class ShoppingListAdd extends DialogFragment {
     {
 
         view = inflater.inflate(R.layout.shopping_list_add, container, false);
+
+        // Initialize list
 
         return view;
     }

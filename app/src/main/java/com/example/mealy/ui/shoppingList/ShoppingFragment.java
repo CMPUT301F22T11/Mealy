@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -122,28 +121,13 @@ public class ShoppingFragment extends Fragment {
                 }
                 Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAdd disp = new ShoppingListAdd();
+                    ShoppingListAdd disp = new ShoppingListAdd(checkedItems, shoppingArrayList);
                     disp.show(getChildFragmentManager(), TAG);
                 }
                 checkedItems.clear();
-                /*
-                if (checked != null) {
-                    Log.d("TAG", String.valueOf("Checked Size:" + checked.size()));
-                    for (int i = 0; i < checked.size(); i++) {
-                        if (checked.valueAt(i)) {
-                            checkedItems.add(i);
-                        }
-                    }
-
-                    for (int i = 0; i < checkedItems.size(); i++) {
-                        Log.d("TAG", "Checked Item: " + checkedItems.get(i).toString());
-                    }
 
 
-                } else {
-                    Log.i(TAG, "Failed");
-                }
-                 */
+
             }
         });
 
