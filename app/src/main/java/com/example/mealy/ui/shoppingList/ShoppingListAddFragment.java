@@ -20,6 +20,10 @@ import com.example.mealy.functions.Firestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This is the class that the user can confirm their additions to the
+ * ingredient storage from the shopping cart
+ */
 public class ShoppingListAddFragment extends DialogFragment {
 
     private ShoppingListAddBinding binding;
@@ -59,6 +63,7 @@ public class ShoppingListAddFragment extends DialogFragment {
         // Initialize list
         ShoppingListview = view.findViewById(R.id.shoppingCartAddSelectedList);
 
+        // remove duplicates
         for(int i=0; i<items.size(); i++){
             for(int j=0; j<items.size(); j++){
                 if(i!=j && (items.get(i) == items.get(j))){
@@ -75,6 +80,7 @@ public class ShoppingListAddFragment extends DialogFragment {
         ListView storage = view.findViewById(R.id.shoppingCartAddSelectedList);
         storage.setAdapter(shoppingAdapter);
 
+        // add button
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
