@@ -130,15 +130,15 @@ public class IngredientAdd extends DialogFragment {
         // Inflates View
         view = inflater.inflate(R.layout.ingredient_add, container, false);
 
-        InitializeIngredientName();
-        GetIngredientNames(); // Gets all the ingredient names to avoid duplicates
         // Initializes Interface
+        InitializeIngredientName();
         InitializeCategorySpinner();
         InitializeQuantityUnitsSpinner();
         InitializeSaveButton();
         InitializeLocationSpinner();
         InitializeTextViews();
         InitializeDatePicker();
+        GetIngredientNames(); // Gets all the ingredient names to avoid duplicates
 
         if (edit) {
             EditMode();
@@ -161,15 +161,14 @@ public class IngredientAdd extends DialogFragment {
                 Map<String, Object> currentIngredient = RecipeIngredientsMaps.get(RecipeIngredients.get(i));
 
                 DescriptionText.setText(General.blankIfVoid((String) currentIngredient.get("Description")));
-                wholeButton.setChecked(true); // true in case the field is empty
 
                 String unit = (String) currentIngredient.get("Unit Category");
                 unit = General.blankIfVoid(unit);
-                wholeButton.setChecked(true);
+                wholeButton.setChecked(true); // true in case the field is empty
                 weightButton.setChecked(unit.equals("Weight"));
                 volumeButton.setChecked(unit.equals("Volume"));
 
-                unit = (String) currentIngredient.get("Unit");
+                unit = (String) currentIngredient.get("Quantity Unit");
                 unit = General.blankIfVoid(unit);
 
                 quantityUnits.setSelection(Arrays.asList(current).indexOf(unit));
@@ -186,7 +185,7 @@ public class IngredientAdd extends DialogFragment {
      * Sets up the spinner for the Category selection. Sets the values and adapter
      */
     private void InitializeCategorySpinner() {
-        categorySpinner = (Spinner) view.findViewById(R.id.categoryDropdown);
+        categorySpinner = view.findViewById(R.id.categoryDropdown);
         //categories = new String[]{"Select Category", "Add Category", "Raw Food", "Meat", "Spice", "Fluid", "Other"};
         Category.add("Select Category");
         Category.add("Add Category");
@@ -223,7 +222,7 @@ public class IngredientAdd extends DialogFragment {
      */
 
     private void InitializeLocationSpinner() {
-        locationSpinner = (Spinner) view.findViewById(R.id.locationDropdown);
+        locationSpinner = view.findViewById(R.id.locationDropdown);
         //locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
         Location.add("Select Location");
         Location.add("Add Location");
@@ -257,8 +256,8 @@ public class IngredientAdd extends DialogFragment {
      * values accordingly
      */
     private void InitializeQuantityUnitsSpinner() {
-        quantityUnits = (Spinner) view.findViewById(R.id.quantityDropdown);
-        unitsRadioGroup = (RadioGroup) view.findViewById(R.id.quantityType);
+        quantityUnits = view.findViewById(R.id.quantityDropdown);
+        unitsRadioGroup = view.findViewById(R.id.quantityType);
         wholeButton = view.findViewById(R.id.whole);
         volumeButton = view.findViewById(R.id.volume);
         weightButton = view.findViewById(R.id.weight);
@@ -310,7 +309,7 @@ public class IngredientAdd extends DialogFragment {
      * Initialises save button, sets on click listener to store data into Firestore
      */
     private void InitializeSaveButton() {
-        Save = (Button) view.findViewById(R.id.addIngredient);
+        Save = view.findViewById(R.id.addIngredient);
 
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,13 +333,9 @@ public class IngredientAdd extends DialogFragment {
                             Firestore.storeToFirestore("Spinner", "Location", locationData);
                         }
                     }
-
+                    getParentFragmentManager().beginTransaction().remove(fragment).commit();
                     if (edit) {
-                        getParentFragmentManager().beginTransaction().remove(fragment).commit();
                         Firestore.deleteFromFirestore(collection, ingredient.getName());
-                    }
-                    else {
-                        requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     }
                     Firestore.storeToFirestore(collection, ingredientName, data);
                 }
@@ -352,9 +347,9 @@ public class IngredientAdd extends DialogFragment {
      * Initializes the textViews
      */
     private void InitializeTextViews() {
-        IngredientQuantity = (EditText) view.findViewById(R.id.quantity);
-        DescriptionText = (EditText) view.findViewById(R.id.descriptionText);
-        Title = (TextView) view.findViewById(R.id.title);
+        IngredientQuantity = view.findViewById(R.id.quantity);
+        DescriptionText = view.findViewById(R.id.descriptionText);
+        Title = view.findViewById(R.id.title);
     }
 
     /**
@@ -491,6 +486,12 @@ public class IngredientAdd extends DialogFragment {
             IngredientName.setError("Ingredient Name cant be empty");
             isValid = false;
         }
+
+        if (Ingredients.contains(ingredientName)) {
+            IngredientName.setError("This ingredient already exists");
+            isValid = false;
+        }
+
         // checks if categoryName is empty or equal to the default text
         if (Validate.isEmpty(categoryName) || Objects.equals(categoryName, "Select Category")) {
             // if it's empty it shows a red exclamation mark and turns spinner text red
@@ -584,6 +585,7 @@ public class IngredientAdd extends DialogFragment {
                         Category = General.mapToArrayList(categoryData);
                         categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
                         categorySpinner.setAdapter(categoryAdapter);
+
                         if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
 
                         Log.d(TAG, "DocumentSnapshot data: " + categoryData);
@@ -663,43 +665,36 @@ public class IngredientAdd extends DialogFragment {
     private void GetIngredientNames() {
         CollectionReference ingredientReference = db.collection("Ingredients");
         ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            /**
-             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
-             * that was created for each respective lists.
-             *
-             * @param queryDocumentSnapshots returns each document within the collection
-             * @param error
-             */
+
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
-
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    String ingredient = (String) doc.getId();
-                    Ingredients.add(ingredient);
+                    String ingredient = doc.getId();
+                    if (!Ingredients.contains(ingredient)) {
+                        Ingredients.add(ingredient);
+                    }
                 }
             }
         });
 
         CollectionReference recipeIngredientReference = db.collection("RecipeIngredients");
         recipeIngredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            /**
-             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
-             * that was created for each respective lists.
-             *
-             * @param queryDocumentSnapshots returns each document within the collection
-             * @param error
-             */
+
+
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
-
+                String name;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    if (!RecipeIngredientsMaps.containsKey((String) doc.getData().get("Name"))) {
-                        RecipeIngredientsMaps.put((String) doc.getData().get("Name"), doc.getData());
-                        RecipeIngredients.add((String) doc.getData().get("Name"));
+                    name = (String) doc.getData().get("Name");
+
+                    if (!RecipeIngredientsMaps.containsKey(name)) {
+                        RecipeIngredientsMaps.put(name, doc.getData());
+                        RecipeIngredients.add(name);
                     }
                 }
+                RecipeIngredients.removeAll(Ingredients);
             }
         });
 

@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Helper class which allows for easy selection of the comparators for ListView
  */
 public class Compare {
-    private Comparator<Ingredient> comparator;
+    private final Comparator<Ingredient> comparator;
 
     /**
      * This creates a Compare object, which essentially encapsulates the selection for

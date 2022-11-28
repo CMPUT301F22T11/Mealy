@@ -48,7 +48,7 @@ public class Firestore {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // These are a method which gets executed if there’s any problem
-                        Log.d(TAG, "Data could not be added!" + e.toString());
+                        Log.d(TAG, "Data could not be added!" + e);
                     }
                 });
     }
@@ -78,7 +78,7 @@ public class Firestore {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // These are a method which gets executed if there’s any problem
-                        Log.d(TAG, "Data could not be added!" + e.toString());
+                        Log.d(TAG, "Data could not be added!" + e);
                     }
                 });
     }
@@ -102,7 +102,7 @@ public class Firestore {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // These are a method which gets executed if there’s any problem
-                        Log.d(TAG, "Data could not be removed!" + e.toString());
+                        Log.d(TAG, "Data could not be removed!" + e);
                     }
                 });
     }
