@@ -13,10 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-
-        android:layout_marginEnd="16sp"
         android:background="@color/white"
-        android:baselineAligned="false"
         android:orientation="vertical"
         android:outlineAmbientShadowColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,11 +60,12 @@
                 android:layout_marginLeft="16sp"
                 android:layout_marginTop="16sp"
                 android:layout_marginRight="16sp"
+                android:layout_marginStart="32sp"
+                android:layout_marginEnd="32sp"
                 android:clickable="true"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10.0sp"
                 android:drawSelectorOnTop="true"
-                android:focusable="true"
                 android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

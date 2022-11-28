@@ -47,16 +47,33 @@
 
     </LinearLayout>
 
+<!--    <ListView-->
+<!--        android:id="@+id/shoppingStorage"-->
+<!--        android:layout_width="360sp"-->
+<!--        android:layout_height="490sp"-->
+<!--        android:layout_marginTop="16sp"-->
+<!--        android:clickable="true"-->
+<!--        android:dividerHeight="10sp"-->
+<!--        android:scrollbars="none"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.529"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/groupShopping" />-->
+
     <ListView
         android:id="@+id/shoppingStorage"
-        android:layout_width="360sp"
-        android:layout_height="490sp"
+        android:layout_width="match_parent"
+        android:layout_height="488sp"
+        android:layout_marginLeft="16sp"
+        android:layout_marginRight="16sp"
         android:layout_marginTop="16sp"
         android:clickable="true"
-        android:dividerHeight="10sp"
         android:scrollbars="none"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:drawSelectorOnTop="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupShopping" />
 
