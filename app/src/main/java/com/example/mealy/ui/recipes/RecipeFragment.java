@@ -59,7 +59,7 @@ public class RecipeFragment extends Fragment {
     private ListView recipeListView; // list of recipes
     private ConstraintLayout recipeEntryBox; // each individual recipe contained in a box
     private ImageButton flipButton; // for flipping the recipe items
-    private Button Home_Add_Recipe_Entry;
+    private ImageButton Home_Add_Recipe_Entry;
 
     final String TAG = "Logging";
 

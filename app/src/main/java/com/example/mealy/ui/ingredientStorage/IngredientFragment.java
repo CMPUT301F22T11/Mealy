@@ -50,7 +50,7 @@ public class IngredientFragment extends Fragment {
     private int asc;
     FirebaseFirestore db;
 
-    private Button Home_Add_Ingredient_Entry;
+    private ImageButton Home_Add_Ingredient_Entry;
 
     private ListView storage;
     // listview adapter

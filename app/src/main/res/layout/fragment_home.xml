@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/listitem"
-        app:layout_constraintBottom_toTopOf="@id/mealplanlistview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -30,28 +29,38 @@
     <ListView
         android:id="@+id/mealplanlistview"
         android:layout_width="match_parent"
-        android:layout_height="120sp"
+        android:layout_height="0sp"
         android:clickable="true"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        app:layout_constraintBottom_toTopOf="@id/cardCal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textLayout"
+        app:layout_constraintBottom_toTopOf="@id/cardCal"/>
+
+    <Button
+        android:id="@+id/meal_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="+ Meal Plan"
+        app:layout_constraintBottom_toTopOf="@+id/cardCal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealplanlistview" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardCal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16sp"
+        android:layout_marginBottom="?attr/actionBarSize"
         app:cardBackgroundColor="@color/accent_grey"
         app:cardCornerRadius="16sp"
         app:cardElevation="6sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealplanlistview">
+        app:layout_constraintTop_toBottomOf="@+id/meal_button"
+        app:layout_constraintRight_toRightOf="parent">
 
         <CalendarView
             android:id="@+id/calendar"
@@ -60,18 +69,20 @@
             android:background="@drawable/calendar_bg"
             android:dateTextAppearance="@style/CalenderViewDateCustomText"
             android:theme="@style/CalenderViewCustom"
-            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"></CalendarView>
+            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"/>
 
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <ImageButton
         android:id="@+id/Home_Add_Meal_Entry"
         android:layout_width="wrap_content"
-        android:layout_height="48sp"
-        android:layout_marginEnd="24sp"
-        android:text="+ Meal"
-        app:layout_constraintBottom_toTopOf="@+id/cardCal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealplanlistview" />
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_library_add_24"
+        android:background="@drawable/recipe_add_bg"
+        android:padding="6sp"
+        android:layout_marginBottom="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/mealplanlistview"
+        app:layout_constraintEnd_toEndOf="@id/mealplanlistview"
+        android:layout_marginEnd="16sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,7 +57,6 @@ public class MealList extends ArrayAdapter<Meal> {
 
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.mealServingDisplay);
-        textView2.setText(currentMeal.getServingsString());
 
         // then return the recyclable view
         return currentItemView;

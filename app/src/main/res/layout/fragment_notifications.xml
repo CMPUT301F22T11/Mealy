@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,7 +15,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recipestorage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="horizontal">
@@ -47,32 +47,34 @@
 
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/recipestorage"
         android:layout_width="match_parent"
-        android:layout_height="488sp"
+        android:layout_height="0sp"
         android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
         android:layout_marginTop="16sp"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:clickable="true"
         android:scrollbars="none"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:drawSelectorOnTop="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grouprecipe" />
+        app:layout_constraintTop_toBottomOf="@id/grouprecipe"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/Home_Add_Recipe_Entry"
         android:layout_width="wrap_content"
-        android:layout_height="48sp"
-        android:layout_marginEnd="16sp"
-        android:text="+ Recipe"
-        app:layout_constraintBottom_toBottomOf="@+id/recipestorage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipestorage" />
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_library_add_24"
+        android:background="@drawable/recipe_add_bg"
+        android:padding="6sp"
+        android:layout_marginRight="16sp"
+        android:layout_marginBottom="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/recipestorage"
+        app:layout_constraintEnd_toEndOf="@id/recipestorage" />
 
 
 

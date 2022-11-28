@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Meal implements Serializable {
     String title;
-    Integer servings;
     String startDate; // the day that this meal plan starts with
     String endDate; // the day that this meal plan ends with (should be consecutive)
 
@@ -64,30 +63,6 @@ public class Meal implements Serializable {
     public void addRecipe(Recipe recipe) { mealRecipes.add(recipe); }
 
     /**
-     * Get the servings for the meal
-     * @return: servings of meal
-     */
-    public int getServings() {
-        return servings;
-    }
-
-    /**
-     * Set the servings for the meal
-     * @param: servings of meal
-     */
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
-    /**
-     * Get the servings for the meal in string format
-     * @return: servings of meal as a string
-     */
-    public String getServingsString() {
-        return "Serving size: " + servings.toString();
-    }
-
-    /**
      * Get the start date for the meal
      * @return: start date of meal (yyyy-mm-dd)
      */
@@ -129,13 +104,11 @@ public class Meal implements Serializable {
      * @param: date The date of this meal plan in format yyyy-mm-dd
      */
     public Meal(String title,
-                  Integer servings,
                   String startDate,
                   String endDate,
                   List recipes,
                   List ingredients){
         this.title = title;
-        this.servings = servings;
         this.startDate = startDate;
         this.endDate = endDate;
         this.mealRecipes = recipes;

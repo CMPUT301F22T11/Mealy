@@ -7,33 +7,26 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-/**
- *  Prompts the user to delete an item, if they accept, it deletes it from Firestore.
- *  How to call: new DeletePrompt(collection, document).show(getParentFragmentManager(),"delete_prompt");
- */
-public class DeletePrompt extends DialogFragment {
+import java.util.ArrayList;
 
-    private final String collectionName;
-    private final String document;
+public class DeletePromptSpinner extends DeletePrompt{
 
-    /**
-     * Takes in parameters to be able to delete the item from firestore
-     * @param collectionName The name of the collection (e.g. Ingredients)
-     * @param document The name of the item in the collection (e.g. Apple)
-     */
-    public DeletePrompt(String collectionName, String document){
+    String collectionName;
+    String document;
+    ArrayList<String> data;
+    int index;
+
+    public DeletePromptSpinner(String collectionName, String document, ArrayList<String> data, int index){
+        super(collectionName, document);
         this.collectionName = collectionName;
         this.document = document;
+        this.data = data;
+        this.index = index;
 
     }
 
-    /**
-     * Prompts the user to delete the item or to cancel. If they want to delete it, it will delete it from Firestore
-     * @param savedInstanceState idk tbh
-     * @return Builder
-     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -46,13 +39,11 @@ public class DeletePrompt extends DialogFragment {
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() { // deletes the food item
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // deletes item from Firestore
-                        Firestore.deleteFromFirestore(collectionName, document);
+                        data.remove(index);
+                        Firestore.storeToFirestore(collectionName, document, General.listToMap(data));
                     }
                 })
                 .setNeutralButton("Cancel", null).create();
     }
-
-
-
 }
+
