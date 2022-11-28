@@ -173,6 +173,7 @@ public class ShoppingFragment extends Fragment {
                 Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
             }
         });
+        Log.d("shoppingIngredientAfter", Integer.toString(ingredientList.size()));
 
         // Getting all the recipe's ingredients from the FireBase
         final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
@@ -205,7 +206,9 @@ public class ShoppingFragment extends Fragment {
                     } catch (Exception e) {
                         Log.d(TAG, ("Error with firebase pull"));
                     }
+
                 }
+                Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
             }
         });
 
@@ -301,6 +304,7 @@ public class ShoppingFragment extends Fragment {
                     mealArrayList.add(addMeal);
 
                 }
+                Log.d("shoppingMeal", Integer.toString(mealArrayList.size()));
             }
         });
 
@@ -321,7 +325,7 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        Log.d("shopping", Integer.toString(mealArrayList.size()));
+        Log.d("shoppingMeal", Integer.toString(mealArrayList.size()));
         Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
         Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
 
