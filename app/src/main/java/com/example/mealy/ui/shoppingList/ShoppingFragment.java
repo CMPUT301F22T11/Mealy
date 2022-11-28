@@ -53,12 +53,12 @@ import java.util.concurrent.TimeUnit;
 public class ShoppingFragment extends Fragment {
 
     private ShoppingListDashboardBinding binding;
-
+    private final ShoppingFragment fragment = this;
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
     private ImageButton addButton;
-
+    private ImageButton refreshButton;
     final String TAG = "Logging";
 
     int asc = 1; // for sort order
@@ -89,6 +89,7 @@ public class ShoppingFragment extends Fragment {
         flipButton = root.findViewById(R.id.flip_shopping_sort);
         sortSpinner = root.findViewById(R.id.shoppingSort);
         addButton = root.findViewById(R.id.addShoppingIngredient);
+        refreshButton = root.findViewById(R.id.refreshButton);
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
@@ -460,18 +461,25 @@ public class ShoppingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // List of checked items
-                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
-                for(int j=0; j<checkedItems.size(); j++){
-                    Log.d("LIST", checkedItems.get(j).toString());
-                }
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems);
+                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems, ingredientList);
                     displayAdd.show(getChildFragmentManager(), TAG);
                 }
-
+                shoppingAdapter.notifyDataSetChanged();
+                getParentFragmentManager().beginTransaction().detach(fragment).commitNow();
+                getParentFragmentManager().beginTransaction().attach(fragment).commitNow();
             }
         });
 
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("CLICKINGBUTTON", "YES");
+                shoppingAdapter.notifyDataSetChanged();
+                getParentFragmentManager().beginTransaction().detach(fragment).commitNow();
+                getParentFragmentManager().beginTransaction().attach(fragment).commitNow();
+            }
+        });
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
