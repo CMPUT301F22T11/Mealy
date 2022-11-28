@@ -21,7 +21,11 @@ import java.util.ArrayList;
  */
 public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
 
-    // invoke the suitable constructor of the ArrayAdapter class
+    /**
+     * invoke the suitable constructor of the ArrayAdapter class
+     * @param context of the application
+     * @param arrayList arraylist of shopping ingredients
+     */
     public ShoppingList(@NonNull Context context, ArrayList<ShoppingIngredient> arrayList) {
 
         // pass the context and arrayList for the super
@@ -29,6 +33,13 @@ public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
         super(context, 0, arrayList);
     }
 
+    /**
+     * gets the view of the fragment
+     * @param position of the selected item
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -48,18 +59,16 @@ public class ShoppingList extends ArrayAdapter<ShoppingIngredient> {
         // currently disabled, image adding may be considered for ingredients at a later date.
         ImageView ingredientImage = currentItemView.findViewById(R.id.shoppingimageView);
         assert ingredientImage != null;
-        //ingredientImage.setImageResource(R.drawable.meat_rat);
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView textView1 = currentItemView.findViewById(R.id.shoppingNameDisplay);
         textView1.setText(currentIngredient.getName());
 
-        // then according to the position of the view assign the desired TextView 1 for the same
+        // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.categoryDisplay);
         textView2.setText(currentIngredient.getCategory());
 
-        // TODO: Look at the receipe and display the quantity
-        // then according to the position of the view assign the desired TextView 2 for the same
+        // then according to the position of the view assign the desired TextView 3 for the same
         TextView textView3 = currentItemView.findViewById(R.id.quantityDisplay);
         textView3.setText(currentIngredient.getQuantity() + " " + currentIngredient.getUnit());
 
