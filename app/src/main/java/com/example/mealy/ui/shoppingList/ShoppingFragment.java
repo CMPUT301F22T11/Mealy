@@ -115,55 +115,6 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-        // add sample ingredient for shopping list (change later once meal planner and receipe ingredients are functional)
-        ShoppingIngredient sample = new ShoppingIngredient("Tomato",
-                "Tomato is a red fruit",
-                "10",
-                "kg",
-                "Vegetable");
-        shoppingArrayList.add(sample);
-
-        ShoppingIngredient sample2 = new ShoppingIngredient("Grape",
-                "Grape is a green fruit",
-                "5",
-                "kg",
-                "Fruit");
-        shoppingArrayList.add(sample2);
-
-        ShoppingIngredient sample3 = new ShoppingIngredient("Apple",
-                "Apple is a red fruit",
-                "7",
-                "kg",
-                "Fruit");
-        shoppingArrayList.add(sample3);
-
-        ShoppingIngredient sample4 = new ShoppingIngredient("B",
-                "Apple is a red fruit",
-                "7",
-                "kg",
-                "Drink");
-        shoppingArrayList.add(sample4);
-
-        ShoppingIngredient sample5 = new ShoppingIngredient("C",
-                "This is a snack",
-                "7",
-                "kg",
-                "Snack");
-        shoppingArrayList.add(sample5);
-
-        ShoppingIngredient sample6 = new ShoppingIngredient("D",
-                "This is a drink",
-                "7",
-                "kg",
-                "Drink");
-        shoppingArrayList.add(sample6);
-
-        ShoppingIngredient sample7 = new ShoppingIngredient("E",
-                "Apple is a red fruit",
-                "7",
-                "kg",
-                "Fruit");
-        shoppingArrayList.add(sample7);
 
         // create the instance of the ListView to set the shopping list adapter
         ListView storage = root.findViewById(R.id.shoppingStorage);
@@ -374,7 +325,7 @@ public class ShoppingFragment extends Fragment {
 
             // Adding ingredients into the shopping ingredient list
             for (Ingredient y : ingredientMealList){
-                ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
+                ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory(), y.getUnitCategory());
                 String tempName = tempIngredient.getName();
                 boolean shoppingIngredientExists = false;
                 // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
