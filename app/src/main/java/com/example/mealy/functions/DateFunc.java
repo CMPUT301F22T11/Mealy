@@ -1,6 +1,7 @@
 package com.example.mealy.functions;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -191,9 +192,19 @@ public class DateFunc {
      * @param date Date object
      * @return Date in "Date" format ("yyyy-MM-dd")
      */
-    public static String makeObjString(Date date) {
+    public static String makeObjDate(Date date) {
         return sdf.format(date);
     }
+
+    /**
+     * Takes in date in "Obj" format and converts it to "Date" format
+     * @param date Date in "Date" format ("yyyy-MM-dd")
+     * @return Date Object
+     */
+    public static Date makeDateObj(String date) throws ParseException {
+        return sdf.parse(date);
+    }
+
 }
 
 

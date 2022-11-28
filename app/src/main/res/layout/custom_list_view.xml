@@ -25,24 +25,48 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:gravity="bottom|left"
+            android:layout_marginTop="16sp"
+            android:layout_marginLeft="16sp"
+            android:gravity="top|left"
+            android:layout_weight="1"
+            android:text="test2"
             android:textColor="@color/accent_red"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:ignore="RtlHardcoded" />
 
         <TextView
+            android:id="@+id/expiry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="16sp"
+            android:gravity="top|right"
+            android:layout_weight="1"
+            android:text="test"
+            android:textColor="@color/accent_red"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded"/>
+
+    </LinearLayout>
+
+        <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4sp"
+            android:layout_marginBottom="16sp"
+            android:layout_marginLeft="16sp"
             android:gravity="top|left"
             android:textColor="@color/accent_red"
             android:textSize="14sp"

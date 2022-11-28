@@ -2,6 +2,8 @@ package com.example.mealy.ui.ingredientStorage;
 // taken from https://www.geeksforgeeks.org/custom-arrayadapter-with-listview-in-android/
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.Validate;
 
 import java.util.ArrayList;
 
@@ -58,6 +62,33 @@ public class IngredientList extends ArrayAdapter<Ingredient> {
         // then according to the position of the view assign the desired TextView 2 for the same
         TextView textView2 = currentItemView.findViewById(R.id.textView2);
         textView2.setText(currentIngredient.getExpiryDate());
+
+        TextView expiry = currentItemView.findViewById(R.id.expiry);
+
+
+        try {
+            if (Validate.datePassed(currentIngredient.getExpiryDate())) {
+                expiry.findViewById(R.id.expiry).setVisibility(View.VISIBLE);
+                expiry.setText("EXPIRED");
+                textView1.setTextColor(Color.RED);
+                textView2.setTextColor(Color.RED);
+                expiry.setTextColor(Color.RED);
+
+            } else {
+                ColorStateList defaultColor = ContextCompat.getColorStateList(getContext(), R.color.accent_red);
+                expiry.findViewById(R.id.expiry).setVisibility(View.GONE);
+                textView1.setTextColor(defaultColor);
+                textView2.setTextColor(defaultColor);
+                expiry.setTextColor(defaultColor);
+            }
+        } catch (Exception e) {
+            expiry.findViewById(R.id.expiry).setVisibility(View.VISIBLE);
+            ColorStateList orange = ContextCompat.getColorStateList(getContext(), R.color.burnt_orange);
+            expiry.setText("MISSING EXPIRY DATE");
+            textView1.setTextColor(orange);
+            textView2.setTextColor(orange);
+            expiry.setTextColor(orange);
+        }
 
         // then return the recyclable view
         return currentItemView;
