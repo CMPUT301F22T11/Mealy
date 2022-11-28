@@ -140,41 +140,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // set some sample meal plans
-        Ingredient apple = new Ingredient("Apple",
-                "Red",
-                "0",
-                "lb",
-                "Weight",
-                "Raw Food",
-                "Pantry",
-                "2022-12-05");
-
-        // make ingredient list
-        List sampleIngredients = new ArrayList<Ingredient>();
-        sampleIngredients.add(apple);
-
-        List<Recipe> sampleRecipes = new ArrayList();
-
-        Recipe applePie = new Recipe("Apple pie",
-                "Delicious apple pie made from real apple",
-                4, 1, 30,
-                "Baked", sampleIngredients);
-
-        Recipe friedApple = new Recipe("Fried apple",
-                "Apples that are fried in a vat of oil",
-                2, 0, 15,
-                "Fried", sampleIngredients);
-
-        sampleRecipes.add(applePie);
-        sampleRecipes.add(friedApple);
-
-        Meal sample = new Meal("Lunch", "2022-11-11", "2022-11-13", sampleRecipes, sampleIngredients);
-
-        // add the meals to the list and connect it to the adapter
-        mealArrayList.add(sample);
-        mealAdapter.notifyDataSetChanged();
-
         // set it so that clicking on a meal plan displays the info
         mealPlanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -353,10 +318,9 @@ public class HomeFragment extends Fragment {
                                                     else if (ntry.getKey() == "name") {
                                                         ingName = ntry.getValue();
                                                     }
-
-                                                    Ingredient addIng = new Ingredient(ingName, desc, amount, unit, unitCategory, category, location, exp);
-                                                    listofIng.add(addIng);
                                                 }
+                                            Ingredient addIng = new Ingredient(ingName, desc, amount, unit, unitCategory, category, location, exp);
+                                            listofIng.add(addIng);
                                                 // do something with key and/or tab
                                             }
                                             for (  HashMap<String, String> x : listRec) {
@@ -364,9 +328,11 @@ public class HomeFragment extends Fragment {
                                                 for (HashMap.Entry<String, String> ntry : x.entrySet()) {
                                                     if (ntry.getKey() == "comments") {
                                                         comments = ntry.getValue();
+                                                        System.out.println("comments for this recipe: " + comments);
                                                     }
                                                     else if (ntry.getKey() == "category") {
                                                         category = ntry.getValue();
+                                                        System.out.println("category for this recipe: " + category);
                                                     }
                                                     else if (ntry.getKey() == "preptimeHours") {
                                                         prepHour = ntry.getValue();
@@ -379,14 +345,21 @@ public class HomeFragment extends Fragment {
                                                     }
                                                     else if (ntry.getKey() == "title") {
                                                         recName = ntry.getValue();
+                                                        System.out.println("title for this recipe: " + recName);
                                                     }
 
-                                                    ArrayList<Ingredient> noIng = new ArrayList<>();
-                                                    Recipe addRec = new Recipe(recName, comments, Integer.parseInt(servings), Integer.parseInt(prepHour), Integer.parseInt(prepMin), category, noIng);
-                                                    listofRec.add(addRec);
                                                 }
+                                            ArrayList<Ingredient> noIng = new ArrayList<>();
+                                            Recipe addRec = new Recipe(recName, comments, Integer.parseInt(servings), Integer.parseInt(prepHour), Integer.parseInt(prepMin), category, noIng);
+                                            listofRec.add(addRec);
                                                 // do something with key and/or tab
                                             }
+
+                                            System.out.println("Recipes added...");
+                                            System.out.println(listofRec);
+
+                                            System.out.println("Ingredients added...");
+                                            System.out.println(listofIng);
 
                                             Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
                                             mealArrayList.add(addMeal);

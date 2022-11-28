@@ -91,6 +91,7 @@ public class DisplayMealInfo extends DialogFragment {
 
         for (Recipe x : mealRecipes) {
 
+            System.out.println(x);
             recipes += (x.getTitle() + ", Servings: " + x.getServings() + "\n");
         }
 
