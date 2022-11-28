@@ -97,6 +97,12 @@ public class ShoppingFragment extends Fragment {
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
         ArrayList<Meal> mealArrayList = new ArrayList<>();
 
+        // list that will store all our firebase objects
+        ArrayList<ShoppingIngredient> shoppingArrayListTemp = new ArrayList<>();
+        ArrayList<Ingredient> ingredientListTemp = new ArrayList<>();
+        ArrayList<RecipeIngredient> recipeIngredientsListTemp = new ArrayList<>();
+        ArrayList<Meal> mealArrayListTemp = new ArrayList<>();
+
 
         // Create the adapter and set it to the arraylist
         ShoppingList shoppingAdapter = new ShoppingList(getActivity(), shoppingArrayList);
@@ -153,7 +159,7 @@ public class ShoppingFragment extends Fragment {
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
                     FirebaseFirestoreException error) {
                 // Clear the old list
-                ingredientList.clear();
+                ingredientListTemp.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
                     Log.d(TAG, (doc.getId()));
@@ -168,7 +174,10 @@ public class ShoppingFragment extends Fragment {
                     String unit = (String) doc.getData().get("Quantity Unit");
 
                     Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
-                    ingredientList.add(ingred); // Adding Ingredients from FireStore
+                    ingredientListTemp.add(ingred); // Adding Ingredients from FireStore
+                }
+                for(Ingredient i : ingredientListTemp){
+                    ingredientList.add(i);
                 }
                 Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
             }
@@ -433,6 +442,10 @@ public class ShoppingFragment extends Fragment {
         });
 
         return root;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+
     }
 
     /**
