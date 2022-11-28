@@ -20,10 +20,10 @@ import com.example.mealy.functions.Firestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ShoppingListAdd extends DialogFragment {
+public class ShoppingListAddFragment extends DialogFragment {
 
     private ShoppingListAddBinding binding;
-    private final ShoppingListAdd fragment = this;
+    private final ShoppingListAddFragment fragment = this;
     private ListView ShoppingListview;
     private Button addButton;
     ArrayList<ShoppingIngredient> items;
@@ -34,7 +34,7 @@ public class ShoppingListAdd extends DialogFragment {
 
     // variables that are passed through
 
-    public ShoppingListAdd(ArrayList<ShoppingIngredient> items) {
+    public ShoppingListAddFragment(ArrayList<ShoppingIngredient> items) {
         this.items = items;
     }
     @Override
@@ -74,7 +74,6 @@ public class ShoppingListAdd extends DialogFragment {
         // create the instance of the ListView to set the shopping list adapter
         ListView storage = view.findViewById(R.id.shoppingCartAddSelectedList);
         storage.setAdapter(shoppingAdapter);
-
 
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
