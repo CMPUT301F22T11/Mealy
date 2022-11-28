@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00000000"
-            android:minWidth="48dp"
+            android:minWidth="48sp"
             android:minHeight="40sp"
             android:src="@drawable/ic_baseline_swap_vert_24"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -49,26 +49,30 @@
 
     <ListView
         android:id="@+id/shoppingStorage"
-        android:layout_width="359dp"
-        android:layout_height="529dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="360sp"
+        android:layout_height="490sp"
+        android:layout_marginTop="16sp"
         android:clickable="true"
+        android:dividerHeight="10sp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupShopping" />
 
-    <Button
+    <ImageButton
         android:id="@+id/addShoppingIngredient"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="300sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="Add"
+        android:gravity="center"
+        android:minHeight="48sp"
+        android:layout_marginBottom="4sp"
+        android:src="@drawable/ic_baseline_add_shopping_cart_24"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingStorage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shoppingStorage" />
+        app:layout_constraintHorizontal_bias="0.928"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

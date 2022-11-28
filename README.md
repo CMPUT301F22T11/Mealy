@@ -10,5 +10,5 @@ Mealy is a simple app that allows user to plan out and prepare their meals in ad
 | Jakob Lau | jakob1 | JakobLau9 |
 | Mohammed Saleh| msaleh | MohammedSaleh2001 |
 | Lawrence Wang | lxwang | 5yph |
-| Kody Diep|kdiep | MainKoDy |
+| Kody Diep|kdiep | MainKoDy/YomangYomang333 |
 | Yahya Al-Shamali | yalshama | PointlessUsername |
