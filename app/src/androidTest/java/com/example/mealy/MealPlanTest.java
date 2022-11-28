@@ -33,6 +33,7 @@ import com.example.mealy.functions.Firestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -71,7 +72,7 @@ public class MealPlanTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnImageButton(2); //Click add meal plan button
 
-        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "Terrible Meal Plan");
+        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "A Meal");
 
         // Get view for EditText and Spinner and enter the parameters
         solo.clickOnButton("Start Date");
@@ -86,7 +87,7 @@ public class MealPlanTest {
         // True if there is a MealPlan called Terrible Meal Plan in firebase.
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         CollectionReference recipeRef = rootRef.collection("MealPlan");
-        Query query = recipeRef.whereEqualTo("Name", "Terrible Meal Plan");
+        Query query = recipeRef.whereEqualTo("Name", "A Meal");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -104,14 +105,27 @@ public class MealPlanTest {
             }
 
         });
+
+        //Delete the meal plan.
+        rootRef.collection("MealPlan").document("SuperHungry").delete();
+
+//        Calendar calendar = Calendar.getInstance();
+//        int day = calendar.get(Calendar.DAY_OF_WEEK);
+//        solo.clickOnText(String.valueOf(day));
+//        solo.clickOnView(thisCalendar);
+//        thisCalendar.setDate(System.currentTimeMillis()+(long) 86400000);
+//        solo.clickOnView(thisCalendar);
+//        solo.clickOnText("A Meal");
+//        assertTrue(solo.waitForText("Pineapple", 1, 2000));
+//        solo.clickOnButton("DELETE");
+
+
 //
-        // Delete the meal plan.
-        Firestore.deleteFromFirestore("MealPlan", "Terrible Meal Plan");
-
-
+//
+//
 //        solo.clickOnImageButton(2); //Click add meal plan button
 //
-//        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "DeleteThis Meal Plan");
+//        solo.enterText((EditText) solo.getView(R.id.Meal_Plan_Name), "Worthless Meal");
 //
 //        // Get view for EditText and Spinner and enter the parameters
 //        solo.clickOnButton("Start Date");
@@ -126,8 +140,7 @@ public class MealPlanTest {
 //
 //        ListView thisList = (ListView) solo.getView(R.id.mealplanlistview);
 //        TextView selectedDate = (TextView) solo.getView(R.id.date_view);
-//        solo.clickOnView(thisCalendar);
-//        thisCalendar.setDate(System.currentTimeMillis()+86400000);
+//
 ////        selectedDate.setText()
 //
 //        solo.sleep(3000);
@@ -137,8 +150,8 @@ public class MealPlanTest {
 //        solo.clickOnButton("Delete");
 //
 //        // True if there is no MealPlan called DeleteThis Meal Plan in the firebase.
-//        Query query = recipeRef.whereEqualTo("Name", "DeleteThis Meal Plan");
-//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        Query query1 = recipeRef.whereEqualTo("Name", "DeleteThis Meal Plan");
+//        query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                assertTrue(task.isSuccessful());
