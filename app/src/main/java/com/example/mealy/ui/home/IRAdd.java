@@ -41,8 +41,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * This class contains the DialogFragment that allows the user to create/edit a RecipeIngredient entry.
- * After hitting the "Save" button, the fragment passes the created (or edited) Recipe Ingredient
- * object back to the RecipeEntry fragment, and ends.
+ * After hitting the "Save" button, the fragment passes the created (or edited) Recipe/Ingredient
+ * object back to the IREntry fragment, and ends.
  */
 public class IRAdd extends DialogFragment {
     private final IRAdd fragment = this;
@@ -134,8 +134,8 @@ public class IRAdd extends DialogFragment {
         RecipeIngredientName = (TextView) view.findViewById(R.id.ir_select);
     }
     /**
-     * Initialize an addSnapshotListener that retrieves all current entries of Ingredients, alongside the category in which
-     * each ingredient is in, from the Firebase.
+     * Initialize an addSnapshotListener that retrieves all current entries of Ingredients/Recipes, alongside the category in which
+     * each ingredient/recipe is in, from the Firebase.
      */
     private void InitializeGetAll() {
         IngredientRecipeList.add("Select Ingredient/Recipe:");
@@ -143,8 +143,8 @@ public class IRAdd extends DialogFragment {
         collectionReference = db.collection("Ingredients");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
-             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
-             * that was created for each respective lists.
+             * Retrieve entries of Ingredients from the firebase, and notify the IRAdapter
+             * that was created.
              *
              * @param queryDocumentSnapshots returns each document within the collection
              * @param error
@@ -173,8 +173,8 @@ public class IRAdd extends DialogFragment {
         collectionReference = db.collection("Recipe");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
-             * Retrieve entries of Ingredients and categories from the firebase, and notify the nameAdapter and categoryAdapter
-             * that was created for each respective lists.
+             * Retrieve entries of Recipes from the firebase, and notify the IRAdapter
+             * that was created.
              *
              * @param queryDocumentSnapshots returns each document within the collection
              * @param error
@@ -201,7 +201,7 @@ public class IRAdd extends DialogFragment {
     }
 
     /**
-     * Initializes the spinner for selecting the name
+     * Initializes the spinners
      */
     private void InitializeIRSpinner() {
         IRSpinner = (Spinner) view.findViewById(R.id.ir_dropdown);
@@ -221,7 +221,7 @@ public class IRAdd extends DialogFragment {
         Save.setOnClickListener(new View.OnClickListener() {
             /**
              * Once the save button is clicked, get the user's inputs for all the different fields, and use it to create a
-             * new Recipe Ingredient. Using Parcelable, the Recipe Ingredient gets passed back to the Recipe DialogFragment.
+             * Recipe or Ingredient. Using Parcelable, the Recipe/Ingredient gets passed back to the MealPlan DialogFragment.
              *
              * @param view returns the current view of the activity
              */
@@ -273,7 +273,7 @@ public class IRAdd extends DialogFragment {
 
 
     /**
-     * Gets the name for the Recipe Ingredient the user gave for this current instacne of a Recipe Ingredient.
+     * Gets the name for the Recipe /Ingredient the user gave for this current instacne of a Recipe/Ingredient.
      *
      * @return Returns the name of the recipe ingredient that was created.
      */

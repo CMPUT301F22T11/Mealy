@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 /**
  * This class represents the Recipe Ingredient list that gets created for a given recipe. This allows us to track the
- * total amount of ingredients for the recipe, and allows us to edit/delete it.
+ * total amount of ingredients/recipes for the meal plan, and allows us to edit/delete it.
  */
 public class MealIRList extends ArrayAdapter<Object> {
 
