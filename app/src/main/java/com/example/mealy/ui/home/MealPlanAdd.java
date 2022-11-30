@@ -42,7 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 /**
- * This class contains the DIalogFragment that allows the user to create/edit a RecipeIngredient entry.
+ * This class contains the DIalogFragment that allows the user to create/edit aMealPlan entry.
  * After hitting the "Save" button, the fragment passes the created (or edited) Recipe Ingredient
  * object back to the RecipeEntry fragment, and ends.
  */
@@ -128,10 +128,10 @@ public class MealPlanAdd extends DialogFragment {
     private void onCreateFragment() {
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             /**
-             * Asks for an instance of recipe ingredient that was created, and returns it be adding it to the list of
+             * Asks for an instance of meal plan that was created, and returns it be adding it to the list of
              * recipe ingredients.
              * @param requestKey
-             * @param bundle bundle that stores the data of the recipe ingredient
+             * @param bundle bundle that stores the data of the meal plan
              */
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
@@ -198,7 +198,7 @@ public class MealPlanAdd extends DialogFragment {
 
             /**
              * This function is called when the user wants to perform an action on the recipe ingredient. When the user selects an entry,
-             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient, or remove it.
+             * an Alert Dialog pops up. Then, the user can either choose to edit the ingredient/recipe, or remove it.
              * @param adapterView The adapterView where the click occurred
              * @param view The current view of the app
              * @param i Returns the index of the recipe ingredient that was selected
@@ -225,6 +225,12 @@ public class MealPlanAdd extends DialogFragment {
                         })
                         .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                if (IRList.get(i) instanceof Ingredient) {
+                                    ingredientArray.remove((Ingredient) IRList.get(i));
+                                }
+                                else {
+                                    recipeMap.remove((Recipe) IRList.get(i));
+                                }
                                 IRList.remove(i);
                                 IRListAdapter.notifyDataSetChanged();
 
@@ -247,7 +253,7 @@ public class MealPlanAdd extends DialogFragment {
         Save.setOnClickListener(new View.OnClickListener() {
             /**
              * Once the save button is clicked, get the user's inputs for all the different fields, and use it to create a
-             * new Recipe Ingredient. Using Parcelable, the Recipe Ingredient gets passed back to the Recipe DialogFragment.
+             * new meal plan. Using Parcelable, the meal plane gets passed back to the meal plan DialogFragment.
              *
              * @param view returns the current view of the activity
              */
@@ -363,6 +369,9 @@ public class MealPlanAdd extends DialogFragment {
 
     }
 
+    /**
+     * Initializes the start date picker.
+     */
     private void InitializeDatePickerStart() {
         startDate = view.findViewById(R.id.Meal_Plan_start);
 
@@ -397,7 +406,9 @@ public class MealPlanAdd extends DialogFragment {
             }
         });
     }
-
+    /**
+     * Initializes the end date picker.
+     */
     private void InitializeDatePickerEnd() {
         endDate = view.findViewById(R.id.Meal_Plan_end);
 
@@ -436,7 +447,7 @@ public class MealPlanAdd extends DialogFragment {
     }
 
     /**
-     * Gets the name for the Recipe Ingredient the user gave for this current instacne of a Recipe Ingredient.
+     * Gets the name for the Meal Plan the user gave for this current instacne of a Recipe Ingredient.
      *
      * @return Returns the name of the recipe ingredient that was created.
      */
@@ -459,6 +470,16 @@ public class MealPlanAdd extends DialogFragment {
         System.out.println("Start date format: " + compareStart);
         System.out.println("End date format: " + compareEnd);
 
+        boolean isValid = true;
+
+        if (startD.equals("Start Date") || Validate.isEmpty(startD)) {
+            startDate.setError("Please select a starting date!");
+            return false;
+        } else if (endD.equals("End Date")|| Validate.isEmpty(endD)) {
+            endDate.setError("Please select an ending date!");
+            return false;
+        }
+
         String[] startDateComponents = compareStart.split("-");
         String[] endDateComponents = compareEnd.split("-");
 
@@ -470,20 +491,11 @@ public class MealPlanAdd extends DialogFragment {
         int endMonth = Integer.parseInt(endDateComponents[1]);
         int endDay = Integer.parseInt(endDateComponents[2]);
 
-        boolean isValid = true;
-
         if (Validate.isEmpty(mealPlan)) {
             MealPlanTitle.setError("Please give a name to the Meal Plan");
             isValid =  false;
         }
 
-        if (startD.equals("Start Date") || Validate.isEmpty(startD)) {
-            startDate.setError("Please select a starting date!");
-            isValid =  false;
-        } else if (endD.equals("End Date")|| Validate.isEmpty(endD)) {
-            endDate.setError("Please select an ending date!");
-            isValid =  false;
-        }
         // compare start date with end date
         else if ((startYear > endYear) || ((startYear == endYear) && ((startMonth > endMonth) || ((startMonth == endMonth) && (startDay > endDay))))) {
             startDate.setError("Start date has to come before end date!");

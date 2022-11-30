@@ -1,6 +1,8 @@
 package com.example.mealy.ui.shoppingList;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -26,6 +29,8 @@ import com.example.mealy.ui.home.Meal;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.Recipe;
 import com.example.mealy.ui.recipes.RecipeIngredient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -33,7 +38,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +52,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This fragment represents the shopping list screen.
@@ -51,12 +62,12 @@ import java.util.List;
 public class ShoppingFragment extends Fragment {
 
     private ShoppingListDashboardBinding binding;
-
+    private final ShoppingFragment fragment = this;
     private Spinner sortSpinner; // for selecting sorting category
     private ListView shoppingIngredientListView; // list of shopping ingredients
     private ImageButton flipButton; // for flipping order of the shopping list
     private ImageButton addButton;
-
+    private ImageButton refreshButton;
     final String TAG = "Logging";
 
     int asc = 1; // for sort order
@@ -87,6 +98,7 @@ public class ShoppingFragment extends Fragment {
         flipButton = root.findViewById(R.id.flip_shopping_sort);
         sortSpinner = root.findViewById(R.id.shoppingSort);
         addButton = root.findViewById(R.id.addShoppingIngredient);
+        refreshButton = root.findViewById(R.id.refreshButton);
 
         // create sorting spinner with sort categories
         ArrayList<String> options = new ArrayList<>(Arrays.asList("Title", "Description", "Category", "Quantity"));
@@ -99,12 +111,9 @@ public class ShoppingFragment extends Fragment {
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         ArrayList<RecipeIngredient> recipeIngredientsList = new ArrayList<>();
         ArrayList<Meal> mealArrayList = new ArrayList<>();
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+        ArrayList<ShoppingIngredient> toRemove = new ArrayList<>();
 
-        // list that will store all our firebase objects
-        ArrayList<ShoppingIngredient> shoppingArrayListTemp = new ArrayList<>();
-        ArrayList<Ingredient> ingredientListTemp = new ArrayList<>();
-        ArrayList<RecipeIngredient> recipeIngredientsListTemp = new ArrayList<>();
-        ArrayList<Meal> mealArrayListTemp = new ArrayList<>();
 
 
         // Create the adapter and set it to the arraylist
@@ -141,7 +150,7 @@ public class ShoppingFragment extends Fragment {
             public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
                     FirebaseFirestoreException error) {
                 // Clear the old list
-                ingredientListTemp.clear();
+                ingredientList.clear();
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
                 {
                     Log.d(TAG, (doc.getId()));
@@ -156,15 +165,51 @@ public class ShoppingFragment extends Fragment {
                     String unit = (String) doc.getData().get("Quantity Unit");
 
                     Ingredient ingred = new Ingredient(name, desc, amount, unit, unitC, category, location, exp);
-                    ingredientListTemp.add(ingred); // Adding Ingredients from FireStore
-                }
-                for(Ingredient i : ingredientListTemp){
-                    ingredientList.add(i);
+                    ingredientList.add(ingred); // Adding Ingredients from FireStore
                 }
                 Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
             }
         });
         Log.d("shoppingIngredientAfter", Integer.toString(ingredientList.size()));
+
+        // Getting all the recipes from firebase
+        final CollectionReference recipeCollection = dbf.collection("Recipe");
+        recipeCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable
+                    FirebaseFirestoreException error) {
+
+                // Clear the old list
+                recipeArrayList.clear();
+
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+                {
+                    try {
+
+                        // fetch recipe info
+                        // fetch rest of recipe info
+                        String category = (String) doc.getData().get("Category");
+                        String comments = (String) doc.getData().get("Comments");
+                        String preptime = (String) doc.getData().get("Preparation Time");
+                        String preptimeM = (String) doc.getData().get("Preparation Time Min");
+                        String title = (String) doc.getData().get("Recipe Name");
+                        String servings = (String) doc.getData().get("Servings");
+
+                        int preptimeHours = Integer.parseInt(preptime);
+                        int preptimeMins = Integer.parseInt(preptimeM);
+                        int servingsString = Integer.parseInt(servings);
+
+                        Recipe recipe = new Recipe(title, comments, servingsString, preptimeHours, preptimeMins, category,
+                                ingredientList);
+
+                        recipeArrayList.add(recipe);
+                    } catch (Exception e) {
+                        System.out.println("Error with firebase pull, incorrect formatting");
+                    }
+                }
+            }
+        });
+
 
         // Getting all the recipe's ingredients from the FireBase
         final CollectionReference shoppingCollection = dbf.collection("RecipeIngredients");
@@ -220,8 +265,32 @@ public class ShoppingFragment extends Fragment {
 
                 // Pull every meal
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    long days = 1;
                     String startDate = (String) doc.getData().get("Start Date");
                     String endDate = (String) doc.getData().get("End Date");
+                    String[] startDateComponents = startDate.split("-");
+                    String[] endDateComponents = endDate.split("-");
+
+                    int startYear = Integer.parseInt(startDateComponents[0]);
+                    int startMonth = Integer.parseInt(startDateComponents[1]);
+                    int startDay = Integer.parseInt(startDateComponents[2]);
+
+                    int endYear = Integer.parseInt(endDateComponents[0]);
+                    int endMonth = Integer.parseInt(endDateComponents[1]);
+                    int endDay = Integer.parseInt(endDateComponents[2]);
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date startDateObj = sdf.parse(startDate);
+                        Date endDateObj = sdf.parse(endDate);
+
+                        long diff = endDateObj.getTime() - startDateObj.getTime();
+                        days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1;
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     String mealPlan = (String) doc.getId();
                     ArrayList<HashMap<String, String>> listIng = (ArrayList<HashMap<String, String>>) doc.getData().get("Ingredients");
@@ -294,31 +363,56 @@ public class ShoppingFragment extends Fragment {
                         // do something with key and/or tab
                     }
                     Meal addMeal = new Meal(mealPlan, startDate, endDate, listofRec, listofIng);
-                    mealArrayList.add(addMeal);
+                    System.out.println("Days: " + days);
+                    for(int i = 0; i < days; i++){
+                        mealArrayList.add(addMeal);
+                    }
 
                 }
 
-                Log.d("shoppingMeal", Integer.toString(mealArrayList.size()));
-                Log.d("shoppingIngredient", Integer.toString(ingredientList.size()));
-                Log.d("shoppingRecipe", Integer.toString(recipeIngredientsList.size()));
 
+                shoppingArrayList.clear();
+                toRemove.clear();
+
+                // Creating the lists for the
+                List<Recipe> recipeMealList = new ArrayList<Recipe>();
+                List<Ingredient> ingredientMealList = new ArrayList<Ingredient>();
+                List<Ingredient> ingredientMealListTemp = new ArrayList<Ingredient>();
                 // Going through each meal and adding the ingredients required to make each meal into the shopping list
                 for (Meal x : mealArrayList){
-                    List<Recipe> recipeMealList = x.getMealRecipes();
-                    List<Ingredient> ingredientMealList = x.getMealIngredients();
+                    ingredientMealListTemp.clear();
+                    recipeMealList = x.getMealRecipes();
+                    ingredientMealList = x.getMealIngredients();
 
                     // Going through the recipe and adding ingredients from the recipe into the ingredientMealList to later add to the shopping list
                     for (Recipe y : recipeMealList){
                         String recipeName = y.getTitle();
-                        // Checking all the ingredients of the recipe and adding them to ingredientMealList
-                        for (RecipeIngredient z : recipeIngredientsList){
-                            String tempTitle[] = z.getTitle().split(",");
-                            if(tempTitle[1] == recipeName){
-                                Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), "NULL", "NULL", "NULL");
-                                ingredientMealList.add(tempIngredient);
+                        int userServings = y.getServings();
+                        int recipeServings = 0;
+
+                        for (Recipe temp : recipeArrayList){
+                            if (temp.getTitle().equals(recipeName)){
+                                recipeServings = temp.getServings();
+                            }
+                        }
+
+                        double count = 1;
+                        if(userServings/recipeServings > 1){
+                            count = Math.ceil(userServings/recipeServings);
+                        }
+                        for (int i = 0; i < count; i++){
+                            // Checking all the ingredients of the recipe and adding them to ingredientMealList
+                            for (RecipeIngredient z : recipeIngredientsList){
+                                String tempTitle[] = z.getTitle().split(",");
+
+                                if(tempTitle[1].equals(recipeName)){
+                                    Ingredient tempIngredient = new Ingredient(tempTitle[0], z.getDescription(), z.getAmount(), z.getUnit(), z.getUnitCategory(), z.getCategory(), "NULL", "NULL");
+                                    ingredientMealListTemp.add(tempIngredient);
+                                }
                             }
                         }
                     }
+
 
                     // Adding ingredients into the shopping ingredient list
                     for (Ingredient y : ingredientMealList){
@@ -329,10 +423,30 @@ public class ShoppingFragment extends Fragment {
                         boolean shoppingIngredientExists = false;
 
                         for(ShoppingIngredient z : shoppingArrayList){
+                            if (z.getName().equals(tempName)){
+                                z.setQuantity(Double.toString(Double.valueOf(z.getQuantity()) + Double.valueOf(tempIngredient.getQuantity())));
+                                shoppingIngredientExists = true;
+                            }
+                        }
+                        // Otherwise, if the ingredient does not already exists in the shopping list, then add it
+                        if(shoppingIngredientExists == false){
+                            shoppingArrayList.add(tempIngredient);
+                        }
+                    }
+
+                    // Adding ingredients into the shopping ingredient list
+                    for (Ingredient y : ingredientMealListTemp){
+                        ShoppingIngredient tempIngredient = new ShoppingIngredient(y.getName(), y.getDescription(), y.getAmount(), y.getUnit(), y.getCategory());
+                        String tempName = tempIngredient.getName();
+
+                        // If the selected ingredient already exists in the shopping ingredient list, then add more needed to the list
+                        boolean shoppingIngredientExists = false;
+
+                        for(ShoppingIngredient z : shoppingArrayList){
                             Log.d("TAGtempName", tempName);
                             Log.d("TAGzName", z.getName());
                             if (z.getName().equals(tempName)){
-                                z.setQuantity(Integer.toString(Integer.valueOf(z.getQuantity()) + Integer.valueOf(tempIngredient.getQuantity())));
+                                z.setQuantity(Double.toString(Double.valueOf(z.getQuantity()) + Double.valueOf(tempIngredient.getQuantity())));
                                 shoppingIngredientExists = true;
                                 Log.d("TAG", "True");
                             }
@@ -342,34 +456,46 @@ public class ShoppingFragment extends Fragment {
                             Log.d("TAG", "False");
                             shoppingArrayList.add(tempIngredient);
                         }
-
                     }
+                }
+
+                if(shoppingArrayList.isEmpty()){
+                    Toast toast=Toast.makeText(getContext(),"Add meals into the meal planner to update your shopping list!",Toast.LENGTH_LONG);
+                    toast.setMargin(50,50);
+                    toast.show();
                 }
 
                 // Removing items from shopping list if we already have enough ingredients in storage
                 // In other words, the user needs to buy them if they are not in storage
+
                 for (ShoppingIngredient x : shoppingArrayList){
                     String name = x.getName();
                     String amount = x.getQuantity();
-                    int amountNeeded = Integer.valueOf(amount);
+                    double amountNeeded = Double.valueOf(amount);
                     Log.d("shoppingName", name);
                     Log.d("shoppingAmount", amount);
 
                     // For every ingredient in the the ingredient storage list, see if it matches the shopping list ingredient
                     // If it does, then check if it need to buy more, otherwise, remove from shopping list.
                     for (Ingredient y : ingredientList){
-                        if(y.getName() == name){
+                        Log.d("shoppingIngredientName", y.getName());
+                        if(y.getName().equals(name)){
                             String amountStorage = y.getAmount();
-                            int amountHave = Integer.valueOf(amountStorage);
+                            double amountHave = Double.valueOf(amountStorage);
+                            Log.d("shoppingHave", amountStorage);
                             if(amountNeeded <= amountHave){
-                                shoppingArrayList.remove(x);
+                                toRemove.add(x);
                             } else {
-                                x.setQuantity(Integer.toString(amountNeeded - amountHave));
+                                x.setQuantity(Double.toString(amountNeeded - amountHave));
                             }
                         }
                     }
-                    shoppingAdapter.notifyDataSetChanged();
                 }
+                // Removing items from the shopping list that we already own
+                for(ShoppingIngredient i : toRemove){
+                    shoppingArrayList.remove(i);
+                }
+                shoppingAdapter.notifyDataSetChanged();
             }
         });
 
@@ -399,18 +525,25 @@ public class ShoppingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // List of checked items
-                Log.d("TAG", "Checkboxes counted: " + checkedItems.size());
-                for(int j=0; j<checkedItems.size(); j++){
-                    Log.d("LIST", checkedItems.get(j).toString());
-                }
                 if (! checkedItems.isEmpty()) {
-                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems);
+                    ShoppingListAddFragment displayAdd = new ShoppingListAddFragment(checkedItems, ingredientList);
                     displayAdd.show(getChildFragmentManager(), TAG);
                 }
-
+                shoppingAdapter.notifyDataSetChanged();
+                getParentFragmentManager().beginTransaction().detach(fragment).commitNow();
+                getParentFragmentManager().beginTransaction().attach(fragment).commitNow();
             }
         });
 
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("CLICKINGBUTTON", "YES");
+                shoppingAdapter.notifyDataSetChanged();
+                getParentFragmentManager().beginTransaction().detach(fragment).commitNow();
+                getParentFragmentManager().beginTransaction().attach(fragment).commitNow();
+            }
+        });
 
         // set the spinner to sort things correctly
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

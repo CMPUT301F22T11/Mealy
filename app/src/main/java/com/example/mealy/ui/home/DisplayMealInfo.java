@@ -25,6 +25,9 @@ import com.example.mealy.ui.recipes.RecipeEntry;
 
 import java.util.List;
 
+/**
+ * A fragment that takes in an meal object and displays its info
+ */
 public class DisplayMealInfo extends DialogFragment {
 
     private final Meal meal;
@@ -47,6 +50,10 @@ public class DisplayMealInfo extends DialogFragment {
     View view;
     private  DisplayMealInfo fragment = this;
 
+    /**
+     * Takes in the meal info and stores it into the class
+     * @param meal The ingredient that you want to display the info of
+     */
     public DisplayMealInfo(Meal meal) {
         this.meal = meal;
         this.mealName = meal.getTitle();
@@ -56,6 +63,10 @@ public class DisplayMealInfo extends DialogFragment {
         this.mealIngredients = meal.getMealIngredients();
     }
 
+    /**
+     * Displays the meal name and gives the option to delete the meal plan or close
+     * the dialog box.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -74,6 +85,10 @@ public class DisplayMealInfo extends DialogFragment {
                 }).create();
     }
 
+    /**
+     * Displays all the info of meal. This includes the title, date range,
+     * the ingredients list and the recipe list
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

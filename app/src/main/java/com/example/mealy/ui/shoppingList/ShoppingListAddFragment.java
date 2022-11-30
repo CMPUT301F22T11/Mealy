@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.mealy.R;
 import com.example.mealy.databinding.ShoppingListAddBinding;
 import com.example.mealy.functions.Firestore;
+import com.example.mealy.ui.ingredientStorage.Ingredient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,14 @@ public class ShoppingListAddFragment extends DialogFragment {
     ArrayList<ShoppingIngredient> items;
     ArrayList<ShoppingIngredient> shoppingAddList;
     ArrayList<ShoppingIngredient> ingredientsToBeAdded = new ArrayList<ShoppingIngredient>();
-
+    ArrayList<Ingredient> itemList = new ArrayList<>();
     View view;
-
+    boolean flagItem = false;
     // variables that are passed through
 
-    public ShoppingListAddFragment(ArrayList<ShoppingIngredient> items) {
+    public ShoppingListAddFragment(ArrayList<ShoppingIngredient> items, ArrayList<Ingredient> itemList) {
         this.items = items;
+        this.itemList = itemList;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,11 +87,24 @@ public class ShoppingListAddFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 final String collection = "Ingredients";
-                for(int i=0; i<items.size(); i++) {
-                    String ingredientName = items.get(i).getName();
-                    HashMap<String, String > data = GetData(items.get(i));
-                    Firestore.storeToFirestore(collection, ingredientName, data);
+                for(int i=0; i<items.size(); i++){
+                    flagItem = false;
+                    for(int j=0; j<itemList.size(); j++){
+                        if(items.get(i).getName().equals(itemList.get(j).getName())){
+                            String ingredientName = items.get(i).getName();
+                            HashMap<String, String> data = GetDataExisting(items.get(i), j);
+                            Firestore.storeToFirestore(collection, ingredientName, data);
+                            flagItem = true;
+                        }
+                    }
+                    if(flagItem == false) {
+                        String ingredientName = items.get(i).getName();
+                        HashMap<String, String> data = GetData(items.get(i));
+                        Firestore.storeToFirestore(collection, ingredientName, data);
+
+                    }
                 }
+                shoppingAdapter.notifyDataSetChanged();
                 getParentFragmentManager().beginTransaction().remove(fragment).commit();
             }
         });
@@ -119,6 +134,43 @@ public class ShoppingListAddFragment extends DialogFragment {
         String unit = Item.getUnit();
         String expiryDate = null;
         String unitCategory = null;
+        String description = Item.getDescription();
+
+        data.put("Category", categoryName);
+        data.put("Quantity", ingredientQuantity);
+        data.put("Quantity Unit", unit);
+        data.put("Unit Category", unitCategory);
+        data.put("Expiry Date", expiryDate);
+        data.put("Description", description);
+        data.put("Location", location);
+
+        return data;
+    }
+
+    /**
+     * Takes all inputted data (except for ingredient name) and stores it into a HashMap
+     * (This is for an existing entry)
+     * Hashmap:
+     * Key            Value
+     * Category       categoryName
+     * Quantity       ingredientQuantity
+     * Quantity Unit  unit
+     * Expiry Date    expiryDate
+     * Description    description
+     *
+     * @return HashMap of the data inputted (except for ingredient name)
+     */
+    private HashMap<String, String> GetDataExisting(ShoppingIngredient Item, int index) {
+
+        HashMap<String, String> data = new HashMap<>();
+        String categoryName = Item.getCategory();
+        String location = itemList.get(index).getLocation();
+        float existingQuant = Float.parseFloat(itemList.get(index).getAmount());
+        float newQuant = Float.parseFloat(Item.getQuantity());
+        String ingredientQuantity = String.valueOf(existingQuant+newQuant);
+        String unit = Item.getUnit();
+        String expiryDate = itemList.get(index).getExpiryDate();
+        String unitCategory = itemList.get(index).getCategory();
         String description = Item.getDescription();
 
         data.put("Category", categoryName);
