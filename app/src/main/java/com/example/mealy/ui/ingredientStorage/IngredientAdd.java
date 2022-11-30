@@ -148,6 +148,10 @@ public class IngredientAdd extends DialogFragment {
         return view;
     }
 
+
+    /**
+     * Sets up the AutoComplete for the Ingredient name
+     */
     private void InitializeIngredientName() {
         IngredientName = view.findViewById(R.id.ingredientName);
         ingredientAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, RecipeIngredients);
@@ -157,23 +161,29 @@ public class IngredientAdd extends DialogFragment {
         IngredientName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Hides keyboard when item is clicked
                 InputMethodManager in = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                // Gets the current info for the Recipe Ingredients
                 Map<String, Object> currentIngredient = RecipeIngredientsMaps.get(RecipeIngredients.get(i));
 
+                // Sets the Description based on the Ingredient selected
                 DescriptionText.setText(General.blankIfVoid((String) currentIngredient.get("Description")));
 
+                // Sets the Unit type based on the ingredient selected
                 String unit = (String) currentIngredient.get("Unit Category");
                 unit = General.blankIfVoid(unit);
                 wholeButton.setChecked(true); // true in case the field is empty
                 weightButton.setChecked(unit.equals("Weight"));
                 volumeButton.setChecked(unit.equals("Volume"));
 
+                // Sets the specific unit based on the ingredient selected
                 unit = (String) currentIngredient.get("Quantity Unit");
                 unit = General.blankIfVoid(unit);
-
                 quantityUnits.setSelection(Arrays.asList(current).indexOf(unit));
 
+                // sets the unit category based on the ingredient selected
                 if (Category.contains((String) currentIngredient.get("Category"))) {
                     categorySpinner.setSelection(Category.indexOf(General.blankIfVoid((String) currentIngredient.get("Category"))));
                 }
@@ -196,15 +206,12 @@ public class IngredientAdd extends DialogFragment {
         AddCategory = view.findViewById(R.id.newCategory);
         readCategoryFirebase();
 
-        // Todo let user add categories
-
+        // turns on or off the user input for the category spinner
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position == 1) {
                     AddCategory.setVisibility(View.VISIBLE);
-
                 } else {
                     AddCategory.setVisibility(View.GONE);
                 }
@@ -221,7 +228,6 @@ public class IngredientAdd extends DialogFragment {
     /**
      * Sets up the spinner for location. Sets the values and adapter
      */
-
     private void InitializeLocationSpinner() {
         locationSpinner = view.findViewById(R.id.locationDropdown);
         //locations = new String[]{"Select Location","Add Location", "Pantry", "Fridge", "Freezer"};
@@ -277,6 +283,7 @@ public class IngredientAdd extends DialogFragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch (checkedId) {
+                    // Updates Category Units when whole is clicked
                     case R.id.whole:
                         current = whole;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
@@ -284,6 +291,7 @@ public class IngredientAdd extends DialogFragment {
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Whole";
                         break;
+                    // Updates Category Units when whole is weight
                     case R.id.weight:
                         current = weight;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
@@ -291,6 +299,7 @@ public class IngredientAdd extends DialogFragment {
                         quantityUnits.setAdapter(unitsAdapter);
                         unitCategory = "Weight";
                         break;
+                    // Updates Category Units when whole is volume
                     case R.id.volume:
                         current = volume;
                         unitsAdapter = new ArrayAdapter<CharSequence>(getContext(), R.layout.spinner_layout, current);
@@ -321,6 +330,7 @@ public class IngredientAdd extends DialogFragment {
                     String ingredientName = GetIngredientName();
                     HashMap<String, String> data = GetData();
 
+                    // stores new category data to firebase
                     if (AddCategory.getVisibility() == View.VISIBLE){
                         if (!categoryData.containsValue(AddCategory.getText().toString())) {
                             categoryData.put(String.valueOf(categoryData.size()), AddCategory.getText().toString());
@@ -328,6 +338,7 @@ public class IngredientAdd extends DialogFragment {
                         }
                     }
 
+                    // stores new location data to firebase
                     if (AddLocation.getVisibility() == View.VISIBLE){
                         if(!locationData.containsValue(AddLocation.getText().toString())) {
                             locationData.put(String.valueOf(locationData.size() + 1), AddLocation.getText().toString());
@@ -336,8 +347,10 @@ public class IngredientAdd extends DialogFragment {
                     }
                     getParentFragmentManager().beginTransaction().remove(fragment).commit();
                     if (edit) {
+                        // deletes old data from firestore in edit mode
                         Firestore.deleteFromFirestore(collection, ingredient.getName());
                     }
+                    // stores ingredient data to firebase
                     Firestore.storeToFirestore(collection, ingredientName, data);
                 }
             }
@@ -488,13 +501,15 @@ public class IngredientAdd extends DialogFragment {
             isValid = false;
         }
 
+        // Checks if ingredient already exists
         if (Ingredients.contains(ingredientName) && !edit) {
             IngredientName.setError("This ingredient already exists");
             isValid = false;
         }
 
+        // Checks if the ingredient already exists in edit mode
         if (Ingredients.contains(ingredientName) && edit) {
-            if (!ingredientName.equals(oldName)) {
+            if (!ingredientName.equals(oldName)) { // old name can be reused
                 IngredientName.setError("This ingredient already exists");
                 isValid = false;
             }
@@ -518,6 +533,7 @@ public class IngredientAdd extends DialogFragment {
             }
         }
 
+        // Checks if new location already exists
         if (AddLocation.getVisibility() == View.VISIBLE) {
             if (Validate.isEmpty(AddLocation.getText().toString())){
                 AddLocation.setError("Please Input a New Location");
@@ -578,28 +594,31 @@ public class IngredientAdd extends DialogFragment {
 
     }
 
+    /**
+     * Reads category data from firebase
+     */
     public void readCategoryFirebase() {
         String CollectionName = "Spinner";
         String documentName = "Category";
         DocumentReference docRef = db.collection(CollectionName).document(documentName);
-        Source source = Source.CACHE;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        categoryData = document.getData();
-                        Category = General.mapToArrayList(categoryData);
-                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
-                        categorySpinner.setAdapter(categoryAdapter);
+                        categoryData = document.getData(); // map of categories
+                        Category = General.mapToArrayList(categoryData); // gets array of data
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category"); // updates category adapter
+                        categorySpinner.setAdapter(categoryAdapter); // sets the adapter to spinner
 
-                        if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory()));
+                        if (edit && ingredient!=null) categorySpinner.setSelection(Category.indexOf(ingredient.getCategory())); // sets category in edit mode
 
                         Log.d(TAG, "DocumentSnapshot data: " + categoryData);
                     } else {
                         Log.d(TAG, "No such document");
                         assert Category != null;
+                        // creates storage in firebase if no data exists
                         Firestore.storeToFirestore("Spinner", documentName, General.listToMap(Category));
                     }
                 } else {
@@ -608,37 +627,41 @@ public class IngredientAdd extends DialogFragment {
             }
         });
 
+        // Updates Category adapter when item deleted
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
                 if (doc != null) {
                     if ((doc.getData() != null) && (getContext() != null))
                     {
-                        categoryData = doc.getData();
-                        Category = General.mapToArrayList(categoryData);
-                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category");
-                        categorySpinner.setAdapter(categoryAdapter);
+                        categoryData = doc.getData(); // map of categories
+                        Category = General.mapToArrayList(categoryData); // gets array of data
+                        categoryAdapter = new DeletableSpinnerArrayAdapter(getContext(), Category, "Category"); // updates category adapter
+                        categorySpinner.setAdapter(categoryAdapter); // sets the adapter to spinner
                     }
                 }
             }
         });
     }
 
+    /**
+     * Reads location data from firebase
+     */
     public void readLocationFirebase() {
         String CollectionName = "Spinner";
         String documentName = "Location";
         DocumentReference docRef = db.collection(CollectionName).document(documentName);
-        Source source = Source.CACHE;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        locationData = document.getData();
-                        Location = General.mapToArrayList(locationData);
-                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
-                        locationSpinner.setAdapter(locationAdapter);
+                        locationData = document.getData(); // map of locations
+                        Location = General.mapToArrayList(locationData); // gets array of data
+                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location"); // updates location adapter
+                        locationSpinner.setAdapter(locationAdapter); // sets the adapter to spinner
+
                         if (edit && ingredient!=null) {
                             locationSpinner.setSelection(Location.indexOf(ingredient.getLocation()));
                         }
@@ -655,54 +678,58 @@ public class IngredientAdd extends DialogFragment {
             }
         });
 
+        // Updates Location adapter when item deleted
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
                 if (doc != null) {
                     if ((doc.getData() != null) && (getContext() != null))
                     {
-                        locationData = doc.getData();
-                        Location = General.mapToArrayList(locationData);
-                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location");
-                        locationSpinner.setAdapter(locationAdapter);
+                        locationData = doc.getData(); // map of locations
+                        Location = General.mapToArrayList(locationData); // gets array of data
+                        locationAdapter = new DeletableSpinnerArrayAdapter(getContext(), Location, "Location"); // updates location adapter
+                        locationSpinner.setAdapter(locationAdapter); // sets the adapter to spinner
                     }
                 }
             }
         });
     }
 
+    /**
+     * Gets Ingredient Storage names and Recipe Ingredient name and data to autofill info
+     */
     private void GetIngredientNames() {
         CollectionReference ingredientReference = db.collection("Ingredients");
         ingredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-
+            // Gets Ingredient Storage Names
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String ingredient = doc.getId();
                     if (!Ingredients.contains(ingredient)) {
-                        Ingredients.add(ingredient);
+                        Ingredients.add(ingredient); // Stores the name into Ingredients
                     }
                 }
             }
         });
 
+        // Gets Recipe Ingredient Names and data for autofill
         CollectionReference recipeIngredientReference = db.collection("RecipeIngredients");
         recipeIngredientReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-
-
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
                     FirebaseFirestoreException error) {
                 String name;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    name = (String) doc.getData().get("Name");
+                    name = (String) doc.getData().get("Name"); // Gets the ingredient name from firebase
 
                     if (!RecipeIngredientsMaps.containsKey(name)) {
-                        RecipeIngredientsMaps.put(name, doc.getData());
-                        RecipeIngredients.add(name);
+                        RecipeIngredientsMaps.put(name, doc.getData()); // gets the data from the ingredient
+                        RecipeIngredients.add(name); // gets the ingredient recipe names
                     }
                 }
+                // Removes Ingredient storage names from Ingredient recipe names from Autofill suggestions
                 RecipeIngredients.removeAll(Ingredients);
             }
         });

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mealy.R;
+import com.example.mealy.functions.DateFunc;
 import com.example.mealy.functions.DeletePrompt;
 import com.example.mealy.ui.ingredientStorage.Ingredient;
 import com.example.mealy.ui.recipes.DisplayRecipeInfo;
@@ -95,7 +96,7 @@ public class DisplayMealInfo extends DialogFragment {
 
         // set date
         view_date = view.findViewById(R.id.mealDate);
-        view_date.setText(startDate + " to " + endDate);
+        view_date.setText(DateFunc.makeDateString(startDate) + " to " + DateFunc.makeDateString(endDate));
         meal_title = view.findViewById(R.id.meal_title);
         meal_title.setText(mealName);
         recipeDisplay = view.findViewById(R.id.mealRecipeListDisplay);
@@ -107,11 +108,11 @@ public class DisplayMealInfo extends DialogFragment {
 
             System.out.println("Iterating over a recipe in this meal");
             System.out.println("Recipe title: " + x.getTitle());
-            recipes += (x.getTitle() + ", Servings: " + x.getServings() + "\n");
+            recipes += (x.getTitle() + ", Servings: " + x.getServings());
         }
 
         for (Ingredient x : mealIngredients) {
-            ingredients += (x.getName() + "\n");
+            ingredients += (x.getName());
         }
 
         recipeDisplay.setText(recipes);
